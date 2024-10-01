@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"strings"
@@ -13,13 +14,13 @@ type Resource struct {
 	Textures map[string]*ebiten.Image
 }
 
-func NewResource() *Resource {
+func newResource() *Resource {
 	p := new(Resource)
 	p.Textures = make(map[string]*ebiten.Image)
 	return p
 }
 
-var resource Resource = *NewResource()
+var Resources Resource = *newResource()
 
 func (r *Resource) LoadTexturesDir(directory string) {
 	os.Getwd()
@@ -35,7 +36,12 @@ func (r *Resource) LoadTexturesDir(directory string) {
 			r.LoadTexturesDir("./" + file.Name())
 		}
 		if strings.Contains(file.Name(), ".png") {
-			r.Textures[file.Name()], _, err = ebitenutil.NewImageFromFile(file.Name())
+			_, ok := r.Textures[file.Name()]
+			if !ok {
+				r.Textures[file.Name()], _, err = ebitenutil.NewImageFromFile(file.Name())
+			} else {
+				fmt.Println("\033[33mWARNING: the texture " + file.Name() + " is already loaded, skipping.\033[0m")
+			}
 			if err != nil {
 				log.Fatal(err)
 			}

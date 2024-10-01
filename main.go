@@ -27,7 +27,8 @@ func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeigh
 
 func main() {
 	var err error
-	resource.LoadTexturesDir("./res/textures")
+	Resources.LoadTexturesDir("./res/textures")
+	Resources.LoadTexturesDir("./res/textures")
 	image, _, err = ebitenutil.NewImageFromFile("res/textures/Button.png")
 	if err != nil {
 		log.Fatal(err)
