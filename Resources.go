@@ -20,7 +20,7 @@ func newResource() *Resource {
 	return p
 }
 
-var Resources Resource = *newResource()
+var Resources *Resource = newResource()
 
 func (r *Resource) LoadTexturesDir(directory string) {
 	os.Getwd()

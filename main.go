@@ -7,17 +7,18 @@ import (
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 )
 
-type Game struct{}
-
-var image *ebiten.Image
+type Game struct {
+	button Button
+}
 
 func (g *Game) Update() error {
+	g.button.Handle()
 	return nil
 }
 
 func (g *Game) Draw(screen *ebiten.Image) {
 	ebitenutil.DebugPrint(screen, "Hello, World!")
-	screen.DrawImage(image, nil)
+	g.button.Draw(screen)
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeight int) {
@@ -26,16 +27,13 @@ func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeigh
 }
 
 func main() {
-	var err error
 	Resources.LoadTexturesDir("./res/textures")
 	Resources.LoadTexturesDir("./res/textures")
-	image, _, err = ebitenutil.NewImageFromFile("res/textures/Button.png")
-	if err != nil {
-		log.Fatal(err)
-	}
 	ebiten.SetWindowSize(1600, 900)
 	ebiten.SetWindowTitle("Hello, World!")
-	if err := ebiten.RunGame(&Game{}); err != nil {
+	game := &Game{}
+	game.button = makeButton(20, 20)
+	if err := ebiten.RunGame(game); err != nil {
 		log.Fatal(err)
 	}
 }
