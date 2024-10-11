@@ -15,7 +15,7 @@ type Button struct {
 	pressed   bool
 }
 
-func makeButton(posX, posY float64) Button {
+func MakeButton(posX, posY float64) Button {
 	var button Button
 	button.Image = Resources.Textures["Button.png"]
 	button.PosX = posX

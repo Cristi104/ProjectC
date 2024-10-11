@@ -5,10 +5,12 @@ import (
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
+
+	"github.com/Cristi104/ProjectC/gameLib"
 )
 
 type Game struct {
-	button Button
+	button gameLib.Button
 }
 
 func (g *Game) Update() error {
@@ -27,13 +29,14 @@ func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeigh
 }
 
 func main() {
-	Resources.LoadTexturesDir("./res/textures")
-	Resources.LoadTexturesDir("./res/textures")
+	gameLib.Resources.LoadTexturesDir("./res/textures")
+	gameLib.Resources.LoadTexturesDir("./res/textures")
 	ebiten.SetWindowSize(1600, 900)
 	ebiten.SetWindowTitle("Hello, World!")
 	game := &Game{}
-	game.button = makeButton(20, 20)
+	game.button = gameLib.MakeButton(20, 20)
 	game.button.Update()
+	// game.button.OnClick = func() { fmt.Println("button pressed\n") }
 	if err := ebiten.RunGame(game); err != nil {
 		log.Fatal(err)
 	}
