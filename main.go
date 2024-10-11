@@ -33,6 +33,7 @@ func main() {
 	ebiten.SetWindowTitle("Hello, World!")
 	game := &Game{}
 	game.button = makeButton(20, 20)
+	game.button.Update()
 	if err := ebiten.RunGame(game); err != nil {
 		log.Fatal(err)
 	}

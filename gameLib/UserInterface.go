@@ -1,4 +1,4 @@
-package main
+package gameLib
 
 import (
 	"fmt"
@@ -8,24 +8,25 @@ import (
 
 type Button struct {
 	Image     *ebiten.Image
-	posX      float64
-	posY      float64
+	PosX      float64
+	PosY      float64
+	OnClick   func()
 	transform ebiten.DrawImageOptions
 	pressed   bool
-	OnClick   func()
 }
 
 func makeButton(posX, posY float64) Button {
 	var button Button
 	button.Image = Resources.Textures["Button.png"]
-	button.posX = posX
-	button.posY = posY
+	button.PosX = posX
+	button.PosY = posY
 	button.Update()
 	return button
 }
 
 func (b *Button) Update() {
-	b.transform.GeoM.Translate(b.posX, b.posY)
+	b.transform.GeoM.Reset()
+	b.transform.GeoM.Translate(b.PosX, b.PosY)
 }
 
 func (b *Button) Draw(target *ebiten.Image) {
@@ -37,10 +38,10 @@ func (b *Button) Handle() {
 	if b.pressed && !pressed {
 		mousePosX, mousePosY := ebiten.CursorPosition()
 		rect := b.Image.Bounds()
-		rect.Min.X += int(b.posX)
-		rect.Min.Y += int(b.posY)
-		rect.Max.X += int(b.posX)
-		rect.Max.Y += int(b.posY)
+		rect.Min.X += int(b.PosX)
+		rect.Min.Y += int(b.PosY)
+		rect.Max.X += int(b.PosX)
+		rect.Max.Y += int(b.PosY)
 		if (rect.Min.X < mousePosX && mousePosX < rect.Max.X) && (rect.Min.Y < mousePosY && mousePosY < rect.Max.Y) {
 			if b.OnClick != nil {
 				b.OnClick()
