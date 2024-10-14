@@ -24,13 +24,14 @@ func (g *Game) Draw(screen *ebiten.Image) {
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeight int) {
-	// return 480, 270
-	return 240, 135
+	return 480, 270
+	// return 240, 135
 }
 
 func main() {
 	gameLib.Resources.LoadTexturesDir("./res/textures")
 	gameLib.Resources.LoadTexturesDir("./res/textures")
+	gameLib.Resources.LoadFontsDir("./res/fonts")
 	ebiten.SetWindowSize(1600, 900)
 	ebiten.SetWindowTitle("Hello, World!")
 	game := &Game{}

@@ -2,7 +2,11 @@ module github.com/Cristi104/ProjectC
 
 go 1.23.1
 
-require github.com/hajimehoshi/ebiten/v2 v2.8.1
+require (
+	github.com/golang/freetype v0.0.0-20170609003504-e2365dfdc4a0
+	github.com/hajimehoshi/ebiten/v2 v2.8.1
+	golang.org/x/image v0.20.0
+)
 
 require (
 	github.com/ebitengine/gomobile v0.0.0-20240911145611-4856209ac325 // indirect
