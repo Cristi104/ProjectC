@@ -9,6 +9,7 @@ import (
 	"github.com/golang/freetype/truetype"
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
+	"golang.org/x/image/font"
 )
 
 type resource struct {
@@ -16,14 +17,13 @@ type resource struct {
 	Fonts    map[string]*truetype.Font
 }
 
-func newResource() *resource {
-	p := new(resource)
+func makeResource() (p resource) {
 	p.Textures = make(map[string]*ebiten.Image)
 	p.Fonts = make(map[string]*truetype.Font)
 	return p
 }
 
-var Resources *resource = newResource()
+var Resources resource = makeResource()
 
 func (r *resource) LoadTexturesDir(directory string) {
 	os.Getwd()
@@ -92,4 +92,8 @@ func (r *resource) LoadFontsDir(directory string) {
 	count := strings.Count(directory, "/")
 
 	os.Chdir(strings.Repeat(".."+"/", count))
+}
+
+func (r *resource) MakeFaceFromFont(name string, opts *truetype.Options) font.Face {
+	return truetype.NewFace(r.Fonts[name], opts)
 }

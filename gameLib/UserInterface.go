@@ -2,8 +2,12 @@ package gameLib
 
 import (
 	"fmt"
+	"image/color"
 
+	"github.com/golang/freetype/truetype"
 	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten/v2/text"
+	"golang.org/x/image/font"
 )
 
 type Button struct {
@@ -15,8 +19,7 @@ type Button struct {
 	pressed   bool
 }
 
-func MakeButton(posX, posY float64) Button {
-	var button Button
+func MakeButton(posX, posY float64) (button Button) {
 	button.Image = Resources.Textures["Button.png"]
 	button.PosX = posX
 	button.PosY = posY
@@ -51,4 +54,32 @@ func (b *Button) Handle() {
 		}
 	}
 	b.pressed = pressed
+}
+
+type Text struct {
+	PosX float64
+	PosY float64
+	Font font.Face
+	str  string
+}
+
+func MakeText(text string, posX, posY float64, font font.Face) (t Text) {
+	if text == "" {
+		t.str = "New\nText\n"
+	} else {
+		t.str = text
+	}
+	if font == nil {
+		var opts truetype.Options
+		t.Font = Resources.MakeFaceFromFont("arial.ttf", &opts)
+	} else {
+		t.Font = font
+	}
+	t.PosX = posX
+	t.PosY = posY
+	return t
+}
+
+func (t *Text) Draw(target *ebiten.Image) {
+	text.Draw(target, t.str, t.Font, int(t.PosX), int(t.PosY), color.White)
 }

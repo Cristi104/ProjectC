@@ -11,6 +11,7 @@ import (
 
 type Game struct {
 	button gameLib.Button
+	text   gameLib.Text
 }
 
 func (g *Game) Update() error {
@@ -21,6 +22,7 @@ func (g *Game) Update() error {
 func (g *Game) Draw(screen *ebiten.Image) {
 	ebitenutil.DebugPrint(screen, "Hello, World!")
 	g.button.Draw(screen)
+	g.text.Draw(screen)
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeight int) {
@@ -36,6 +38,7 @@ func main() {
 	ebiten.SetWindowTitle("Hello, World!")
 	game := &Game{}
 	game.button = gameLib.MakeButton(20, 20)
+	game.text = gameLib.MakeText("test", 100, 100, nil)
 	game.button.Update()
 	// game.button.OnClick = func() { fmt.Println("button pressed\n") }
 	if err := ebiten.RunGame(game); err != nil {
