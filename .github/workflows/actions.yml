@@ -42,7 +42,7 @@ jobs:
 
       - name: Install linux dependencies
         if: runner.os == 'Linux'
-        run: sudo apt-get install libegl1-mesa-dev libudev-dev libopenal-dev libvorbis-dev libflac-dev libxrandr-dev libxcursor-dev libglew-dev
+        run: sudo apt install libasound2-dev libx11-dev libxrandr-dev libxi-dev libgl1-mesa-dev libglu1-mesa-dev libxcursor-dev libxinerama-dev libwayland-dev libxkbcommon-dev
 
       - name: Install MacOS dependencies
         if: runner.os == 'macos'
