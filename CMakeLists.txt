@@ -28,17 +28,19 @@ if (NOT raylib_FOUND)
                 COMMAND ${CMAKE_COMMAND} -E copy_if_different
                 "${CMAKE_BINARY_DIR}/_deps/raylib-build/raylib/raylib.dll"
                 $<TARGET_FILE_DIR:ProjectC>)
-    elseif (APPLE)
-        # I don't know if this works since i don't have access to a mac for testing
-        add_custom_command(TARGET ProjectC POST_BUILD
-                COMMAND ${CMAKE_COMMAND} -E copy_if_different
-                "${CMAKE_BINARY_DIR}/_deps/raylib-build/raylib/librarylib.dylib"
-                $<TARGET_FILE_DIR:ProjectC>)
-    elseif (UNIX AND NOT APPLE)
-        add_custom_command(TARGET ProjectC POST_BUILD
-                COMMAND ${CMAKE_COMMAND} -E copy_if_different
-                "${CMAKE_BINARY_DIR}/_deps/raylib-build/raylib/librarylib.so"
-                $<TARGET_FILE_DIR:ProjectC>)
+
+        #    elseif (APPLE)
+        #        # TODO: fix copying here
+        #        # I don't know if this works since i don't have access to a mac for testing
+        #        add_custom_command(TARGET ProjectC POST_BUILD
+        #                COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        #                "${CMAKE_BINARY_DIR}/_deps/raylib-build/raylib/librarylib.dylib"
+        #                $<TARGET_FILE_DIR:ProjectC>)
+        #    elseif (UNIX AND NOT APPLE)
+        #        add_custom_command(TARGET ProjectC POST_BUILD
+        #                COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        #                "${CMAKE_BINARY_DIR}/_deps/raylib-build/raylib/librarylib.so"
+        #                $<TARGET_FILE_DIR:ProjectC>)
     endif ()
 
 endif ()
