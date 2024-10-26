@@ -37,7 +37,7 @@ if (NOT raylib_FOUND)
     elseif (UNIX AND NOT APPLE)
         add_custom_command(TARGET ProjectC POST_BUILD
                 COMMAND ${CMAKE_COMMAND} -E copy_if_different
-                "${CMAKE_BINARY_DIR}/_deps/raylib-build/raylib/raylib.so"
+                "${CMAKE_BINARY_DIR}/_deps/raylib-build/raylib/librarylib.so"
                 $<TARGET_FILE_DIR:ProjectC>)
     endif ()
 
