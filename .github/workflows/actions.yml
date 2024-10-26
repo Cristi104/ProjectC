@@ -1,0 +1,67 @@
+name: Cpp-CI
+on:
+  push:
+    branches: [ '*' ]
+jobs:
+  build:
+    name: ${{matrix.name}}
+    runs-on: ${{matrix.os}}
+    timeout-minutes: 10
+    strategy:
+      fail-fast: true
+      matrix:
+        os: [ windows-latest, ubuntu-latest, macos-latest ]
+        build_type: [ Debug ]
+        c: [ gcc, clang, cl ]
+        include:
+          - os: windows-latest
+            c: cl
+            name: Windows build
+          - os: ubuntu-latest
+            c: gcc
+            name: Linux gcc build
+          - os: ubuntu-latest
+            c: clang
+            name: Linux clang build
+          - os: macos-latest
+            c: clang
+            name: MacOS build
+        exclude:
+          - os: windows-latest
+            c: gcc
+          - os: windows-latest
+            c: clang
+          - os: ubuntu-latest
+            c: cl
+          - os: macos-latest
+            c: cl
+          - os: macos-latest
+            c: gcc
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install linux dependencies
+        if: runner.os == 'Linux'
+        run: sudo apt-get install libegl1-mesa-dev libudev-dev libopenal-dev libvorbis-dev libflac-dev libxrandr-dev libxcursor-dev libglew-dev
+
+      - name: Install MacOS dependencies
+        if: runner.os == 'macos'
+        run: brew install glew
+
+      - name: CMake config
+        run: >
+          cmake -B cmake-build
+          -DCMAKE_C_COMPILER=${{ matrix.c }}
+          -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+          -S ${{ github.workspace }}
+
+      - name: Build
+        run: cmake --build cmake-build --config ${{ matrix.build_type }}
+
+      - name: Cache release builds
+        if: (matrix.build_type == 'Release') && (matrix.c != 'gcc')
+        uses: actions/cache@v4
+        with:
+          path: cmake-build
+          key: ${{runner.os}}-build-release
+          restore-keys: ${{runner.os}}-release
