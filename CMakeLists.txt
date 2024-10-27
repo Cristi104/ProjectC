@@ -5,8 +5,8 @@ set(CMAKE_C_STANDARD 11)
 
 find_package(raylib 5.0 QUIET)
 
-add_library(gamelib src/LibTest.c
-        include/LibTest.h)
+add_library(gamelib include/DataStructs.h
+        src/HashMap.c)
 
 add_executable(ProjectC main.c)
 
@@ -23,23 +23,22 @@ if (NOT raylib_FOUND)
 
     FetchContent_MakeAvailable(raylib)
 
+    # TODO: fix copying here
     #    if (WIN32)
-    #        add_custom_command(TARGET raylib POST_BUILD
+    #        add_custom_command(TARGET ProjectC POST_BUILD
     #                COMMAND ${CMAKE_COMMAND} -E copy_if_different
     #                "${CMAKE_CURRENT_BINARY_DIR}/_deps/raylib-build/raylib/raylib.dll"
     #                $<TARGET_FILE_DIR:ProjectC>)
-    #            elseif (APPLE)
-    #                # TODO: fix copying here
-    #                # I don't know if this works since i don't have access to a mac for testing
-    #                add_custom_command(TARGET ProjectC POST_BUILD
-    #                        COMMAND ${CMAKE_COMMAND} -E copy_if_different
-    #                        "${CMAKE_CURRENT_BINARY_DIR}/_deps/raylib-build/raylib/librarylib.dylib"
-    #                        $<TARGET_FILE_DIR:ProjectC>)
-    #            elseif (UNIX AND NOT APPLE)
-    #                add_custom_command(TARGET ProjectC POST_BUILD
-    #                        COMMAND ${CMAKE_COMMAND} -E copy_if_different
-    #                        "${CMAKE_CURRENT_BINARY_DIR}/_deps/raylib-build/raylib/librarylib.so"
-    #                        $<TARGET_FILE_DIR:ProjectC>)
+    #    elseif (APPLE)
+    #        add_custom_command(TARGET ProjectC POST_BUILD
+    #                COMMAND ${CMAKE_COMMAND} -E copy_if_different
+    #                "${CMAKE_CURRENT_BINARY_DIR}/_deps/raylib-build/raylib/librarylib.dylib"
+    #                $<TARGET_FILE_DIR:ProjectC>)
+    #    elseif (UNIX AND NOT APPLE)
+    #        add_custom_command(TARGET ProjectC POST_BUILD
+    #                COMMAND ${CMAKE_COMMAND} -E copy_if_different
+    #                "${CMAKE_CURRENT_BINARY_DIR}/_deps/raylib-build/raylib/librarylib.so"
+    #                $<TARGET_FILE_DIR:ProjectC>)
     #    endif ()
 
 endif ()
