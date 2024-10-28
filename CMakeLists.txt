@@ -7,7 +7,9 @@ find_package(raylib 5.0 QUIET)
 
 add_library(gamelib include/DataStructs.h
         src/HashMap.c
-        src/Vector.c)
+        src/Vector.c
+        include/SystemFunc.h
+        src/Thread.c)
 
 add_executable(ProjectC main.c)
 

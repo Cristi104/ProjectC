@@ -90,4 +90,5 @@ void DeleteVector(Vector *vector, size_t index) {
     free(vec[index]);
     size = (vector->size - index) * sizeof(void *);
     memcpy_s(vec + index, size, vec + index + 1, size);
+    vec[vector->size] = NULL;
 }

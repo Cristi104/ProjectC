@@ -2,10 +2,16 @@
 #include <string.h>
 #include "raylib.h"
 #include "include/DataStructs.h"
+#include "include/SystemFunc.h"
 
+void testFunc(void *arg) {
+    ((char *) arg)[2] = '\n';
+    printf("%s\n", (char *) arg);
+}
 
 int main() {
     InitWindow(800, 600, "Hello World");
+
     while (!WindowShouldClose()) {
         BeginDrawing();
         ClearBackground(RAYWHITE);
@@ -26,6 +32,14 @@ int main() {
 //    }
 //    printf("%i\n", *(int *) GetHashMap(test, "abc"));
 //    FreeHashMap(test);
+
+    char arg[] = "it works!";
+
+    Thread thread = NewThread(&testFunc, arg);
+    testFunc(arg);
+    JoinThread(&thread);
+    testFunc(arg);
+    printf("handle %p, %lu\n", thread.handle, thread.threadId);
 
     Vector *vector = NewVector(0);
     for (int i = 0; i < 5; i++) {
