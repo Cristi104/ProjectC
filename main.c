@@ -5,31 +5,40 @@
 #include "include/DataStructs.h"
 #include "include/SystemFunc.h"
 
+Mutex mutexTest;
+
 void testFunc(void *arg) {
+    LockMutex(mutexTest);
     ((char *) arg)[2] = '\n';
-    printf("%s\n", (char *) arg);
+    UnlockMutex(mutexTest);
 }
 
 int main() {
-    InitWindow(800, 600, "Hello World");
-
-    while (!WindowShouldClose()) {
-        BeginDrawing();
-        ClearBackground(RAYWHITE);
-        DrawText("Congrats! You created your first window!", 190, 200, 20, LIGHTGRAY);
-        EndDrawing();
-    }
-
-    CloseWindow();
-
-    char *arg = malloc(101);
+//    InitWindow(800, 600, "Hello World");
+//
+//    while (!WindowShouldClose()) {
+//        BeginDrawing();
+//        ClearBackground(RAYWHITE);
+//        DrawText("Congrats! You created your first window!", 190, 200, 20, LIGHTGRAY);
+//        EndDrawing();
+//    }
+//
+//    CloseWindow();
+    char *arg = malloc(100);
     strcpy_s(arg, 10, "it works!");
 
-    Thread thread = NewThread(&testFunc, arg);
-    printf("%s\n", (char *) arg);
-    printf("%s\n", (char *) arg);
-    JoinThread(&thread);
+    mutexTest = NewMutex();
 
-    free(arg);
+    Thread thread = NewThread(testFunc, arg);
+    for (int i = 0; i < 100; i++) {
+        printf("%s", arg);
+    }
+
+    LockMutex(mutexTest);
+    printf("%s", arg);
+    UnlockMutex(mutexTest);
+
+    JoinThread(&thread);
+    FreeMutex(mutexTest);
     return 0;
 }
