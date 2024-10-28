@@ -1,45 +1,21 @@
 //
 // Created by Cristi on 10/28/2024.
 //
+#include <stdio.h>
 #include <Windows.h>
 #include "../include/SystemFunc.h"
 
 #ifdef WIN32
 
-typedef struct prv_ThreadData {
-    void (*main)(void *);
-
-    void *data;
-} prv_ThreadData;
-
-static DWORD WINAPI threadInit(LPVOID parameters) {
-    HANDLE stdout;
-    prv_ThreadData *data;
-    prv_ThreadData copy;
-
-    data = parameters;
-    copy.main = data->main;
-    copy.data = data->data;
-
-    stdout = GetStdHandle(STD_OUTPUT_HANDLE);
-    if (stdout == INVALID_HANDLE_VALUE) {
-        return 1;
-    }
-
-    copy.main(copy.data);
-
-    return 0;
-}
-
 Thread NewThread(void (*main)(void *), void *data) {
     Thread thread;
-    prv_ThreadData threadData = {main, data};
+    void *test;
 
     thread.handle = CreateThread(
             NULL,
             0,
-            threadInit,
-            &threadData,
+            (LPTHREAD_START_ROUTINE) main,
+            data,
             0,
             &thread.threadId);
 
@@ -51,7 +27,6 @@ Thread NewThread(void (*main)(void *), void *data) {
 }
 
 void JoinThread(Thread *thread) {
-    TerminateThread(thread->handle, 0);
     WaitForSingleObject(thread->handle, INFINITE);
     CloseHandle(thread->handle);
 }
