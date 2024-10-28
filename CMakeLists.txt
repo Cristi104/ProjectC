@@ -6,7 +6,8 @@ set(CMAKE_C_STANDARD 11)
 find_package(raylib 5.0 QUIET)
 
 add_library(gamelib include/DataStructs.h
-        src/HashMap.c)
+        src/HashMap.c
+        src/Vector.c)
 
 add_executable(ProjectC main.c)
 

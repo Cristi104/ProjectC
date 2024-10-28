@@ -6,15 +6,15 @@
 #include "../include/DataStructs.h"
 
 static size_t hash(const char *key) {
-    size_t hash = 0x5A5A;
+    size_t hash = 5381;
     while (key[0]) {
-        hash = (hash << 4) + hash + (size_t) key[0];
+        hash = (hash << 5) + hash + (size_t) key[0];
         key++;
     }
     return hash;
 }
 
-HashMap *newHashMap(size_t size) {
+HashMap *NewHashMap(size_t size) {
     HashMap *map;
     map = malloc(sizeof(HashMap));
     if (map == NULL) {
@@ -30,7 +30,7 @@ HashMap *newHashMap(size_t size) {
     return map;
 }
 
-void freeHashMap(HashMap *map) {
+void FreeHashMap(HashMap *map) {
     Bucket *bucket;
     Pair *pair;
     if (map == NULL) {
@@ -48,7 +48,7 @@ void freeHashMap(HashMap *map) {
     free(map);
 }
 
-void *hashMapGet(const HashMap *map, const char *key) {
+void *GetHashMap(const HashMap *map, const char *key) {
     size_t index;
     Bucket *bucket;
     Pair *pair;
@@ -69,7 +69,7 @@ void *hashMapGet(const HashMap *map, const char *key) {
     return NULL;
 }
 
-void hashMapSet(HashMap *map, const char *key, const void *value, size_t valueSize) {
+void InsertHashMap(HashMap *map, const char *key, const void *value, size_t valueSize) {
     size_t index;
     size_t keySize;
     Bucket *bucket;

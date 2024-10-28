@@ -26,13 +26,29 @@ typedef struct HashMap {
     Bucket *buckets;
 } HashMap;
 
-GAME_EXPORTS HashMap *newHashMap(size_t size);
+typedef struct Vector {
+    void **array;
+    size_t size;
+    size_t maxSize;
+} Vector;
 
-GAME_EXPORTS void freeHashMap(HashMap *map);
+GAME_EXPORTS HashMap *NewHashMap(size_t size);
 
-GAME_EXPORTS void *hashMapGet(const HashMap *map, const char *key);
+GAME_EXPORTS void FreeHashMap(HashMap *map);
 
-GAME_EXPORTS void hashMapSet(HashMap *map, const char *key, const void *value, size_t valueSize);
+GAME_EXPORTS void *GetHashMap(const HashMap *map, const char *key);
+
+GAME_EXPORTS void InsertHashMap(HashMap *map, const char *key, const void *value, size_t valueSize);
+
+GAME_EXPORTS Vector *NewVector(size_t length);
+
+GAME_EXPORTS void FreeVector(Vector *vector);
+
+GAME_EXPORTS void InsertVector(Vector *vector, size_t index, void *value, size_t valueSize);
+
+GAME_EXPORTS void AppendVector(Vector *vector, void *value, size_t valueSize);
+
+GAME_EXPORTS void DeleteVector(Vector *vector, size_t index);
 
 #ifdef __cplusplus
 }
