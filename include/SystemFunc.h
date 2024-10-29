@@ -20,7 +20,7 @@ typedef struct Thread {
 
 typedef void *Mutex;
 
-#elif defined(UNIX)
+#elif defined(unix)
 
 #include <pthread.h>
 

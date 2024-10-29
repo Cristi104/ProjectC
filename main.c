@@ -25,7 +25,7 @@ int main() {
 //
 //    CloseWindow();
     char *arg = malloc(100);
-    strcpy_s(arg, 10, "it works!");
+    strcpy(arg, "it works!");
 
     mutexTest = NewMutex();
 

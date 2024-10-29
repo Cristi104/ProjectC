@@ -50,9 +50,9 @@ void InsertVector(Vector *vector, size_t index, void *value, size_t valueSize) {
     }
     vec = vector->array;
     size = (vector->size - index) * sizeof(void *);
-    memcpy_s(vec + index + 1, size, vec + index, size);
+    memcpy(vec + index + 1, vec + index, size);
     vec[index] = malloc(valueSize);
-    memcpy_s(vec[index], valueSize, value, valueSize);
+    memcpy(vec[index], value, valueSize);
     vector->size++;
 }
 
@@ -72,7 +72,7 @@ void AppendVector(Vector *vector, void *value, size_t valueSize) {
     }
     vec = vector->array;
     vec[vector->size] = malloc(valueSize);
-    memcpy_s(vec[vector->size], valueSize, value, valueSize);
+    memcpy(vec[vector->size], value, valueSize);
     vector->size++;
 }
 
@@ -89,6 +89,6 @@ void DeleteVector(Vector *vector, size_t index) {
     vector->size--;
     free(vec[index]);
     size = (vector->size - index) * sizeof(void *);
-    memcpy_s(vec + index, size, vec + index + 1, size);
+    memcpy(vec + index, vec + index + 1, size);
     vec[vector->size] = NULL;
 }

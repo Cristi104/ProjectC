@@ -49,7 +49,7 @@ void UnlockMutex(Mutex mutex) {
     ReleaseMutex(mutex);
 }
 
-#elif defined(UNIX)
+#elif defined(unix)
 
 Thread NewThread(void (*main)(void *), void *data){
 

@@ -93,7 +93,7 @@ void InsertHashMap(HashMap *map, const char *key, const void *value, size_t valu
     }
     pair = &bucket->pairs[bucket->count - 1];
     pair->key = malloc(keySize + 1);
-    strncpy_s(pair->key, keySize + 1, key, keySize);
+    strncpy(pair->key, key, keySize);
     pair->value = malloc(valueSize);
-    memcpy_s(pair->value, valueSize, value, valueSize);
+    memcpy(pair->value, value, valueSize);
 }
