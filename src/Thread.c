@@ -29,6 +29,8 @@ Thread NewThread(void (*main)(void *), void *data) {
 void JoinThread(Thread *thread) {
     WaitForSingleObject(thread->handle, INFINITE);
     CloseHandle(thread->handle);
+    thread->handle = NULL;
+    thread->threadId = 0;
 }
 
 Mutex NewMutex() {
@@ -51,28 +53,38 @@ void UnlockMutex(Mutex mutex) {
 
 #elif defined(unix)
 
-Thread NewThread(void (*main)(void *), void *data){
+#include <malloc.h>
+#include <pthread.h>
 
+Thread NewThread(void (*main)(void *), void *data) {
+    Thread thread = malloc(sizeof(pthread_t));
+    pthread_create(thread, NULL, (void *(*)(void *)) main, data);
+    return thread;
 }
 
-void JoinThread(Thread *thread){
-
+void JoinThread(Thread *thread) {
+    pthread_join(**thread, NULL);
+    free(*thread);
+    *thread = NULL;
 }
 
-Mutex NewMutex(){
-
+Mutex NewMutex() {
+    Mutex mutex = malloc(sizeof(pthread_mutex_t));
+    pthread_mutex_init(mutex, NULL);
+    return mutex;
 }
 
-void FreeMutex(Mutex mutex){
-
+void FreeMutex(Mutex mutex) {
+    pthread_mutex_destroy(mutex);
+    free(mutex);
 }
 
-void LockMutex(Mutex mutex){
-
+void LockMutex(Mutex mutex) {
+    pthread_mutex_lock(mutex);
 }
 
-void UnlockMutex(Mutex mutex){
-
+void UnlockMutex(Mutex mutex) {
+    pthread_mutex_unlock(mutex);
 }
 
 #endif

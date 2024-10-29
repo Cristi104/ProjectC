@@ -28,17 +28,22 @@ int main() {
     strcpy(arg, "it works!");
 
     mutexTest = NewMutex();
-
     Thread thread = NewThread(testFunc, arg);
+
+    LockMutex(mutexTest);
     for (int i = 0; i < 100; i++) {
         printf("%s", arg);
     }
+    UnlockMutex(mutexTest);
+
+    JoinThread(&thread);
 
     LockMutex(mutexTest);
     printf("%s", arg);
     UnlockMutex(mutexTest);
 
-    JoinThread(&thread);
     FreeMutex(mutexTest);
+    free(arg);
+
     return 0;
 }
