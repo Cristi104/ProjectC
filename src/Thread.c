@@ -53,7 +53,7 @@ void UnlockMutex(Mutex mutex) {
 
 #elif defined(unix)
 
-#include <malloc.h>
+#include <stdlib.h>
 #include <pthread.h>
 
 Thread NewThread(void (*main)(void *), void *data) {

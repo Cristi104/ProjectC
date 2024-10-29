@@ -1,7 +1,7 @@
 //
 // Created by Cristi on 10/27/2024.
 //
-#include <malloc.h>
+#include <stdlib.h>
 #include <string.h>
 #include "../include/DataStructs.h"
 

@@ -1,6 +1,6 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
-#include <malloc.h>
 #include "raylib.h"
 #include "include/DataStructs.h"
 #include "include/SystemFunc.h"
