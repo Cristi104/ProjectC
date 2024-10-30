@@ -3,6 +3,7 @@
 //
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 #include "../include/DataStructs.h"
 
 static size_t hash(const char *key) {
@@ -14,9 +15,10 @@ static size_t hash(const char *key) {
     return hash;
 }
 
-HashMap *NewHashMap(size_t size) {
+HashMap *NewHashMap(size_t size, bool createCopy) {
     HashMap *map;
     map = malloc(sizeof(HashMap));
+    *((bool *) &map->auto_copy) = createCopy;
     if (map == NULL) {
         return NULL;
     }
@@ -40,7 +42,9 @@ void FreeHashMap(HashMap *map) {
         bucket = &map->buckets[i];
         for (size_t j = 0; j < bucket->count; j++) {
             pair = &bucket->pairs[j];
-            free(pair->value);
+            if (map->auto_copy) {
+                free(pair->value);
+            }
             free(pair->key);
         }
         free(bucket->pairs);
@@ -94,6 +98,10 @@ void InsertHashMap(HashMap *map, const char *key, const void *value, size_t valu
     pair = &bucket->pairs[bucket->count - 1];
     pair->key = malloc(keySize + 1);
     strncpy(pair->key, key, keySize);
-    pair->value = malloc(valueSize);
-    memcpy(pair->value, value, valueSize);
+    if (map->auto_copy) {
+        pair->value = malloc(valueSize);
+        memcpy(pair->value, value, valueSize);
+    } else {
+        pair->value = (void *) value;
+    }
 }

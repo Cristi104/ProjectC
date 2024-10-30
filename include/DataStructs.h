@@ -24,15 +24,17 @@ typedef struct Bucket {
 typedef struct HashMap {
     size_t count;
     Bucket *buckets;
+    const bool auto_copy;
 } HashMap;
 
 typedef struct Vector {
     void **array;
     size_t size;
     size_t maxSize;
+    const bool auto_copy;
 } Vector;
 
-GAME_EXPORTS HashMap *NewHashMap(size_t size);
+GAME_EXPORTS HashMap *NewHashMap(size_t size, bool createCopy);
 
 GAME_EXPORTS void FreeHashMap(HashMap *map);
 
@@ -40,7 +42,7 @@ GAME_EXPORTS void *GetHashMap(const HashMap *map, const char *key);
 
 GAME_EXPORTS void InsertHashMap(HashMap *map, const char *key, const void *value, size_t valueSize);
 
-GAME_EXPORTS Vector *NewVector(size_t length);
+GAME_EXPORTS Vector *NewVector(size_t length, bool createCopy);
 
 GAME_EXPORTS void FreeVector(Vector *vector);
 

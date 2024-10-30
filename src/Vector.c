@@ -4,11 +4,16 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 #include "../include/DataStructs.h"
 
-Vector *NewVector(size_t length) {
+Vector *NewVector(size_t length, bool createCopy) {
     Vector *vector;
     vector = malloc(sizeof(Vector));
+    if (vector == NULL) {
+        return NULL;
+    }
+    *((bool *) &vector->auto_copy) = createCopy;
     if (length == 0) {
         vector->maxSize = 1;
     } else {
@@ -16,6 +21,10 @@ Vector *NewVector(size_t length) {
     }
     vector->size = 0;
     vector->array = malloc(sizeof(void *) * vector->maxSize);
+    if (vector->array == NULL) {
+        free(vector);
+        return NULL;
+    }
     return vector;
 }
 
@@ -23,8 +32,10 @@ void FreeVector(Vector *vector) {
     if (vector == NULL) {
         return;
     }
-    for (size_t i = 0; i < vector->size; i++) {
-        free(vector->array[i]);
+    if (vector->auto_copy) {
+        for (size_t i = 0; i < vector->size; i++) {
+            free(vector->array[i]);
+        }
     }
     free(vector->array);
 }
@@ -51,8 +62,12 @@ void InsertVector(Vector *vector, size_t index, void *value, size_t valueSize) {
     vec = vector->array;
     size = (vector->size - index) * sizeof(void *);
     memcpy(vec + index + 1, vec + index, size);
-    vec[index] = malloc(valueSize);
-    memcpy(vec[index], value, valueSize);
+    if (vector->auto_copy) {
+        vec[index] = malloc(valueSize);
+        memcpy(vec[index], value, valueSize);
+    } else {
+        vec[index] = value;
+    }
     vector->size++;
 }
 
@@ -71,8 +86,12 @@ void AppendVector(Vector *vector, void *value, size_t valueSize) {
         vector->array = buf;
     }
     vec = vector->array;
-    vec[vector->size] = malloc(valueSize);
-    memcpy(vec[vector->size], value, valueSize);
+    if (vector->auto_copy) {
+        vec[vector->size] = malloc(valueSize);
+        memcpy(vec[vector->size], value, valueSize);
+    } else {
+        vec[vector->size] = value;
+    }
     vector->size++;
 }
 
@@ -87,7 +106,9 @@ void DeleteVector(Vector *vector, size_t index) {
     }
     vec = vector->array;
     vector->size--;
-    free(vec[index]);
+    if (vector->auto_copy) {
+        free(vec[index]);
+    }
     size = (vector->size - index) * sizeof(void *);
     memcpy(vec + index, vec + index + 1, size);
     vec[vector->size] = NULL;

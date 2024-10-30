@@ -5,14 +5,6 @@
 #include "include/DataStructs.h"
 #include "include/SystemFunc.h"
 
-Mutex mutexTest;
-
-void testFunc(void *arg) {
-    LockMutex(mutexTest);
-    ((char *) arg)[2] = '\n';
-    UnlockMutex(mutexTest);
-}
-
 int main() {
 //    InitWindow(800, 600, "Hello World");
 //
@@ -24,26 +16,33 @@ int main() {
 //    }
 //
 //    CloseWindow();
-    char *arg = malloc(100);
-    strcpy(arg, "it works!");
 
-    mutexTest = NewMutex();
-    Thread thread = NewThread(testFunc, arg);
+    char *keys[] = {"abc", "dfg", "asdg", "54rf", "45reds"};
+    int values[] = {1, 2, 3, 4, 5,};
 
-    LockMutex(mutexTest);
-    for (int i = 0; i < 100; i++) {
-        printf("%s", arg);
+    HashMap *hashMap = NewHashMap(10, false);
+    for (int i = 0; i < 5; i++) {
+        InsertHashMap(hashMap, keys[i], &values[i], 0);
     }
-    UnlockMutex(mutexTest);
-
-    JoinThread(&thread);
-
-    LockMutex(mutexTest);
-    printf("%s", arg);
-    UnlockMutex(mutexTest);
-
-    FreeMutex(mutexTest);
-    free(arg);
-
+    for (int i = 0; i < 5; i++) {
+        printf("%i\n", *(int *) GetHashMap(hashMap, keys[i]));
+        (*(int *) GetHashMap(hashMap, keys[i]))++;
+    }
+    FreeHashMap(hashMap);
+    for (int i = 0; i < 5; i++) {
+        printf("%i\n", values[i]);
+    }
+    Vector *vector = NewVector(5, false);
+    for (int i = 0; i < 5; i++) {
+        AppendVector(vector, &values[i], 0);
+    }
+    for (int i = 0; i < 5; i++) {
+        printf("%i\n", *(int *) vector->array[i]);
+        (*(int *) vector->array[i])++;
+    }
+    FreeVector(vector);
+    for (int i = 0; i < 5; i++) {
+        printf("%i\n", values[i]);
+    }
     return 0;
 }
