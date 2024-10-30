@@ -20,7 +20,7 @@ typedef struct Thread {
 
 typedef void *Mutex;
 
-#elif defined(unix)
+#elif defined(unix) || (defined(__APPLE__) && TARGET_OS_MAC)
 
 #include <pthread.h>
 

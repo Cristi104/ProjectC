@@ -9,7 +9,9 @@ add_library(gamelib include/DataStructs.h
         src/HashMap.c
         src/Vector.c
         include/SystemFunc.h
-        src/Thread.c)
+        src/Thread.c
+        include/Graphics.h
+        src/ResourceLoader.c)
 
 add_executable(ProjectC main.c)
 

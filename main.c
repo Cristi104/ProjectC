@@ -4,9 +4,11 @@
 #include "raylib.h"
 #include "include/DataStructs.h"
 #include "include/SystemFunc.h"
+#include "include/Graphics.h"
 
 int main() {
     InitWindow(800, 600, "Hello World");
+    LoadTexturesDir("../res/textures");
 
     while (!WindowShouldClose()) {
         BeginDrawing();
@@ -16,6 +18,12 @@ int main() {
     }
 
     CloseWindow();
+
+//    FilePathList list = LoadDirectoryFiles("../res/textures");
+
+//    for (int i = 0; i < list.count; i++) {
+//        printf("%s\n", list.paths[i]);
+//    }
 //
 //    char *keys[] = {"abc", "dfg", "asdg", "54rf", "45reds"};
 //    int values[] = {1, 2, 3, 4, 5,};

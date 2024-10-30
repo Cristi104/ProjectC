@@ -51,7 +51,7 @@ void UnlockMutex(Mutex mutex) {
     ReleaseMutex(mutex);
 }
 
-#elif defined(unix)
+#elif defined(unix) || (defined(__APPLE__) && TARGET_OS_MAC)
 
 #include <stdlib.h>
 #include <pthread.h>
