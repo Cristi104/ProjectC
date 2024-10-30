@@ -15,10 +15,10 @@ static size_t hash(const char *key) {
     return hash;
 }
 
-HashMap *NewHashMap(size_t size, bool createCopy) {
+HashMap *NewHashMap(size_t size, bool autoCopy) {
     HashMap *map;
     map = malloc(sizeof(HashMap));
-    *((bool *) &map->auto_copy) = createCopy;
+    *((bool *) &map->autoCopy) = autoCopy;
     if (map == NULL) {
         return NULL;
     }
@@ -42,7 +42,7 @@ void FreeHashMap(HashMap *map) {
         bucket = &map->buckets[i];
         for (size_t j = 0; j < bucket->count; j++) {
             pair = &bucket->pairs[j];
-            if (map->auto_copy) {
+            if (map->autoCopy) {
                 free(pair->value);
             }
             free(pair->key);
@@ -98,7 +98,7 @@ void InsertHashMap(HashMap *map, const char *key, const void *value, size_t valu
     pair = &bucket->pairs[bucket->count - 1];
     pair->key = malloc(keySize + 1);
     strncpy(pair->key, key, keySize);
-    if (map->auto_copy) {
+    if (map->autoCopy) {
         pair->value = malloc(valueSize);
         memcpy(pair->value, value, valueSize);
     } else {

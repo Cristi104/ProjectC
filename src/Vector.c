@@ -7,13 +7,13 @@
 #include <stdbool.h>
 #include "../include/DataStructs.h"
 
-Vector *NewVector(size_t length, bool createCopy) {
+Vector *NewVector(size_t length, bool autoCopy) {
     Vector *vector;
     vector = malloc(sizeof(Vector));
     if (vector == NULL) {
         return NULL;
     }
-    *((bool *) &vector->auto_copy) = createCopy;
+    *((bool *) &vector->autoCopy) = autoCopy;
     if (length == 0) {
         vector->maxSize = 1;
     } else {
@@ -32,7 +32,7 @@ void FreeVector(Vector *vector) {
     if (vector == NULL) {
         return;
     }
-    if (vector->auto_copy) {
+    if (vector->autoCopy) {
         for (size_t i = 0; i < vector->size; i++) {
             free(vector->array[i]);
         }
@@ -62,7 +62,7 @@ void InsertVector(Vector *vector, size_t index, void *value, size_t valueSize) {
     vec = vector->array;
     size = (vector->size - index) * sizeof(void *);
     memcpy(vec + index + 1, vec + index, size);
-    if (vector->auto_copy) {
+    if (vector->autoCopy) {
         vec[index] = malloc(valueSize);
         memcpy(vec[index], value, valueSize);
     } else {
@@ -86,7 +86,7 @@ void AppendVector(Vector *vector, void *value, size_t valueSize) {
         vector->array = buf;
     }
     vec = vector->array;
-    if (vector->auto_copy) {
+    if (vector->autoCopy) {
         vec[vector->size] = malloc(valueSize);
         memcpy(vec[vector->size], value, valueSize);
     } else {
@@ -106,7 +106,7 @@ void DeleteVector(Vector *vector, size_t index) {
     }
     vec = vector->array;
     vector->size--;
-    if (vector->auto_copy) {
+    if (vector->autoCopy) {
         free(vec[index]);
     }
     size = (vector->size - index) * sizeof(void *);
