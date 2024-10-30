@@ -41,27 +41,16 @@ typedef struct Vector {
 } Vector;
 
 GAME_EXPORTS HashMap *NewHashMap(size_t size, bool autoCopy);
-
 GAME_EXPORTS void FreeHashMap(HashMap *map);
-
 GAME_EXPORTS void *GetHashMap(const HashMap *map, const char *key);
-
 GAME_EXPORTS void InsertHashMap(HashMap *map, const char *key, const void *value, size_t valueSize);
-
 GAME_EXPORTS HashMapIterator NewHashMapIterator(HashMap *map);
-
 GAME_EXPORTS Pair *NextHashMapIterator(HashMapIterator *iterator);
-
 GAME_EXPORTS Pair *PreviousHashMapIterator(HashMapIterator *iterator);
-
 GAME_EXPORTS Vector *NewVector(size_t length, bool autoCopy);
-
 GAME_EXPORTS void FreeVector(Vector *vector);
-
 GAME_EXPORTS void InsertVector(Vector *vector, size_t index, void *value, size_t valueSize);
-
 GAME_EXPORTS void AppendVector(Vector *vector, void *value, size_t valueSize);
-
 GAME_EXPORTS void DeleteVector(Vector *vector, size_t index);
 
 #ifdef __cplusplus

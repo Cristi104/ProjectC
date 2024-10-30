@@ -7,7 +7,7 @@
 #include "raylib.h"
 #include "../include/DataStructs.h"
 
-static HashMap *textures = NULL;
+HashMap *textures = NULL;
 
 void LoadTexturesDir(const char *directory) {
     FilePathList list = LoadDirectoryFiles(directory);
@@ -27,12 +27,10 @@ void LoadTexturesDir(const char *directory) {
 
         if (strchr(fileName, '.') != NULL) {
             if (strstr(fileName + nameSize - 4, ".png") != NULL) {
+                printf("%s\n", fileName);
                 image = LoadImage(file);
                 texture = LoadTextureFromImage(image);
                 InsertHashMap(textures, fileName, &texture, sizeof(texture));
-
-                UnloadTexture(texture);
-
                 UnloadImage(image);
             }
         } else {
@@ -43,5 +41,16 @@ void LoadTexturesDir(const char *directory) {
 }
 
 void UnloadTextures() {
-    //need HashMap iterator for this function
+    HashMapIterator iterator = NewHashMapIterator(textures);
+    Pair *pair;
+    Texture2D *texture;
+
+    while (pair = NextHashMapIterator(&iterator)) {
+        texture = (Texture2D *) pair->value;
+        UnloadTexture(*texture);
+    }
+}
+
+Texture2D *GetTexture(const char *name) {
+    return GetHashMap(textures, name);
 }

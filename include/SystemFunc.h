@@ -31,15 +31,10 @@ typedef pthread_mutex_t *Mutex;
 #endif
 
 GAME_EXPORTS Thread NewThread(void (*main)(void *), void *data);
-
 GAME_EXPORTS void JoinThread(Thread *thread);
-
 GAME_EXPORTS Mutex NewMutex();
-
 GAME_EXPORTS void FreeMutex(Mutex mutex);
-
 GAME_EXPORTS void LockMutex(Mutex mutex);
-
 GAME_EXPORTS void UnlockMutex(Mutex mutex);
 
 #ifdef __cplusplus

@@ -6,17 +6,36 @@
 #include "include/SystemFunc.h"
 #include "include/Graphics.h"
 
+extern HashMap *textures;
+
 int main() {
     InitWindow(800, 600, "Hello World");
     LoadTexturesDir("../res/textures");
 
+    Button *button = CreateButton(NULL);
+    printf("%p\n", button);
+    printf("%p\n", button->texture);
+    printf("%p\n", button->texturePressed);
+    printf("%p\n", GetTexture("Button.png"));
+    printf("%p\n", GetTexture("ButtonPressed.png"));
+    printf("%p\n", textures);
     while (!WindowShouldClose()) {
         BeginDrawing();
         ClearBackground(RAYWHITE);
+        HandleButton(button);
+        DrawButton(button);
+
         DrawText("Congrats! You created your first window!", 190, 200, 20, LIGHTGRAY);
         EndDrawing();
     }
 
+    HashMapIterator iterator = NewHashMapIterator(textures);
+    Pair *pair;
+    while (pair = NextHashMapIterator(&iterator)) {
+        printf("key: %s\nvalue: %p\n", pair->key, pair->value);
+    }
+
+    UnloadTextures();
     CloseWindow();
 
 //    FilePathList list = LoadDirectoryFiles("../res/textures");
@@ -25,29 +44,29 @@ int main() {
 //        printf("%s\n", list.paths[i]);
 //    }
 //
-    char *keys[] = {"abc", "dfg", "asdg", "54rf", "45reds"};
-    int values[] = {1, 2, 3, 4, 5,};
-
-    HashMap *hashMap = NewHashMap(10, false);
-    for (int i = 0; i < 5; i++) {
-        InsertHashMap(hashMap, keys[i], &values[i], 0);
-    }
-    HashMapIterator iterator = NewHashMapIterator(hashMap);
-    Pair *pair;
-    while (pair = NextHashMapIterator(&iterator)) {
-        printf("%i\n", *(int *) pair->value);
-    }
-    printf("\n");
-    while (pair = PreviousHashMapIterator(&iterator)) {
-        printf("%i\n", *(int *) pair->value);
-    }
-    printf("\n");
-    while (pair = NextHashMapIterator(&iterator)) {
-        printf("%i\n", *(int *) pair->value);
-    }
+//    char *keys[] = {"abc", "dfg", "asdg", "54rf", "45reds"};
+//    int values[] = {1, 2, 3, 4, 5,};
+//
+//    HashMap *hashMap = NewHashMap(10, false);
+//    for (int i = 0; i < 5; i++) {
+//        InsertHashMap(hashMap, keys[i], &values[i], 0);
+//    }
+//    HashMapIterator iterator = NewHashMapIterator(hashMap);
+//    Pair *pair;
+//    while (pair = NextHashMapIterator(&iterator)) {
+//        printf("%i\n", *(int *) pair->value);
+//    }
+//    printf("\n");
+//    while (pair = PreviousHashMapIterator(&iterator)) {
+//        printf("%i\n", *(int *) pair->value);
+//    }
+//    printf("\n");
+//    while (pair = NextHashMapIterator(&iterator)) {
+//        printf("%i\n", *(int *) pair->value);
+//    }
 //    pair = PreviousHashMapIterator(&iterator);
 //    printf("%i\n", *(int *) pair->value);
-    FreeHashMap(hashMap);
+//    FreeHashMap(hashMap);
 //    for (int i = 0; i < 5; i++) {
 //        printf("%i\n", values[i]);
 //    }
