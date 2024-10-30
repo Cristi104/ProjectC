@@ -27,6 +27,12 @@ typedef struct HashMap {
     const bool autoCopy;
 } HashMap;
 
+typedef struct HashMapIterator {
+    HashMap *hashMap;
+    size_t bucketIndex;
+    size_t pairIndex;
+} HashMapIterator;
+
 typedef struct Vector {
     void **array;
     size_t size;
@@ -41,6 +47,12 @@ GAME_EXPORTS void FreeHashMap(HashMap *map);
 GAME_EXPORTS void *GetHashMap(const HashMap *map, const char *key);
 
 GAME_EXPORTS void InsertHashMap(HashMap *map, const char *key, const void *value, size_t valueSize);
+
+GAME_EXPORTS HashMapIterator NewHashMapIterator(HashMap *map);
+
+GAME_EXPORTS Pair *NextHashMapIterator(HashMapIterator *iterator);
+
+GAME_EXPORTS Pair *PreviousHashMapIterator(HashMapIterator *iterator);
 
 GAME_EXPORTS Vector *NewVector(size_t length, bool autoCopy);
 

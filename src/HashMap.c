@@ -105,3 +105,62 @@ void InsertHashMap(HashMap *map, const char *key, const void *value, size_t valu
         pair->value = (void *) value;
     }
 }
+
+HashMapIterator NewHashMapIterator(HashMap *map) {
+    HashMapIterator iterator;
+    iterator.hashMap = map;
+    iterator.bucketIndex = 0;
+    iterator.pairIndex = -1;
+    return iterator;
+}
+
+Pair *NextHashMapIterator(HashMapIterator *iterator) {
+    HashMap *map = iterator->hashMap;
+    Bucket *bucket = map->buckets + iterator->bucketIndex;
+
+    if (iterator->pairIndex == -1 && bucket->count) {
+        iterator->pairIndex = 0;
+        return &bucket->pairs[0];
+    }
+
+    if (iterator->pairIndex == bucket->count - 1) {
+        if (iterator->bucketIndex == map->count - 1) {
+            return NULL;
+        } else {
+            do {
+                iterator->bucketIndex++;
+                if (iterator->bucketIndex == map->count)
+                    return NULL;
+                bucket = map->buckets + iterator->bucketIndex;
+            } while (bucket->count == 0);
+            iterator->pairIndex = 0;
+        }
+    } else {
+        iterator->pairIndex++;
+    }
+    return &map->buckets[iterator->bucketIndex].pairs[iterator->pairIndex];
+}
+
+Pair *PreviousHashMapIterator(HashMapIterator *iterator) {
+    HashMap *map = iterator->hashMap;
+    Bucket *bucket;
+
+    if (iterator->pairIndex == 0) {
+        if (iterator->bucketIndex == 0) {
+            iterator->pairIndex = -1;
+            return NULL;
+        } else {
+            do {
+                iterator->bucketIndex--;
+                if (iterator->bucketIndex == -1)
+                    return NULL;
+                bucket = map->buckets + iterator->bucketIndex;
+            } while (bucket->count == 0);
+            iterator->pairIndex = map->buckets[iterator->bucketIndex].count - 1;
+        }
+    } else {
+        iterator->pairIndex--;
+    }
+    return &map->buckets[iterator->bucketIndex].pairs[iterator->pairIndex];
+}
+

@@ -25,18 +25,29 @@ int main() {
 //        printf("%s\n", list.paths[i]);
 //    }
 //
-//    char *keys[] = {"abc", "dfg", "asdg", "54rf", "45reds"};
-//    int values[] = {1, 2, 3, 4, 5,};
-//
-//    HashMap *hashMap = NewHashMap(10, false);
-//    for (int i = 0; i < 5; i++) {
-//        InsertHashMap(hashMap, keys[i], &values[i], 0);
-//    }
-//    for (int i = 0; i < 5; i++) {
-//        printf("%i\n", *(int *) GetHashMap(hashMap, keys[i]));
-//        (*(int *) GetHashMap(hashMap, keys[i]))++;
-//    }
-//    FreeHashMap(hashMap);
+    char *keys[] = {"abc", "dfg", "asdg", "54rf", "45reds"};
+    int values[] = {1, 2, 3, 4, 5,};
+
+    HashMap *hashMap = NewHashMap(10, false);
+    for (int i = 0; i < 5; i++) {
+        InsertHashMap(hashMap, keys[i], &values[i], 0);
+    }
+    HashMapIterator iterator = NewHashMapIterator(hashMap);
+    Pair *pair;
+    while (pair = NextHashMapIterator(&iterator)) {
+        printf("%i\n", *(int *) pair->value);
+    }
+    printf("\n");
+    while (pair = PreviousHashMapIterator(&iterator)) {
+        printf("%i\n", *(int *) pair->value);
+    }
+    printf("\n");
+    while (pair = NextHashMapIterator(&iterator)) {
+        printf("%i\n", *(int *) pair->value);
+    }
+//    pair = PreviousHashMapIterator(&iterator);
+//    printf("%i\n", *(int *) pair->value);
+    FreeHashMap(hashMap);
 //    for (int i = 0; i < 5; i++) {
 //        printf("%i\n", values[i]);
 //    }
