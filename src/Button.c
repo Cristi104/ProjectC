@@ -15,7 +15,7 @@ Button *CreateButton(const char *name) {
     button->vtable.destroy = (void (*)(void *)) DestroyButton;
 
     if (name != NULL) {
-        helper = alloca(strlen(name) + 20);
+        helper = malloc(strlen(name) + 20);
 
         strncpy(helper, name, strlen(name) - 4);
         strncpy(helper + strlen(name) - 4, "Pressed", 7);
@@ -23,6 +23,7 @@ Button *CreateButton(const char *name) {
 
         button->texture = GetTexture(name);
         button->texturePressed = GetTexture(helper);
+        free(helper);
     }
     if (button->texture == NULL) {
         button->texture = GetTexture("Button.png");
