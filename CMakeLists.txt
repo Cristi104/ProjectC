@@ -12,7 +12,8 @@ add_library(gamelib include/DataStructs.h
         src/Thread.c
         include/Graphics.h
         src/ResourceLoader.c
-        src/Button.c)
+        src/Button.c
+        src/Slider.c)
 
 add_executable(ProjectC main.c)
 

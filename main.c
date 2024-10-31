@@ -12,7 +12,7 @@ int main() {
     InitWindow(800, 600, "Hello World");
     LoadTexturesDir("../res/textures");
 
-    UIVtable *button = (UIVtable *) CreateButton(NULL);
+    UIVtable *button = (UIVtable *) CreateSlider(NULL, NULL);
     while (!WindowShouldClose()) {
         BeginDrawing();
         ClearBackground(RAYWHITE);

@@ -28,6 +28,17 @@ typedef struct Button {
     bool prv_pressed;
 } Button;
 
+typedef struct Slider {
+    UIVtable vtable;
+    Texture2D *sliderTexture;
+    Texture2D *pointTexture;
+    void (*onClick)(float);
+    Vector2 slidePosition;
+    Vector2 pointPosition;
+    bool prv_pressed;
+    float percent;
+} Slider;
+
 GAME_EXPORTS void LoadTexturesDir(const char *directory);
 GAME_EXPORTS void UnloadTextures();
 GAME_EXPORTS Texture2D *GetTexture(const char *name);
@@ -35,6 +46,10 @@ GAME_EXPORTS Button *CreateButton(const char *name);
 GAME_EXPORTS void HandleButton(Button *button);
 GAME_EXPORTS void DrawButton(Button *button);
 GAME_EXPORTS void DestroyButton(Button *button);
+GAME_EXPORTS Slider *CreateSlider(const char *sliderTexture, const char *pointTexture);
+GAME_EXPORTS void HandleSlider(Slider *slider);
+GAME_EXPORTS void DrawSlider(Slider *slider);
+GAME_EXPORTS void DestroySlider(Slider *slider);
 
 
 #ifdef __cplusplus
