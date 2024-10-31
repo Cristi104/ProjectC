@@ -27,6 +27,7 @@ GAME_EXPORTS Texture2D *GetTexture(const char *name);
 GAME_EXPORTS Button *CreateButton(const char *name);
 GAME_EXPORTS void HandleButton(Button *button);
 GAME_EXPORTS void DrawButton(Button *button);
+GAME_EXPORTS void DestroyButton(Button *button);
 
 
 #ifdef __cplusplus

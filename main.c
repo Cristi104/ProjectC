@@ -13,12 +13,6 @@ int main() {
     LoadTexturesDir("../res/textures");
 
     Button *button = CreateButton(NULL);
-    printf("%p\n", button);
-    printf("%p\n", button->texture);
-    printf("%p\n", button->texturePressed);
-    printf("%p\n", GetTexture("Button.png"));
-    printf("%p\n", GetTexture("ButtonPressed.png"));
-    printf("%p\n", textures);
     while (!WindowShouldClose()) {
         BeginDrawing();
         ClearBackground(RAYWHITE);
@@ -28,12 +22,7 @@ int main() {
         DrawText("Congrats! You created your first window!", 190, 200, 20, LIGHTGRAY);
         EndDrawing();
     }
-
-    HashMapIterator iterator = NewHashMapIterator(textures);
-    Pair *pair;
-    while (pair = NextHashMapIterator(&iterator)) {
-        printf("key: %s\nvalue: %p\n", pair->key, pair->value);
-    }
+    DestroyButton(button);
 
     UnloadTextures();
     CloseWindow();

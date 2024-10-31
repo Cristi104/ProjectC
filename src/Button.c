@@ -67,3 +67,7 @@ void DrawButton(Button *button) {
         DrawTextureV(*button->texturePressed, button->position, tint);
     }
 }
+
+void DestroyButton(Button *button) {
+    free(button);
+}
