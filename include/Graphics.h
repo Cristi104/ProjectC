@@ -12,7 +12,14 @@ extern "C" {
 #include "Game_exports.h"
 #include "raylib.h"
 
+typedef struct UIVtable {
+    void (*draw)(void *);
+    void (*handleEvent)(void *);
+    void (*destroy)(void *);
+} UIVtable;
+
 typedef struct Button {
+    UIVtable vtable;
     Texture2D *texture;
     Texture2D *texturePressed;
     void (*onClick)(void *);

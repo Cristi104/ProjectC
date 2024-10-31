@@ -12,17 +12,17 @@ int main() {
     InitWindow(800, 600, "Hello World");
     LoadTexturesDir("../res/textures");
 
-    Button *button = CreateButton(NULL);
+    UIVtable *button = (UIVtable *) CreateButton(NULL);
     while (!WindowShouldClose()) {
         BeginDrawing();
         ClearBackground(RAYWHITE);
-        HandleButton(button);
-        DrawButton(button);
+        button->handleEvent(button);
+        button->draw(button);
 
         DrawText("Congrats! You created your first window!", 190, 200, 20, LIGHTGRAY);
         EndDrawing();
     }
-    DestroyButton(button);
+    button->destroy(button);
 
     UnloadTextures();
     CloseWindow();

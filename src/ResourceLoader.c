@@ -3,7 +3,6 @@
 //
 
 #include <string.h>
-#include <stdio.h>
 #include "raylib.h"
 #include "../include/DataStructs.h"
 
@@ -27,7 +26,6 @@ void LoadTexturesDir(const char *directory) {
 
         if (strchr(fileName, '.') != NULL) {
             if (strstr(fileName + nameSize - 4, ".png") != NULL) {
-                printf("%s\n", fileName);
                 image = LoadImage(file);
                 texture = LoadTextureFromImage(image);
                 InsertHashMap(textures, fileName, &texture, sizeof(texture));

@@ -10,6 +10,10 @@ Button *CreateButton(const char *name) {
     Button *button = malloc(sizeof(Button));
     char *helper;
 
+    button->vtable.draw = (void (*)(void *)) DrawButton;
+    button->vtable.handleEvent = (void (*)(void *)) HandleButton;
+    button->vtable.destroy = (void (*)(void *)) DestroyButton;
+
     button->texture = NULL;
     button->texturePressed = NULL;
 
