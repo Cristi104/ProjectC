@@ -7,15 +7,12 @@
 #include "../include/Graphics.h"
 
 Button *CreateButton(const char *name) {
-    Button *button = malloc(sizeof(Button));
+    Button *button = calloc(1, sizeof(Button));
     char *helper;
 
     button->vtable.draw = (void (*)(void *)) DrawButton;
     button->vtable.handleEvent = (void (*)(void *)) HandleButton;
     button->vtable.destroy = (void (*)(void *)) DestroyButton;
-
-    button->texture = NULL;
-    button->texturePressed = NULL;
 
     if (name != NULL) {
         helper = alloca(strlen(name) + 20);
@@ -33,21 +30,21 @@ Button *CreateButton(const char *name) {
     if (button->texturePressed == NULL) {
         button->texturePressed = GetTexture("ButtonPressed.png");
     }
-    button->onClick = NULL;
-    button->params = NULL;
-    button->position.x = 0;
-    button->position.y = 0;
     return button;
 }
 
 void HandleButton(Button *button) {
     int x, y, minx, miny, maxx, maxy;
+    bool buttonDown, buttonRelease;
 
     if (button == NULL)
         return;
-    button->prv_pressed = IsMouseButtonDown(MOUSE_BUTTON_LEFT);
 
-    if (button->onClick != NULL && IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) {
+    button->prv_pressed = false;
+    buttonDown = IsMouseButtonDown(MOUSE_BUTTON_LEFT);
+    buttonRelease = IsMouseButtonReleased(MOUSE_BUTTON_LEFT);
+
+    if (buttonRelease || buttonDown) {
         minx = button->position.x;
         x = GetMouseX();
         maxx = button->texture->width + minx;
@@ -56,19 +53,21 @@ void HandleButton(Button *button) {
             y = GetMouseY();
             maxy = button->texture->height + miny;
             if (miny <= y && y <= maxy) {
-                button->onClick(button->params);
+                if (button->onClick != NULL && buttonRelease) {
+                    button->onClick(button->params);
+                }
+                button->prv_pressed = buttonDown;
             }
         }
-
     }
 }
 
 void DrawButton(Button *button) {
-    Color tint = {128, 128, 128, 128};
+    Color tint = {255, 255, 255, 255};
     if (button->prv_pressed) {
-        DrawTextureV(*button->texture, button->position, tint);
-    } else {
         DrawTextureV(*button->texturePressed, button->position, tint);
+    } else {
+        DrawTextureV(*button->texture, button->position, tint);
     }
 }
 
