@@ -53,7 +53,7 @@ void GmlibHandleSlider(GmlibSlider *slider) {
                 slider->pointPosition.x =
                         minx + slider->percent * (slider->sliderTexture->width - slider->pointTexture->width);
                 if (slider->onClick != NULL && buttonRelease) {
-                    slider->onClick(slider->percent);
+                    slider->onClick(slider->params, slider->percent);
                 }
                 printf("%f\n", slider->percent);
                 slider->prv_pressed = buttonDown;

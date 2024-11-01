@@ -10,15 +10,18 @@ int main() {
     Vector2 pos = {190, 200};
 
     InitWindow(800, 600, "Hello World");
+    SetTargetFPS(60);
+
     GmlibLoadAssetsDir("../res");
 
-    GmlibUIComponent *button = (GmlibUIComponent *) GmlibCreateSlider(NULL, NULL);
+    GmlibUIComponent *button = (GmlibUIComponent *) GmlibCreateTextBox(NULL, NULL);
     while (!WindowShouldClose()) {
         BeginDrawing();
         ClearBackground(RAYWHITE);
         button->handleEvent(button);
         button->draw(button);
 
+        DrawFPS(700, 0);
         DrawTextEx(*GmlibGetFont("8bitOperatorPlus-Regular.ttf"), "Congrats!\nYou created your first window!", pos, 16,
                    0, LIGHTGRAY);
         EndDrawing();

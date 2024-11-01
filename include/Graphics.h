@@ -32,12 +32,24 @@ typedef struct {
     GmlibUIComponent base;
     Texture2D *sliderTexture;
     Texture2D *pointTexture;
-    void (*onClick)(float);
+    void (*onClick)(void *, float);
+    void *params;
     Vector2 slidePosition;
     Vector2 pointPosition;
     bool prv_pressed;
     float percent;
 } GmlibSlider;
+
+typedef struct {
+    GmlibUIComponent base;
+    Texture2D *background;
+    void (*onClick)(void *, char *);
+    void *params;
+    Vector2 position;
+    bool prv_pressed;
+    char text[31];
+    Font *font;
+} GmlibTextBox;
 
 GAME_EXPORTS void GmlibLoadAssetsDir(const char *directory);
 GAME_EXPORTS void GmlibUnloadAssets();
@@ -51,7 +63,10 @@ GAME_EXPORTS GmlibSlider *GmlibCreateSlider(const char *sliderTexture, const cha
 GAME_EXPORTS void GmlibHandleSlider(GmlibSlider *slider);
 GAME_EXPORTS void GmlibDrawSlider(GmlibSlider *slider);
 GAME_EXPORTS void GmlibDestroySlider(GmlibSlider *slider);
-
+GAME_EXPORTS GmlibTextBox *GmlibCreateTextBox(const char *backgroundTexture, const char *font);
+GAME_EXPORTS void GmlibHandleTextBox(GmlibTextBox *textBox);
+GAME_EXPORTS void GmlibDrawTextBox(GmlibTextBox *textBox);
+GAME_EXPORTS void GmlibDestroyTextBox(GmlibTextBox *textBox);
 
 #ifdef __cplusplus
 }
