@@ -7,9 +7,9 @@
 #include <stdbool.h>
 #include "../include/DataStructs.h"
 
-Vector *NewVector(size_t length, bool autoCopy) {
-    Vector *vector;
-    vector = malloc(sizeof(Vector));
+GmlibArray *GmlibNewArray(size_t length, bool autoCopy) {
+    GmlibArray *vector;
+    vector = malloc(sizeof(GmlibArray));
     if (vector == NULL) {
         return NULL;
     }
@@ -20,96 +20,96 @@ Vector *NewVector(size_t length, bool autoCopy) {
         vector->maxSize = length;
     }
     vector->size = 0;
-    vector->array = malloc(sizeof(void *) * vector->maxSize);
-    if (vector->array == NULL) {
+    vector->arr = malloc(sizeof(void *) * vector->maxSize);
+    if (vector->arr == NULL) {
         free(vector);
         return NULL;
     }
     return vector;
 }
 
-void FreeVector(Vector *vector) {
-    if (vector == NULL) {
+void GmlibFreeArray(GmlibArray *array) {
+    if (array == NULL) {
         return;
     }
-    if (vector->autoCopy) {
-        for (size_t i = 0; i < vector->size; i++) {
-            free(vector->array[i]);
+    if (array->autoCopy) {
+        for (size_t i = 0; i < array->size; i++) {
+            free(array->arr[i]);
         }
     }
-    free(vector->array);
+    free(array->arr);
 }
 
-void InsertVector(Vector *vector, size_t index, void *value, size_t valueSize) {
+void GmlibInsertArray(GmlibArray *array, size_t index, void *value, size_t valueSize) {
     void **buf;
     void **vec;
     size_t size;
-    if (vector == NULL || value == NULL) {
+    if (array == NULL || value == NULL) {
         return;
     }
-    if (index >= vector->size) {
-        AppendVector(vector, value, valueSize);
+    if (index >= array->size) {
+        GmlibAppendArray(array, value, valueSize);
         return;
     }
-    if (vector->size == vector->maxSize) {
-        vector->maxSize++;
-        buf = realloc(vector->array, vector->maxSize * sizeof(void *));
+    if (array->size == array->maxSize) {
+        array->maxSize++;
+        buf = realloc(array->arr, array->maxSize * sizeof(void *));
         if (buf == NULL) {
             return;
         }
-        vector->array = buf;
+        array->arr = buf;
     }
-    vec = vector->array;
-    size = (vector->size - index) * sizeof(void *);
+    vec = array->arr;
+    size = (array->size - index) * sizeof(void *);
     memcpy(vec + index + 1, vec + index, size);
-    if (vector->autoCopy) {
+    if (array->autoCopy) {
         vec[index] = malloc(valueSize);
         memcpy(vec[index], value, valueSize);
     } else {
         vec[index] = value;
     }
-    vector->size++;
+    array->size++;
 }
 
-void AppendVector(Vector *vector, void *value, size_t valueSize) {
+void GmlibAppendArray(GmlibArray *array, void *value, size_t valueSize) {
     void **buf;
     void **vec;
-    if (vector == NULL || value == NULL) {
+    if (array == NULL || value == NULL) {
         return;
     }
-    if (vector->size == vector->maxSize) {
-        vector->maxSize++;
-        buf = realloc(vector->array, vector->maxSize * sizeof(void *));
+    if (array->size == array->maxSize) {
+        array->maxSize++;
+        buf = realloc(array->arr, array->maxSize * sizeof(void *));
         if (buf == NULL) {
             return;
         }
-        vector->array = buf;
+        array->arr = buf;
     }
-    vec = vector->array;
-    if (vector->autoCopy) {
-        vec[vector->size] = malloc(valueSize);
-        memcpy(vec[vector->size], value, valueSize);
+    vec = array->arr;
+    if (array->autoCopy) {
+        vec[array->size] = malloc(valueSize);
+        memcpy(vec[array->size], value, valueSize);
     } else {
-        vec[vector->size] = value;
+        vec[array->size] = value;
     }
-    vector->size++;
+    array->size++;
 }
 
-void DeleteVector(Vector *vector, size_t index) {
+void GmlibDeleteArray(GmlibArray *array, size_t index) {
     void **vec;
     size_t size;
-    if (vector == NULL) {
+    if (array == NULL) {
         return;
     }
-    if (index >= vector->size) {
+    if (index >= array->size) {
         return;
     }
-    vec = vector->array;
-    vector->size--;
-    if (vector->autoCopy) {
+    vec = array->arr;
+    array->size--;
+    if (array->autoCopy) {
         free(vec[index]);
     }
-    size = (vector->size - index) * sizeof(void *);
+    size = (array->size - index) * sizeof(void *);
     memcpy(vec + index, vec + index + 1, size);
-    vec[vector->size] = NULL;
+    vec[array->size] = NULL;
 }

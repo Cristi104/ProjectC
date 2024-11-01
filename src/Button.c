@@ -6,13 +6,13 @@
 #include <stdio.h>
 #include "../include/Graphics.h"
 
-Button *CreateButton(const char *name) {
-    Button *button = calloc(1, sizeof(Button));
+GmlibButton *GmlibCreateButton(const char *name) {
+    GmlibButton *button = calloc(1, sizeof(GmlibButton));
     char *helper;
 
-    button->vtable.draw = (void (*)(void *)) DrawButton;
-    button->vtable.handleEvent = (void (*)(void *)) HandleButton;
-    button->vtable.destroy = (void (*)(void *)) DestroyButton;
+    button->base.draw = (void (*)(void *)) GmlibDrawButton;
+    button->base.handleEvent = (void (*)(void *)) GmlibHandleButton;
+    button->base.destroy = (void (*)(void *)) GmlibDestroyButton;
 
     if (name != NULL) {
         helper = malloc(strlen(name) + 20);
@@ -21,20 +21,20 @@ Button *CreateButton(const char *name) {
         strncpy(helper + strlen(name) - 4, "Pressed", 7);
         strncpy(helper + strlen(name) + 3, ".png\0", 5);
 
-        button->texture = GetTexture(name);
-        button->texturePressed = GetTexture(helper);
+        button->texture = GmlibGetTexture(name);
+        button->texturePressed = GmlibGetTexture(helper);
         free(helper);
     }
     if (button->texture == NULL) {
-        button->texture = GetTexture("Button.png");
+        button->texture = GmlibGetTexture("Button.png");
     }
     if (button->texturePressed == NULL) {
-        button->texturePressed = GetTexture("ButtonPressed.png");
+        button->texturePressed = GmlibGetTexture("ButtonPressed.png");
     }
     return button;
 }
 
-void HandleButton(Button *button) {
+void GmlibHandleButton(GmlibButton *button) {
     int x, y, minx, miny, maxx, maxy;
     bool buttonDown, buttonRelease;
 
@@ -63,7 +63,7 @@ void HandleButton(Button *button) {
     }
 }
 
-void DrawButton(Button *button) {
+void GmlibDrawButton(GmlibButton *button) {
     Color tint = {255, 255, 255, 255};
     if (button->prv_pressed) {
         DrawTextureV(*button->texturePressed, button->position, tint);
@@ -72,6 +72,6 @@ void DrawButton(Button *button) {
     }
 }
 
-void DestroyButton(Button *button) {
+void GmlibDestroyButton(GmlibButton *button) {
     free(button);
 }

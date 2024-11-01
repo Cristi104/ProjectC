@@ -11,47 +11,47 @@ extern "C" {
 
 #include "Game_exports.h"
 
-typedef struct Pair {
+typedef struct {
     char *key;
     void *value;
-} Pair;
+} GmlibPair;
 
-typedef struct Bucket {
+typedef struct {
     size_t count;
-    Pair *pairs;
-} Bucket;
+    GmlibPair *pairs;
+} GmlibBucket;
 
-typedef struct HashMap {
+typedef struct {
     size_t count;
-    Bucket *buckets;
+    GmlibBucket *buckets;
     const bool autoCopy;
-} HashMap;
+} GmlibHashMap;
 
-typedef struct HashMapIterator {
-    HashMap *hashMap;
+typedef struct {
+    GmlibHashMap *hashMap;
     size_t bucketIndex;
     size_t pairIndex;
-} HashMapIterator;
+} GmlibHashMapIterator;
 
-typedef struct Vector {
-    void **array;
+typedef struct {
+    void **arr;
     size_t size;
     size_t maxSize;
     const bool autoCopy;
-} Vector;
+} GmlibArray;
 
-GAME_EXPORTS HashMap *NewHashMap(size_t size, bool autoCopy);
-GAME_EXPORTS void FreeHashMap(HashMap *map);
-GAME_EXPORTS void *GetHashMap(const HashMap *map, const char *key);
-GAME_EXPORTS void InsertHashMap(HashMap *map, const char *key, const void *value, size_t valueSize);
-GAME_EXPORTS HashMapIterator NewHashMapIterator(HashMap *map);
-GAME_EXPORTS Pair *NextHashMapIterator(HashMapIterator *iterator);
-GAME_EXPORTS Pair *PreviousHashMapIterator(HashMapIterator *iterator);
-GAME_EXPORTS Vector *NewVector(size_t length, bool autoCopy);
-GAME_EXPORTS void FreeVector(Vector *vector);
-GAME_EXPORTS void InsertVector(Vector *vector, size_t index, void *value, size_t valueSize);
-GAME_EXPORTS void AppendVector(Vector *vector, void *value, size_t valueSize);
-GAME_EXPORTS void DeleteVector(Vector *vector, size_t index);
+GAME_EXPORTS GmlibHashMap *GmlibNewHashMap(size_t size, bool autoCopy);
+GAME_EXPORTS void GmlibFreeHashMap(GmlibHashMap *map);
+GAME_EXPORTS void *GmlibGetHashMap(const GmlibHashMap *map, const char *key);
+GAME_EXPORTS void GmlibInsertHashMap(GmlibHashMap *map, const char *key, const void *value, size_t valueSize);
+GAME_EXPORTS GmlibHashMapIterator GmlibNewHashMapIterator(GmlibHashMap *map);
+GAME_EXPORTS GmlibPair *GmlibNextHashMapIterator(GmlibHashMapIterator *iterator);
+GAME_EXPORTS GmlibPair *GmlibPreviousHashMapIterator(GmlibHashMapIterator *iterator);
+GAME_EXPORTS GmlibArray *GmlibNewArray(size_t length, bool autoCopy);
+GAME_EXPORTS void GmlibFreeArray(GmlibArray *array);
+GAME_EXPORTS void GmlibInsertArray(GmlibArray *array, size_t index, void *value, size_t valueSize);
+GAME_EXPORTS void GmlibAppendArray(GmlibArray *array, void *value, size_t valueSize);
+GAME_EXPORTS void GmlibDeleteArray(GmlibArray *array, size_t index);
 
 #ifdef __cplusplus
 }

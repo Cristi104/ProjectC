@@ -13,29 +13,29 @@ extern "C" {
 
 #ifdef WIN32
 
-typedef struct Thread {
+typedef struct {
     void *handle;
     unsigned long threadId;
-} Thread;
+} GmlibThread;
 
-typedef void *Mutex;
+typedef void *GmlibMutex;
 
 #elif defined(unix) || defined(__APPLE__)
 
 #include <pthread.h>
 
-typedef pthread_t *Thread;
+typedef pthread_t *GmlibThread;
 
-typedef pthread_mutex_t *Mutex;
+typedef pthread_mutex_t *GmlibMutex;
 
 #endif
 
-GAME_EXPORTS Thread NewThread(void (*main)(void *), void *data);
-GAME_EXPORTS void JoinThread(Thread *thread);
-GAME_EXPORTS Mutex NewMutex();
-GAME_EXPORTS void FreeMutex(Mutex mutex);
-GAME_EXPORTS void LockMutex(Mutex mutex);
-GAME_EXPORTS void UnlockMutex(Mutex mutex);
+GAME_EXPORTS GmlibThread GmlibNewThread(void (*main)(void *), void *data);
+GAME_EXPORTS void GmlibJoinThread(GmlibThread *thread);
+GAME_EXPORTS GmlibMutex GmlibNewMutex();
+GAME_EXPORTS void GmlibFreeMutex(GmlibMutex mutex);
+GAME_EXPORTS void GmlibLockMutex(GmlibMutex mutex);
+GAME_EXPORTS void GmlibUnlockMutex(GmlibMutex mutex);
 
 #ifdef __cplusplus
 }

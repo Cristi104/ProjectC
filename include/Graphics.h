@@ -12,24 +12,24 @@ extern "C" {
 #include "Game_exports.h"
 #include "raylib.h"
 
-typedef struct UIVtable {
+typedef struct {
     void (*draw)(void *);
     void (*handleEvent)(void *);
     void (*destroy)(void *);
-} UIVtable;
+} GmlibUIComponent;
 
-typedef struct Button {
-    UIVtable vtable;
+typedef struct {
+    GmlibUIComponent base;
     Texture2D *texture;
     Texture2D *texturePressed;
     void (*onClick)(void *);
     void *params;
     Vector2 position;
     bool prv_pressed;
-} Button;
+} GmlibButton;
 
-typedef struct Slider {
-    UIVtable vtable;
+typedef struct {
+    GmlibUIComponent base;
     Texture2D *sliderTexture;
     Texture2D *pointTexture;
     void (*onClick)(float);
@@ -37,19 +37,19 @@ typedef struct Slider {
     Vector2 pointPosition;
     bool prv_pressed;
     float percent;
-} Slider;
+} GmlibSlider;
 
-GAME_EXPORTS void LoadTexturesDir(const char *directory);
-GAME_EXPORTS void UnloadTextures();
-GAME_EXPORTS Texture2D *GetTexture(const char *name);
-GAME_EXPORTS Button *CreateButton(const char *name);
-GAME_EXPORTS void HandleButton(Button *button);
-GAME_EXPORTS void DrawButton(Button *button);
-GAME_EXPORTS void DestroyButton(Button *button);
-GAME_EXPORTS Slider *CreateSlider(const char *sliderTexture, const char *pointTexture);
-GAME_EXPORTS void HandleSlider(Slider *slider);
-GAME_EXPORTS void DrawSlider(Slider *slider);
-GAME_EXPORTS void DestroySlider(Slider *slider);
+GAME_EXPORTS void GmlibLoadTexturesDir(const char *directory);
+GAME_EXPORTS void GmlibUnloadTextures();
+GAME_EXPORTS Texture2D *GmlibGetTexture(const char *name);
+GAME_EXPORTS GmlibButton *GmlibCreateButton(const char *name);
+GAME_EXPORTS void GmlibHandleButton(GmlibButton *button);
+GAME_EXPORTS void GmlibDrawButton(GmlibButton *button);
+GAME_EXPORTS void GmlibDestroyButton(GmlibButton *button);
+GAME_EXPORTS GmlibSlider *GmlibCreateSlider(const char *sliderTexture, const char *pointTexture);
+GAME_EXPORTS void GmlibHandleSlider(GmlibSlider *slider);
+GAME_EXPORTS void GmlibDrawSlider(GmlibSlider *slider);
+GAME_EXPORTS void GmlibDestroySlider(GmlibSlider *slider);
 
 
 #ifdef __cplusplus

@@ -15,26 +15,26 @@ static size_t hash(const char *key) {
     return hash;
 }
 
-HashMap *NewHashMap(size_t size, bool autoCopy) {
-    HashMap *map;
-    map = malloc(sizeof(HashMap));
+GmlibHashMap *GmlibNewHashMap(size_t size, bool autoCopy) {
+    GmlibHashMap *map;
+    map = malloc(sizeof(GmlibHashMap));
     *((bool *) &map->autoCopy) = autoCopy;
     if (map == NULL) {
         return NULL;
     }
     map->count = size;
-    map->buckets = malloc(size * sizeof(Bucket));
+    map->buckets = malloc(size * sizeof(GmlibBucket));
     if (map->buckets == NULL) {
         free(map);
         return NULL;
     }
-    memset(map->buckets, 0, size * sizeof(Bucket));
+    memset(map->buckets, 0, size * sizeof(GmlibBucket));
     return map;
 }
 
-void FreeHashMap(HashMap *map) {
-    Bucket *bucket;
-    Pair *pair;
+void GmlibFreeHashMap(GmlibHashMap *map) {
+    GmlibBucket *bucket;
+    GmlibPair *pair;
     if (map == NULL) {
         return;
     }
@@ -52,10 +52,10 @@ void FreeHashMap(HashMap *map) {
     free(map);
 }
 
-void *GetHashMap(const HashMap *map, const char *key) {
+void *GmlibGetHashMap(const GmlibHashMap *map, const char *key) {
     size_t index;
-    Bucket *bucket;
-    Pair *pair;
+    GmlibBucket *bucket;
+    GmlibPair *pair;
     if (key == NULL || map == NULL) {
         return NULL;
     }
@@ -73,12 +73,12 @@ void *GetHashMap(const HashMap *map, const char *key) {
     return NULL;
 }
 
-void InsertHashMap(HashMap *map, const char *key, const void *value, size_t valueSize) {
+void GmlibInsertHashMap(GmlibHashMap *map, const char *key, const void *value, size_t valueSize) {
     size_t index;
     size_t keySize;
-    Bucket *bucket;
-    Pair *pair;
-    Pair *buf;
+    GmlibBucket *bucket;
+    GmlibPair *pair;
+    GmlibPair *buf;
     if (map == NULL || key == NULL || value == NULL) {
         return;
     }
@@ -87,9 +87,9 @@ void InsertHashMap(HashMap *map, const char *key, const void *value, size_t valu
     bucket = &map->buckets[index];
     bucket->count++;
     if (bucket->count == 0) {
-        bucket->pairs = malloc(sizeof(Pair));
+        bucket->pairs = malloc(sizeof(GmlibPair));
     } else {
-        buf = realloc(bucket->pairs, bucket->count * sizeof(Pair));
+        buf = realloc(bucket->pairs, bucket->count * sizeof(GmlibPair));
         if (buf == NULL) {
             return;
         }
@@ -107,17 +107,17 @@ void InsertHashMap(HashMap *map, const char *key, const void *value, size_t valu
     }
 }
 
-HashMapIterator NewHashMapIterator(HashMap *map) {
-    HashMapIterator iterator;
+GmlibHashMapIterator GmlibNewHashMapIterator(GmlibHashMap *map) {
+    GmlibHashMapIterator iterator;
     iterator.hashMap = map;
     iterator.bucketIndex = 0;
     iterator.pairIndex = -1;
     return iterator;
 }
 
-Pair *NextHashMapIterator(HashMapIterator *iterator) {
-    HashMap *map = iterator->hashMap;
-    Bucket *bucket = map->buckets + iterator->bucketIndex;
+GmlibPair *GmlibNextHashMapIterator(GmlibHashMapIterator *iterator) {
+    GmlibHashMap *map = iterator->hashMap;
+    GmlibBucket *bucket = map->buckets + iterator->bucketIndex;
 
     if (iterator->pairIndex == -1 && bucket->count) {
         iterator->pairIndex = 0;
@@ -142,9 +142,9 @@ Pair *NextHashMapIterator(HashMapIterator *iterator) {
     return &map->buckets[iterator->bucketIndex].pairs[iterator->pairIndex];
 }
 
-Pair *PreviousHashMapIterator(HashMapIterator *iterator) {
-    HashMap *map = iterator->hashMap;
-    Bucket *bucket;
+GmlibPair *GmlibPreviousHashMapIterator(GmlibHashMapIterator *iterator) {
+    GmlibHashMap *map = iterator->hashMap;
+    GmlibBucket *bucket;
 
     if (iterator->pairIndex == 0) {
         if (iterator->bucketIndex == 0) {

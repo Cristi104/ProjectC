@@ -7,8 +7,8 @@
 
 #include <Windows.h>
 
-Thread NewThread(void (*main)(void *), void *data) {
-    Thread thread;
+GmlibThread GmlibNewThread(void (*main)(void *), void *data) {
+    GmlibThread thread;
     void *test;
 
     thread.handle = CreateThread(
@@ -26,28 +26,28 @@ Thread NewThread(void (*main)(void *), void *data) {
     return thread;
 }
 
-void JoinThread(Thread *thread) {
+void GmlibJoinThread(GmlibThread *thread) {
     WaitForSingleObject(thread->handle, INFINITE);
     CloseHandle(thread->handle);
     thread->handle = NULL;
     thread->threadId = 0;
 }
 
-Mutex NewMutex() {
+GmlibMutex GmlibNewMutex() {
     HANDLE mutex;
     mutex = CreateMutex(NULL, FALSE, NULL);
     return mutex;
 }
 
-void FreeMutex(Mutex mutex) {
+void GmlibFreeMutex(GmlibMutex mutex) {
     CloseHandle(mutex);
 }
 
-void LockMutex(Mutex mutex) {
+void GmlibLockMutex(GmlibMutex mutex) {
     WaitForSingleObject(mutex, INFINITE);
 }
 
-void UnlockMutex(Mutex mutex) {
+void GmlibUnlockMutex(GmlibMutex mutex) {
     ReleaseMutex(mutex);
 }
 
@@ -56,34 +56,34 @@ void UnlockMutex(Mutex mutex) {
 #include <stdlib.h>
 #include <pthread.h>
 
-Thread NewThread(void (*main)(void *), void *data) {
-    Thread thread = malloc(sizeof(pthread_t));
+GmlibThread GmlibNewThread(void (*main)(void *), void *data) {
+    GmlibThread thread = malloc(sizeof(pthread_t));
     pthread_create(thread, NULL, (void *(*)(void *)) main, data);
     return thread;
 }
 
-void JoinThread(Thread *thread) {
+void GmlibJoinThread(GmlibThread *thread) {
     pthread_join(**thread, NULL);
     free(*thread);
     *thread = NULL;
 }
 
-Mutex NewMutex() {
-    Mutex mutex = malloc(sizeof(pthread_mutex_t));
+GmlibMutex GmlibNewMutex() {
+    GmlibMutex mutex = malloc(sizeof(pthread_mutex_t));
     pthread_mutex_init(mutex, NULL);
     return mutex;
 }
 
-void FreeMutex(Mutex mutex) {
+void GmlibFreeMutex(GmlibMutex mutex) {
     pthread_mutex_destroy(mutex);
     free(mutex);
 }
 
-void LockMutex(Mutex mutex) {
+void GmlibLockMutex(GmlibMutex mutex) {
     pthread_mutex_lock(mutex);
 }
 
-void UnlockMutex(Mutex mutex) {
+void GmlibUnlockMutex(GmlibMutex mutex) {
     pthread_mutex_unlock(mutex);
 }
 

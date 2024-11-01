@@ -6,13 +6,11 @@
 #include "include/SystemFunc.h"
 #include "include/Graphics.h"
 
-extern HashMap *textures;
-
 int main() {
     InitWindow(800, 600, "Hello World");
-    LoadTexturesDir("../res/textures");
+    GmlibLoadTexturesDir("../res/textures");
 
-    UIVtable *button = (UIVtable *) CreateSlider(NULL, NULL);
+    GmlibUIComponent *button = (GmlibUIComponent *) GmlibCreateSlider(NULL, NULL);
     while (!WindowShouldClose()) {
         BeginDrawing();
         ClearBackground(RAYWHITE);
@@ -24,7 +22,7 @@ int main() {
     }
     button->destroy(button);
 
-    UnloadTextures();
+    GmlibUnloadTextures();
     CloseWindow();
 
 //    FilePathList list = LoadDirectoryFiles("../res/textures");
