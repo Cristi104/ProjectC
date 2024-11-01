@@ -6,13 +6,13 @@
 #include <stdio.h>
 #include "../include/Graphics.h"
 
-GmlibButton *GmlibCreateButton(const char *name) {
+GmlibButton *GmlibButtonCreate(const char *name) {
     GmlibButton *button = calloc(1, sizeof(GmlibButton));
     char *helper;
 
-    button->base.draw = (void (*)(void *)) GmlibDrawButton;
-    button->base.handleEvent = (void (*)(void *)) GmlibHandleButton;
-    button->base.destroy = (void (*)(void *)) GmlibDestroyButton;
+    button->base.draw = (void (*)(void *)) GmlibButtonDraw;
+    button->base.handleEvent = (void (*)(void *)) GmlibButtonHandle;
+    button->base.destroy = (void (*)(void *)) GmlibButtonDestroy;
 
     if (name != NULL) {
         helper = malloc(strlen(name) + 20);
@@ -34,7 +34,7 @@ GmlibButton *GmlibCreateButton(const char *name) {
     return button;
 }
 
-void GmlibHandleButton(GmlibButton *button) {
+void GmlibButtonHandle(GmlibButton *button) {
     int x, y, minx, miny, maxx, maxy;
     bool buttonDown, buttonRelease;
 
@@ -63,7 +63,7 @@ void GmlibHandleButton(GmlibButton *button) {
     }
 }
 
-void GmlibDrawButton(GmlibButton *button) {
+void GmlibButtonDraw(GmlibButton *button) {
     Color tint = {255, 255, 255, 255};
     if (button->prv_pressed) {
         DrawTextureV(*button->texturePressed, button->position, tint);
@@ -72,6 +72,6 @@ void GmlibDrawButton(GmlibButton *button) {
     }
 }
 
-void GmlibDestroyButton(GmlibButton *button) {
+void GmlibButtonDestroy(GmlibButton *button) {
     free(button);
 }

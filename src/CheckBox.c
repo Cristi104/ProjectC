@@ -6,13 +6,13 @@
 #include <string.h>
 #include "../include/Graphics.h"
 
-GmlibCheckBox *GmlibCreateCheckBox(const char *texture) {
+GmlibCheckBox *GmlibCheckBoxCreate(const char *texture) {
     GmlibCheckBox *checkBox = calloc(1, sizeof(GmlibCheckBox));
     char *helper;
 
-    checkBox->base.handleEvent = (void (*)(void *)) GmlibHandleCheckBox;
-    checkBox->base.draw = (void (*)(void *)) GmlibDrawCheckBox;
-    checkBox->base.destroy = (void (*)(void *)) GmlibDestroyCheckBox;
+    checkBox->base.handleEvent = (void (*)(void *)) GmlibCheckBoxHandle;
+    checkBox->base.draw = (void (*)(void *)) GmlibCheckBoxDraw;
+    checkBox->base.destroy = (void (*)(void *)) GmlibCheckBoxDestroy;
 
     if (texture != NULL) {
         helper = malloc(strlen(texture) + 20);
@@ -35,7 +35,7 @@ GmlibCheckBox *GmlibCreateCheckBox(const char *texture) {
     return checkBox;
 }
 
-void GmlibHandleCheckBox(GmlibCheckBox *checkBox) {
+void GmlibCheckBoxHandle(GmlibCheckBox *checkBox) {
     int x, y, minx, miny, maxx, maxy;
 
     if (checkBox == NULL)
@@ -56,7 +56,7 @@ void GmlibHandleCheckBox(GmlibCheckBox *checkBox) {
     }
 }
 
-void GmlibDrawCheckBox(GmlibCheckBox *checkBox) {
+void GmlibCheckBoxDraw(GmlibCheckBox *checkBox) {
     if (checkBox->checked) {
         DrawTextureV(*checkBox->textureChecked, checkBox->position, WHITE);
     } else {
@@ -64,6 +64,6 @@ void GmlibDrawCheckBox(GmlibCheckBox *checkBox) {
     }
 }
 
-void GmlibDestroyCheckBox(GmlibCheckBox *checkBox) {
+void GmlibCheckBoxDestroy(GmlibCheckBox *checkBox) {
     free(checkBox);
 }

@@ -7,12 +7,12 @@
 #include <stdio.h>
 #include "../include/Graphics.h"
 
-GmlibTextBox *GmlibCreateTextBox(const char *backgroundTexture, const char *font) {
+GmlibTextBox *GmlibTextBoxCreate(const char *backgroundTexture, const char *font) {
     GmlibTextBox *textBox = calloc(1, sizeof(GmlibTextBox));
 
-    textBox->base.handleEvent = (void (*)(void *)) GmlibHandleTextBox;
-    textBox->base.draw = (void (*)(void *)) GmlibDrawTextBox;
-    textBox->base.destroy = (void (*)(void *)) GmlibDestroyTextBox;
+    textBox->base.handleEvent = (void (*)(void *)) GmlibTextBoxHandle;
+    textBox->base.draw = (void (*)(void *)) GmlibTextBoxDraw;
+    textBox->base.destroy = (void (*)(void *)) GmlibTextBoxDestroy;
 
     if (backgroundTexture != NULL) {
         textBox->background = GmlibGetTexture(backgroundTexture);
@@ -30,7 +30,7 @@ GmlibTextBox *GmlibCreateTextBox(const char *backgroundTexture, const char *font
     return textBox;
 }
 
-void GmlibHandleTextBox(GmlibTextBox *textBox) {
+void GmlibTextBoxHandle(GmlibTextBox *textBox) {
     int x, y, minx, miny, maxx, maxy, length;
     int key;
 
@@ -69,7 +69,7 @@ void GmlibHandleTextBox(GmlibTextBox *textBox) {
     }
 }
 
-void GmlibDrawTextBox(GmlibTextBox *textBox) {
+void GmlibTextBoxDraw(GmlibTextBox *textBox) {
     DrawTextureV(*textBox->background, textBox->position, WHITE);
     if (strlen(textBox->text) >= 8) {
         DrawTextEx(*textBox->font, textBox->text + strlen(textBox->text) - 8, textBox->position, 16, 1, WHITE);
@@ -78,6 +78,6 @@ void GmlibDrawTextBox(GmlibTextBox *textBox) {
     }
 }
 
-void GmlibDestroyTextBox(GmlibTextBox *textBox) {
+void GmlibTextBoxDestroy(GmlibTextBox *textBox) {
     free(textBox);
 }

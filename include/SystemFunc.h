@@ -30,12 +30,12 @@ typedef pthread_mutex_t *GmlibMutex;
 
 #endif
 
-GAME_EXPORTS GmlibThread GmlibNewThread(void (*main)(void *), void *data);
-GAME_EXPORTS void GmlibJoinThread(GmlibThread *thread);
-GAME_EXPORTS GmlibMutex GmlibNewMutex();
-GAME_EXPORTS void GmlibFreeMutex(GmlibMutex mutex);
-GAME_EXPORTS void GmlibLockMutex(GmlibMutex mutex);
-GAME_EXPORTS void GmlibUnlockMutex(GmlibMutex mutex);
+GAME_EXPORTS GmlibThread GmlibThreadCreate(void (*main)(void *), void *data);
+GAME_EXPORTS void GmlibThreadJoin(GmlibThread *thread);
+GAME_EXPORTS GmlibMutex GmlibMutexCreate();
+GAME_EXPORTS void GmlibMutexDestory(GmlibMutex mutex);
+GAME_EXPORTS void GmlibMutexLock(GmlibMutex mutex);
+GAME_EXPORTS void GmlibMutexUnlock(GmlibMutex mutex);
 
 #ifdef __cplusplus
 }

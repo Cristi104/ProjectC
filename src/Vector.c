@@ -7,7 +7,7 @@
 #include <stdbool.h>
 #include "../include/DataStructs.h"
 
-GmlibArray *GmlibNewArray(size_t length, bool autoCopy) {
+GmlibArray *GmlibArrayCreate(size_t length, bool autoCopy) {
     GmlibArray *vector;
     vector = malloc(sizeof(GmlibArray));
     if (vector == NULL) {
@@ -28,7 +28,7 @@ GmlibArray *GmlibNewArray(size_t length, bool autoCopy) {
     return vector;
 }
 
-void GmlibFreeArray(GmlibArray *array) {
+void GmlibArrayDestroy(GmlibArray *array) {
     if (array == NULL) {
         return;
     }
@@ -40,7 +40,7 @@ void GmlibFreeArray(GmlibArray *array) {
     free(array->arr);
 }
 
-void GmlibInsertArray(GmlibArray *array, size_t index, void *value, size_t valueSize) {
+void GmlibArrayInsert(GmlibArray *array, size_t index, void *value, size_t valueSize) {
     void **buf;
     void **vec;
     size_t size;
@@ -48,7 +48,7 @@ void GmlibInsertArray(GmlibArray *array, size_t index, void *value, size_t value
         return;
     }
     if (index >= array->size) {
-        GmlibAppendArray(array, value, valueSize);
+        GmlibArrayAppend(array, value, valueSize);
         return;
     }
     if (array->size == array->maxSize) {
@@ -71,7 +71,7 @@ void GmlibInsertArray(GmlibArray *array, size_t index, void *value, size_t value
     array->size++;
 }
 
-void GmlibAppendArray(GmlibArray *array, void *value, size_t valueSize) {
+void GmlibArrayAppend(GmlibArray *array, void *value, size_t valueSize) {
     void **buf;
     void **vec;
     if (array == NULL || value == NULL) {
@@ -95,7 +95,7 @@ void GmlibAppendArray(GmlibArray *array, void *value, size_t valueSize) {
     array->size++;
 }
 
-void GmlibDeleteArray(GmlibArray *array, size_t index) {
+void GmlibArrayDelete(GmlibArray *array, size_t index) {
     void **vec;
     size_t size;
     if (array == NULL) {

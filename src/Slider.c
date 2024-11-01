@@ -5,12 +5,12 @@
 #include <stdio.h>
 #include "../include/Graphics.h"
 
-GmlibSlider *GmlibCreateSlider(const char *sliderTexture, const char *pointTexture) {
+GmlibSlider *GmlibSliderCreate(const char *sliderTexture, const char *pointTexture) {
     GmlibSlider *slider = calloc(1, sizeof(GmlibSlider));
 
-    slider->base.draw = (void (*)(void *)) GmlibDrawSlider;
-    slider->base.handleEvent = (void (*)(void *)) GmlibHandleSlider;
-    slider->base.destroy = (void (*)(void *)) GmlibDestroySlider;
+    slider->base.draw = (void (*)(void *)) GmlibSliderDraw;
+    slider->base.handleEvent = (void (*)(void *)) GmlibSliderHandle;
+    slider->base.destroy = (void (*)(void *)) GmlibSliderDestroy;
 
     if (sliderTexture != NULL) {
         slider->sliderTexture = GmlibGetTexture(sliderTexture);
@@ -28,7 +28,7 @@ GmlibSlider *GmlibCreateSlider(const char *sliderTexture, const char *pointTextu
     return slider;
 }
 
-void GmlibHandleSlider(GmlibSlider *slider) {
+void GmlibSliderHandle(GmlibSlider *slider) {
     int x, y, minx, miny, maxx, maxy;
     bool buttonDown, buttonRelease;
 
@@ -62,12 +62,12 @@ void GmlibHandleSlider(GmlibSlider *slider) {
     }
 }
 
-void GmlibDrawSlider(GmlibSlider *slider) {
+void GmlibSliderDraw(GmlibSlider *slider) {
     Color tint = {255, 255, 255, 255};
     DrawTextureV(*slider->sliderTexture, slider->slidePosition, tint);
     DrawTextureV(*slider->pointTexture, slider->pointPosition, tint);
 }
 
-void GmlibDestroySlider(GmlibSlider *slider) {
+void GmlibSliderDestroy(GmlibSlider *slider) {
     free(slider);
 }

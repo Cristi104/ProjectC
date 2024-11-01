@@ -59,26 +59,26 @@ typedef struct {
     bool checked;
 } GmlibCheckBox;
 
-GAME_EXPORTS void GmlibLoadAssetsDir(const char *directory);
+GAME_EXPORTS void GmlibLoadAssets(const char *directory);
 GAME_EXPORTS void GmlibUnloadAssets();
 GAME_EXPORTS Texture2D *GmlibGetTexture(const char *name);
 GAME_EXPORTS Font *GmlibGetFont(const char *name);
-GAME_EXPORTS GmlibButton *GmlibCreateButton(const char *name);
-GAME_EXPORTS void GmlibHandleButton(GmlibButton *button);
-GAME_EXPORTS void GmlibDrawButton(GmlibButton *button);
-GAME_EXPORTS void GmlibDestroyButton(GmlibButton *button);
-GAME_EXPORTS GmlibSlider *GmlibCreateSlider(const char *sliderTexture, const char *pointTexture);
-GAME_EXPORTS void GmlibHandleSlider(GmlibSlider *slider);
-GAME_EXPORTS void GmlibDrawSlider(GmlibSlider *slider);
-GAME_EXPORTS void GmlibDestroySlider(GmlibSlider *slider);
-GAME_EXPORTS GmlibTextBox *GmlibCreateTextBox(const char *backgroundTexture, const char *font);
-GAME_EXPORTS void GmlibHandleTextBox(GmlibTextBox *textBox);
-GAME_EXPORTS void GmlibDrawTextBox(GmlibTextBox *textBox);
-GAME_EXPORTS void GmlibDestroyTextBox(GmlibTextBox *textBox);
-GAME_EXPORTS GmlibCheckBox *GmlibCreateCheckBox(const char *texture);
-GAME_EXPORTS void GmlibHandleCheckBox(GmlibCheckBox *checkBox);
-GAME_EXPORTS void GmlibDrawCheckBox(GmlibCheckBox *checkBox);
-GAME_EXPORTS void GmlibDestroyCheckBox(GmlibCheckBox *checkBox);
+GAME_EXPORTS GmlibButton *GmlibButtonCreate(const char *name);
+GAME_EXPORTS void GmlibButtonHandle(GmlibButton *button);
+GAME_EXPORTS void GmlibButtonDraw(GmlibButton *button);
+GAME_EXPORTS void GmlibButtonDestroy(GmlibButton *button);
+GAME_EXPORTS GmlibSlider *GmlibSliderCreate(const char *sliderTexture, const char *pointTexture);
+GAME_EXPORTS void GmlibSliderHandle(GmlibSlider *slider);
+GAME_EXPORTS void GmlibSliderDraw(GmlibSlider *slider);
+GAME_EXPORTS void GmlibSliderDestroy(GmlibSlider *slider);
+GAME_EXPORTS GmlibTextBox *GmlibTextBoxCreate(const char *backgroundTexture, const char *font);
+GAME_EXPORTS void GmlibTextBoxHandle(GmlibTextBox *textBox);
+GAME_EXPORTS void GmlibTextBoxDraw(GmlibTextBox *textBox);
+GAME_EXPORTS void GmlibTextBoxDestroy(GmlibTextBox *textBox);
+GAME_EXPORTS GmlibCheckBox *GmlibCheckBoxCreate(const char *texture);
+GAME_EXPORTS void GmlibCheckBoxHandle(GmlibCheckBox *checkBox);
+GAME_EXPORTS void GmlibCheckBoxDraw(GmlibCheckBox *checkBox);
+GAME_EXPORTS void GmlibCheckBoxDestroy(GmlibCheckBox *checkBox);
 
 #ifdef __cplusplus
 }

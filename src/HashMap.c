@@ -15,7 +15,7 @@ static size_t hash(const char *key) {
     return hash;
 }
 
-GmlibHashMap *GmlibNewHashMap(size_t size, bool autoCopy) {
+GmlibHashMap *GmlibHashMapCreate(size_t size, bool autoCopy) {
     GmlibHashMap *map;
     map = malloc(sizeof(GmlibHashMap));
     *((bool *) &map->autoCopy) = autoCopy;
@@ -32,7 +32,7 @@ GmlibHashMap *GmlibNewHashMap(size_t size, bool autoCopy) {
     return map;
 }
 
-void GmlibFreeHashMap(GmlibHashMap *map) {
+void GmlibHashMapDestory(GmlibHashMap *map) {
     GmlibBucket *bucket;
     GmlibPair *pair;
     if (map == NULL) {
@@ -52,7 +52,7 @@ void GmlibFreeHashMap(GmlibHashMap *map) {
     free(map);
 }
 
-void *GmlibGetHashMap(const GmlibHashMap *map, const char *key) {
+void *GmlibHashMapGet(const GmlibHashMap *map, const char *key) {
     size_t index;
     GmlibBucket *bucket;
     GmlibPair *pair;
@@ -73,7 +73,7 @@ void *GmlibGetHashMap(const GmlibHashMap *map, const char *key) {
     return NULL;
 }
 
-void GmlibInsertHashMap(GmlibHashMap *map, const char *key, const void *value, size_t valueSize) {
+void GmlibHashMapInsert(GmlibHashMap *map, const char *key, const void *value, size_t valueSize) {
     size_t index;
     size_t keySize;
     GmlibBucket *bucket;
@@ -107,7 +107,7 @@ void GmlibInsertHashMap(GmlibHashMap *map, const char *key, const void *value, s
     }
 }
 
-GmlibHashMapIterator GmlibNewHashMapIterator(GmlibHashMap *map) {
+GmlibHashMapIterator GmlibHashMapIteratorCreate(GmlibHashMap *map) {
     GmlibHashMapIterator iterator;
     iterator.hashMap = map;
     iterator.bucketIndex = 0;
@@ -115,7 +115,7 @@ GmlibHashMapIterator GmlibNewHashMapIterator(GmlibHashMap *map) {
     return iterator;
 }
 
-GmlibPair *GmlibNextHashMapIterator(GmlibHashMapIterator *iterator) {
+GmlibPair *GmlibHashMapIteratorNext(GmlibHashMapIterator *iterator) {
     GmlibHashMap *map = iterator->hashMap;
     GmlibBucket *bucket = map->buckets + iterator->bucketIndex;
 
@@ -142,7 +142,7 @@ GmlibPair *GmlibNextHashMapIterator(GmlibHashMapIterator *iterator) {
     return &map->buckets[iterator->bucketIndex].pairs[iterator->pairIndex];
 }
 
-GmlibPair *GmlibPreviousHashMapIterator(GmlibHashMapIterator *iterator) {
+GmlibPair *GmlibHashMapIteratorPrevious(GmlibHashMapIterator *iterator) {
     GmlibHashMap *map = iterator->hashMap;
     GmlibBucket *bucket;
 

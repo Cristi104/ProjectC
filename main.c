@@ -12,9 +12,9 @@ int main() {
     InitWindow(800, 600, "Hello World");
     SetTargetFPS(60);
 
-    GmlibLoadAssetsDir("../res");
+    GmlibLoadAssets("../res");
 
-    GmlibUIComponent *button = (GmlibUIComponent *) GmlibCreateCheckBox(NULL);
+    GmlibUIComponent *button = (GmlibUIComponent *) GmlibCheckBoxCreate(NULL);
     while (!WindowShouldClose()) {
         BeginDrawing();
         ClearBackground(RAYWHITE);

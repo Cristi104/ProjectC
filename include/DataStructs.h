@@ -40,18 +40,18 @@ typedef struct {
     const bool autoCopy;
 } GmlibArray;
 
-GAME_EXPORTS GmlibHashMap *GmlibNewHashMap(size_t size, bool autoCopy);
-GAME_EXPORTS void GmlibFreeHashMap(GmlibHashMap *map);
-GAME_EXPORTS void *GmlibGetHashMap(const GmlibHashMap *map, const char *key);
-GAME_EXPORTS void GmlibInsertHashMap(GmlibHashMap *map, const char *key, const void *value, size_t valueSize);
-GAME_EXPORTS GmlibHashMapIterator GmlibNewHashMapIterator(GmlibHashMap *map);
-GAME_EXPORTS GmlibPair *GmlibNextHashMapIterator(GmlibHashMapIterator *iterator);
-GAME_EXPORTS GmlibPair *GmlibPreviousHashMapIterator(GmlibHashMapIterator *iterator);
-GAME_EXPORTS GmlibArray *GmlibNewArray(size_t length, bool autoCopy);
-GAME_EXPORTS void GmlibFreeArray(GmlibArray *array);
-GAME_EXPORTS void GmlibInsertArray(GmlibArray *array, size_t index, void *value, size_t valueSize);
-GAME_EXPORTS void GmlibAppendArray(GmlibArray *array, void *value, size_t valueSize);
-GAME_EXPORTS void GmlibDeleteArray(GmlibArray *array, size_t index);
+GAME_EXPORTS GmlibHashMap *GmlibHashMapCreate(size_t size, bool autoCopy);
+GAME_EXPORTS void GmlibHashMapDestory(GmlibHashMap *map);
+GAME_EXPORTS void *GmlibHashMapGet(const GmlibHashMap *map, const char *key);
+GAME_EXPORTS void GmlibHashMapInsert(GmlibHashMap *map, const char *key, const void *value, size_t valueSize);
+GAME_EXPORTS GmlibHashMapIterator GmlibHashMapIteratorCreate(GmlibHashMap *map);
+GAME_EXPORTS GmlibPair *GmlibHashMapIteratorNext(GmlibHashMapIterator *iterator);
+GAME_EXPORTS GmlibPair *GmlibHashMapIteratorPrevious(GmlibHashMapIterator *iterator);
+GAME_EXPORTS GmlibArray *GmlibArrayCreate(size_t length, bool autoCopy);
+GAME_EXPORTS void GmlibArrayDestroy(GmlibArray *array);
+GAME_EXPORTS void GmlibArrayInsert(GmlibArray *array, size_t index, void *value, size_t valueSize);
+GAME_EXPORTS void GmlibArrayAppend(GmlibArray *array, void *value, size_t valueSize);
+GAME_EXPORTS void GmlibArrayDelete(GmlibArray *array, size_t index);
 
 #ifdef __cplusplus
 }
