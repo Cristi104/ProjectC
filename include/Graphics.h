@@ -11,6 +11,7 @@ extern "C" {
 
 #include "Game_exports.h"
 #include "raylib.h"
+#include "DataStructs.h"
 
 typedef struct {
     void (*draw)(void *);
@@ -59,6 +60,15 @@ typedef struct {
     bool checked;
 } GmlibCheckBox;
 
+typedef struct {
+    GmlibUIComponent base;
+    Texture2D *background;
+    Texture2D *border;
+    Rectangle location;
+    GmlibArray *components;
+    bool visible;
+} GmlibPanel;
+
 GAME_EXPORTS void GmlibLoadAssets(const char *directory);
 GAME_EXPORTS void GmlibUnloadAssets();
 GAME_EXPORTS Texture2D *GmlibGetTexture(const char *name);
@@ -79,6 +89,10 @@ GAME_EXPORTS GmlibCheckBox *GmlibCheckBoxCreate(const char *texture);
 GAME_EXPORTS void GmlibCheckBoxHandle(GmlibCheckBox *checkBox);
 GAME_EXPORTS void GmlibCheckBoxDraw(GmlibCheckBox *checkBox);
 GAME_EXPORTS void GmlibCheckBoxDestroy(GmlibCheckBox *checkBox);
+GAME_EXPORTS GmlibPanel *GmlibPanelCreate(const char *background);
+GAME_EXPORTS void GmlibPanelDraw(GmlibPanel *panel);
+GAME_EXPORTS void GmlibPanelHandle(GmlibPanel *panel);
+GAME_EXPORTS void GmlibPanelDestory(GmlibPanel *panel);
 
 #ifdef __cplusplus
 }
