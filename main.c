@@ -7,8 +7,10 @@
 #include "include/Graphics.h"
 
 int main() {
+    Vector2 pos = {190, 200};
+
     InitWindow(800, 600, "Hello World");
-    GmlibLoadTexturesDir("../res/textures");
+    GmlibLoadAssetsDir("../res");
 
     GmlibUIComponent *button = (GmlibUIComponent *) GmlibCreateSlider(NULL, NULL);
     while (!WindowShouldClose()) {
@@ -17,12 +19,13 @@ int main() {
         button->handleEvent(button);
         button->draw(button);
 
-        DrawText("Congrats! You created your first window!", 190, 200, 20, LIGHTGRAY);
+        DrawTextEx(*GmlibGetFont("8bitOperatorPlus-Regular.ttf"), "Congrats!\nYou created your first window!", pos, 16,
+                   0, LIGHTGRAY);
         EndDrawing();
     }
     button->destroy(button);
 
-    GmlibUnloadTextures();
+    GmlibUnloadAssets();
     CloseWindow();
 
 //    FilePathList list = LoadDirectoryFiles("../res/textures");

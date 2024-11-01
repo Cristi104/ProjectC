@@ -39,9 +39,10 @@ typedef struct {
     float percent;
 } GmlibSlider;
 
-GAME_EXPORTS void GmlibLoadTexturesDir(const char *directory);
-GAME_EXPORTS void GmlibUnloadTextures();
+GAME_EXPORTS void GmlibLoadAssetsDir(const char *directory);
+GAME_EXPORTS void GmlibUnloadAssets();
 GAME_EXPORTS Texture2D *GmlibGetTexture(const char *name);
+GAME_EXPORTS Font *GmlibGetFont(const char *name);
 GAME_EXPORTS GmlibButton *GmlibCreateButton(const char *name);
 GAME_EXPORTS void GmlibHandleButton(GmlibButton *button);
 GAME_EXPORTS void GmlibDrawButton(GmlibButton *button);
