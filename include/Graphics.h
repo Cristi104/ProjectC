@@ -51,6 +51,14 @@ typedef struct {
     Font *font;
 } GmlibTextBox;
 
+typedef struct {
+    GmlibUIComponent base;
+    Texture2D *texture;
+    Texture2D *textureChecked;
+    Vector2 position;
+    bool checked;
+} GmlibCheckBox;
+
 GAME_EXPORTS void GmlibLoadAssetsDir(const char *directory);
 GAME_EXPORTS void GmlibUnloadAssets();
 GAME_EXPORTS Texture2D *GmlibGetTexture(const char *name);
@@ -67,6 +75,10 @@ GAME_EXPORTS GmlibTextBox *GmlibCreateTextBox(const char *backgroundTexture, con
 GAME_EXPORTS void GmlibHandleTextBox(GmlibTextBox *textBox);
 GAME_EXPORTS void GmlibDrawTextBox(GmlibTextBox *textBox);
 GAME_EXPORTS void GmlibDestroyTextBox(GmlibTextBox *textBox);
+GAME_EXPORTS GmlibCheckBox *GmlibCreateCheckBox(const char *texture);
+GAME_EXPORTS void GmlibHandleCheckBox(GmlibCheckBox *checkBox);
+GAME_EXPORTS void GmlibDrawCheckBox(GmlibCheckBox *checkBox);
+GAME_EXPORTS void GmlibDestroyCheckBox(GmlibCheckBox *checkBox);
 
 #ifdef __cplusplus
 }

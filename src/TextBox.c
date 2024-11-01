@@ -34,6 +34,10 @@ void GmlibHandleTextBox(GmlibTextBox *textBox) {
     int x, y, minx, miny, maxx, maxy, length;
     int key;
 
+    if (textBox == NULL) {
+        return;
+    }
+
     if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
         textBox->prv_pressed = false;
         minx = textBox->position.x;

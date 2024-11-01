@@ -14,7 +14,7 @@ int main() {
 
     GmlibLoadAssetsDir("../res");
 
-    GmlibUIComponent *button = (GmlibUIComponent *) GmlibCreateTextBox(NULL, NULL);
+    GmlibUIComponent *button = (GmlibUIComponent *) GmlibCreateCheckBox(NULL);
     while (!WindowShouldClose()) {
         BeginDrawing();
         ClearBackground(RAYWHITE);
