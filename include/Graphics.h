@@ -25,7 +25,7 @@ typedef struct {
     Texture2D *texturePressed;
     void (*onClick)(void *);
     void *params;
-    Vector2 position;
+    Rectangle position;
     bool prv_pressed;
 } GmlibButton;
 
@@ -35,7 +35,7 @@ typedef struct {
     Texture2D *pointTexture;
     void (*onClick)(void *, float);
     void *params;
-    Vector2 slidePosition;
+    Rectangle slidePosition;
     Vector2 pointPosition;
     bool prv_pressed;
     float percent;
@@ -46,7 +46,7 @@ typedef struct {
     Texture2D *background;
     void (*onClick)(void *, char *);
     void *params;
-    Vector2 position;
+    Rectangle position;
     bool prv_pressed;
     char text[31];
     Font *font;
@@ -56,7 +56,7 @@ typedef struct {
     GmlibUIComponent base;
     Texture2D *texture;
     Texture2D *textureChecked;
-    Vector2 position;
+    Rectangle position;
     bool checked;
 } GmlibCheckBox;
 
@@ -64,7 +64,7 @@ typedef struct {
     GmlibUIComponent base;
     Texture2D *background;
     Texture2D *border;
-    Rectangle location;
+    Rectangle position;
     GmlibArray *components;
     bool visible;
 } GmlibPanel;
@@ -98,7 +98,7 @@ GAME_EXPORTS GmlibCheckBox *GmlibCheckBoxCreate(const char *texture);
 GAME_EXPORTS void GmlibCheckBoxHandle(GmlibCheckBox *checkBox);
 GAME_EXPORTS void GmlibCheckBoxDraw(GmlibCheckBox *checkBox);
 GAME_EXPORTS void GmlibCheckBoxDestroy(GmlibCheckBox *checkBox);
-GAME_EXPORTS GmlibPanel *GmlibPanelCreate(const char *background);
+GAME_EXPORTS GmlibPanel *GmlibPanelCreate(const char *background, Rectangle position);
 GAME_EXPORTS void GmlibPanelDraw(GmlibPanel *panel);
 GAME_EXPORTS void GmlibPanelHandle(GmlibPanel *panel);
 GAME_EXPORTS void GmlibPanelDestory(GmlibPanel *panel);

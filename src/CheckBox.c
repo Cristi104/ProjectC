@@ -32,6 +32,9 @@ GmlibCheckBox *GmlibCheckBoxCreate(const char *texture) {
         checkBox->textureChecked = GmlibGetTexture("CheckBoxChecked.png");
     }
 
+    checkBox->position.width = checkBox->texture->width;
+    checkBox->position.height = checkBox->texture->height;
+
     return checkBox;
 }
 
@@ -42,13 +45,13 @@ void GmlibCheckBoxHandle(GmlibCheckBox *checkBox) {
         return;
 
     if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) {
-        minx = checkBox->position.x;
+        minx = checkBox->position.x * settings.scaleWidth;
         x = GetMouseX();
-        maxx = checkBox->texture->width + minx;
+        maxx = checkBox->position.width * settings.scaleWidth + minx;
         if (minx <= x && x <= maxx) {
-            miny = checkBox->position.y;
+            miny = checkBox->position.y * settings.scaleHeight;
             y = GetMouseY();
-            maxy = checkBox->texture->height + miny;
+            maxy = checkBox->position.height * settings.scaleHeight + miny;
             if (miny <= y && y <= maxy) {
                 checkBox->checked = !checkBox->checked;
             }
@@ -57,10 +60,21 @@ void GmlibCheckBoxHandle(GmlibCheckBox *checkBox) {
 }
 
 void GmlibCheckBoxDraw(GmlibCheckBox *checkBox) {
+    Rectangle src = {0, 0, 0, 0}, dest;
+    Vector2 origin = {0, 0};
+
+    src.width = checkBox->texture->width;
+    src.height = checkBox->texture->height;
+    dest = checkBox->position;
+    dest.x *= settings.scaleWidth;
+    dest.y *= settings.scaleHeight;
+    dest.width *= settings.scaleWidth;
+    dest.height *= settings.scaleHeight;
+
     if (checkBox->checked) {
-        DrawTextureV(*checkBox->textureChecked, checkBox->position, WHITE);
+        DrawTexturePro(*checkBox->textureChecked, src, dest, origin, 0, WHITE);
     } else {
-        DrawTextureV(*checkBox->texture, checkBox->position, WHITE);
+        DrawTexturePro(*checkBox->texture, src, dest, origin, 0, WHITE);
     }
 }
 

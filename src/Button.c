@@ -31,6 +31,10 @@ GmlibButton *GmlibButtonCreate(const char *name) {
     if (button->texturePressed == NULL) {
         button->texturePressed = GmlibGetTexture("ButtonPressed.png");
     }
+
+    button->position.width = button->texture->width;
+    button->position.height = button->texture->height;
+
     return button;
 }
 
@@ -46,13 +50,13 @@ void GmlibButtonHandle(GmlibButton *button) {
     buttonRelease = IsMouseButtonReleased(MOUSE_BUTTON_LEFT);
 
     if (buttonRelease || buttonDown) {
-        minx = button->position.x;
+        minx = button->position.x * settings.scaleWidth;
         x = GetMouseX();
-        maxx = button->texture->width + minx;
+        maxx = button->position.width * settings.scaleWidth + minx;
         if (minx <= x && x <= maxx) {
-            miny = button->position.y;
+            miny = button->position.y * settings.scaleWidth;
             y = GetMouseY();
-            maxy = button->texture->height + miny;
+            maxy = button->position.height * settings.scaleWidth + miny;
             if (miny <= y && y <= maxy) {
                 if (button->onClick != NULL && buttonRelease) {
                     button->onClick(button->params);
@@ -64,11 +68,21 @@ void GmlibButtonHandle(GmlibButton *button) {
 }
 
 void GmlibButtonDraw(GmlibButton *button) {
-    Color tint = {255, 255, 255, 255};
+    Rectangle src = {0, 0, 0, 0}, dest;
+    Vector2 origin = {0, 0};
+
+    src.width = button->texture->width;
+    src.height = button->texture->height;
+    dest = button->position;
+    dest.x *= settings.scaleWidth;
+    dest.y *= settings.scaleHeight;
+    dest.width *= settings.scaleWidth;
+    dest.height *= settings.scaleHeight;
+
     if (button->prv_pressed) {
-        DrawTextureV(*button->texturePressed, button->position, tint);
+        DrawTexturePro(*button->texturePressed, src, dest, origin, 0, WHITE);
     } else {
-        DrawTextureV(*button->texture, button->position, tint);
+        DrawTexturePro(*button->texture, src, dest, origin, 0, WHITE);
     }
 }
 

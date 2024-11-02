@@ -27,6 +27,9 @@ GmlibTextBox *GmlibTextBoxCreate(const char *backgroundTexture, const char *font
         textBox->font = GmlibGetFont("8bitOperatorPlus-Regular.ttf");
     }
 
+    textBox->position.width = textBox->background->width;
+    textBox->position.height = textBox->background->height;
+
     return textBox;
 }
 
@@ -40,13 +43,13 @@ void GmlibTextBoxHandle(GmlibTextBox *textBox) {
 
     if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
         textBox->prv_pressed = false;
-        minx = textBox->position.x;
+        minx = textBox->position.x * settings.scaleWidth;
         x = GetMouseX();
-        maxx = textBox->background->width + minx;
+        maxx = textBox->position.width * settings.scaleWidth + minx;
         if (minx <= x && x <= maxx) {
-            miny = textBox->position.y;
+            miny = textBox->position.y * settings.scaleHeight;
             y = GetMouseY();
-            maxy = textBox->background->height + miny;
+            maxy = textBox->position.height * settings.scaleHeight + miny;
             if (miny <= y && y <= maxy) {
                 textBox->prv_pressed = true;
                 while (GetCharPressed());
@@ -70,11 +73,27 @@ void GmlibTextBoxHandle(GmlibTextBox *textBox) {
 }
 
 void GmlibTextBoxDraw(GmlibTextBox *textBox) {
-    DrawTextureV(*textBox->background, textBox->position, WHITE);
+    Rectangle src = {0, 0, 0, 0}, dest;
+    Vector2 origin = {0, 0};
+
+    src.width = textBox->background->width;
+    src.height = textBox->background->height;
+    dest = textBox->position;
+    dest.x *= settings.scaleWidth;
+    dest.y *= settings.scaleHeight;
+    dest.width *= settings.scaleWidth;
+    dest.height *= settings.scaleHeight;
+
+    DrawTexturePro(*textBox->background, src, dest, origin, 0, WHITE);
+
+    origin.x = dest.x + settings.scaleWidth;
+    origin.y = dest.y;
+
     if (strlen(textBox->text) >= 8) {
-        DrawTextEx(*textBox->font, textBox->text + strlen(textBox->text) - 8, textBox->position, 16, 1, WHITE);
+        DrawTextEx(*textBox->font, textBox->text + strlen(textBox->text) - 8, origin, 16 * settings.scaleWidth, 1,
+                   WHITE);
     } else {
-        DrawTextEx(*textBox->font, textBox->text, textBox->position, 16, 1, WHITE);
+        DrawTextEx(*textBox->font, textBox->text, origin, 16 * settings.scaleWidth, 1, WHITE);
     }
 }
 

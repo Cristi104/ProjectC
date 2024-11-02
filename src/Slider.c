@@ -25,6 +25,8 @@ GmlibSlider *GmlibSliderCreate(const char *sliderTexture, const char *pointTextu
         slider->pointTexture = GmlibGetTexture("Point.png");
     }
 
+    slider->slidePosition.width = slider->sliderTexture->width;
+    slider->slidePosition.height = slider->sliderTexture->height;
     return slider;
 }
 
@@ -40,18 +42,19 @@ void GmlibSliderHandle(GmlibSlider *slider) {
     buttonRelease = IsMouseButtonReleased(MOUSE_BUTTON_LEFT);
 
     if (buttonRelease || buttonDown) {
-        minx = slider->slidePosition.x;
+        minx = slider->slidePosition.x * settings.scaleWidth;
         x = GetMouseX();
-        maxx = slider->sliderTexture->width + minx;
+        maxx = slider->slidePosition.width * settings.scaleWidth + minx;
         if (minx <= x && x <= maxx) {
-            miny = slider->slidePosition.y;
+            miny = slider->slidePosition.y * settings.scaleHeight;
             y = GetMouseY();
-            maxy = slider->sliderTexture->height + miny;
+            maxy = slider->slidePosition.height * settings.scaleHeight + miny;
             if (miny <= y && y <= maxy) {
                 x -= minx;
                 slider->percent = (float) x / (float) slider->sliderTexture->width;
                 slider->pointPosition.x =
-                        minx + slider->percent * (slider->sliderTexture->width - slider->pointTexture->width);
+                        minx + slider->percent * (maxx - minx - slider->pointTexture->width * settings.scaleWidth) /
+                               settings.scaleWidth;
                 if (slider->onClick != NULL && buttonRelease) {
                     slider->onClick(slider->params, slider->percent);
                 }
@@ -63,9 +66,19 @@ void GmlibSliderHandle(GmlibSlider *slider) {
 }
 
 void GmlibSliderDraw(GmlibSlider *slider) {
-    Color tint = {255, 255, 255, 255};
-    DrawTextureV(*slider->sliderTexture, slider->slidePosition, tint);
-    DrawTextureV(*slider->pointTexture, slider->pointPosition, tint);
+    Rectangle src = {0, 0, 0, 0}, dest;
+    Vector2 origin = {0, 0};
+
+    src.width = slider->sliderTexture->width;
+    src.height = slider->sliderTexture->height;
+    dest = slider->slidePosition;
+    dest.x *= settings.scaleWidth;
+    dest.y *= settings.scaleHeight;
+    dest.width *= settings.scaleWidth;
+    dest.height *= settings.scaleHeight;
+
+    DrawTexturePro(*slider->sliderTexture, src, dest, origin, 0, WHITE);
+    DrawTextureEx(*slider->pointTexture, slider->pointPosition, 0, settings.scaleWidth, WHITE);
 }
 
 void GmlibSliderDestroy(GmlibSlider *slider) {

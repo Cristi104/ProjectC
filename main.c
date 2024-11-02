@@ -17,8 +17,12 @@ int main() {
 
     GmlibLoadAssets("../res");
 
-    GmlibUIComponent *button = (GmlibUIComponent *) GmlibPanelCreate(NULL);
-
+//    GmlibUIComponent *button = (GmlibUIComponent *) GmlibPanelCreate(NULL,
+//                                                                     CLITERAL(Rectangle) {0, 0, 1280 / 2, 720 / 2});
+//    GmlibUIComponent *button = GmlibButtonCreate(NULL);
+//    GmlibUIComponent *button = GmlibCheckBoxCreate(NULL);
+//    GmlibUIComponent *button = GmlibTextBoxCreate(NULL, NULL);
+    GmlibUIComponent *button = GmlibSliderCreate(NULL, NULL);
     while (!WindowShouldClose()) {
         BeginDrawing();
         ClearBackground(RAYWHITE);
@@ -32,10 +36,9 @@ int main() {
     }
     button->destroy(button);
 
-    GmlibVideoSettingsLog();
-
     GmlibUnloadAssets();
     CloseWindow();
+    GmlibVideoSettingsLog();
 
 
 //    FilePathList list = LoadDirectoryFiles("../res/textures");

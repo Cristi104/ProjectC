@@ -12,8 +12,8 @@ void GmlibVideoSettingsInit() {
     if (file == NULL) {
         settings.resolutionWidth = GetMonitorWidth(GetCurrentMonitor());
         settings.resolutionHeight = GetMonitorHeight(GetCurrentMonitor());
-        settings.scaleWidth = settings.resolutionWidth / 1280.0f;
-        settings.scaleHeight = settings.resolutionHeight / 720.0f;
+        settings.scaleWidth = settings.resolutionWidth / 960.0f;
+        settings.scaleHeight = settings.resolutionHeight / 540.0f;
         settings.fullscreen = true;
         GmlibVideoSettingsSave();
     } else {

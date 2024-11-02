@@ -7,7 +7,7 @@
 #include "../include/Graphics.h"
 #include "../include/DataStructs.h"
 
-GmlibPanel *GmlibPanelCreate(const char *background) {
+GmlibPanel *GmlibPanelCreate(const char *background, Rectangle position) {
     GmlibPanel *panel = calloc(1, sizeof(GmlibPanel));
     char *helper;
 
@@ -15,8 +15,7 @@ GmlibPanel *GmlibPanelCreate(const char *background) {
     panel->base.handleEvent = (void (*)(void *)) GmlibPanelHandle;
     panel->base.destroy = (void (*)(void *)) GmlibPanelDestory;
 
-    panel->location.width = 400;
-    panel->location.height = 300;
+    panel->position = position;
 
     panel->visible = true;
     panel->components = GmlibArrayCreate(5, false);
@@ -55,11 +54,16 @@ void GmlibPanelDraw(GmlibPanel *panel) {
         return;
     }
 
-    dest = panel->location;
-    helper.x = dest.x + 4;
-    helper.y = dest.y + 4;
-    helper.width = dest.width - 8;
-    helper.height = dest.height - 8;
+    dest = panel->position;
+    helper.x = (dest.x + 4) * settings.scaleWidth;
+    helper.y = (dest.y + 4) * settings.scaleHeight;
+    helper.width = (dest.width - 8) * settings.scaleWidth;
+    helper.height = (dest.height - 8) * settings.scaleHeight;
+    dest.x *= settings.scaleWidth;
+    dest.y *= settings.scaleHeight;
+    dest.width *= settings.scaleWidth;
+    dest.height *= settings.scaleHeight;
+
 
     DrawTexturePro(*panel->border, src, dest, origin, 0, WHITE);
     DrawTexturePro(*panel->background, src, helper, origin, 0, WHITE);
