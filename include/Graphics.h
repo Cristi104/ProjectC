@@ -69,6 +69,15 @@ typedef struct {
     bool visible;
 } GmlibPanel;
 
+typedef struct {
+    unsigned int resolutionWidth;
+    unsigned int resolutionHeight;
+    float scaleWidth;
+    float scaleHeight;
+    bool fullscreen;
+    bool borderless;
+} GmlibVideoSettings;
+
 GAME_EXPORTS void GmlibLoadAssets(const char *directory);
 GAME_EXPORTS void GmlibUnloadAssets();
 GAME_EXPORTS Texture2D *GmlibGetTexture(const char *name);
@@ -93,6 +102,12 @@ GAME_EXPORTS GmlibPanel *GmlibPanelCreate(const char *background);
 GAME_EXPORTS void GmlibPanelDraw(GmlibPanel *panel);
 GAME_EXPORTS void GmlibPanelHandle(GmlibPanel *panel);
 GAME_EXPORTS void GmlibPanelDestory(GmlibPanel *panel);
+GAME_EXPORTS void GmlibVideoSettingsInit();
+GAME_EXPORTS void GmlibVideoSettingsSave();
+GAME_EXPORTS void GmlibVideoSettingsApply();
+GAME_EXPORTS void GmlibVideoSettingsLog();
+
+GAME_EXPORTS extern GmlibVideoSettings settings;
 
 #ifdef __cplusplus
 }

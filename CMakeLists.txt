@@ -16,7 +16,8 @@ add_library(gamelib include/DataStructs.h
         src/Slider.c
         src/TextBox.c
         src/CheckBox.c
-        src/Panel.c)
+        src/Panel.c
+        src/VideoSettings.c)
 
 add_executable(ProjectC main.c)
 

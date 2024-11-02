@@ -10,7 +10,10 @@ int main() {
     Vector2 pos = {190, 200};
 
     InitWindow(800, 600, "Hello World");
+    GmlibVideoSettingsInit();
     SetTargetFPS(60);
+    GmlibVideoSettingsApply();
+
 
     GmlibLoadAssets("../res");
 
@@ -29,8 +32,11 @@ int main() {
     }
     button->destroy(button);
 
+    GmlibVideoSettingsLog();
+
     GmlibUnloadAssets();
     CloseWindow();
+
 
 //    FilePathList list = LoadDirectoryFiles("../res/textures");
 
