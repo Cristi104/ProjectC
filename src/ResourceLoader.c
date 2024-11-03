@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include "raylib.h"
 #include "../include/DataStructs.h"
-#include "../include/Graphics.h"
+#include "../include/UI.h"
 
 static GmlibHashMap *textures = NULL;
 static GmlibHashMap *fonts = NULL;
@@ -40,7 +40,7 @@ void GmlibLoadAssets(const char *directory) {
             if (strstr(fileName + nameSize - 4, ".png") != NULL) {
 
                 // check if exists
-                if (GmlibHashMapGet(textures, fileName)) {
+                if (GmlibHashMapGet(textures, fileName) == NULL) {
                     image = LoadImage(file);
                     texture = LoadTextureFromImage(image);
                     GmlibHashMapInsert(textures, fileName, &texture, sizeof(texture));
@@ -52,7 +52,7 @@ void GmlibLoadAssets(const char *directory) {
             if (strstr(fileName + nameSize - 4, ".ttf") != NULL) {
 
                 // check if exists
-                if (GmlibHashMapGet(fonts, fileName)) {
+                if (GmlibHashMapGet(fonts, fileName) == NULL) {
                     font = LoadFont(file);
                     GmlibHashMapInsert(fonts, fileName, &font, sizeof(Font));
                 }
