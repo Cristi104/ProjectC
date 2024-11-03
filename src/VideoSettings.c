@@ -5,31 +5,33 @@
 #include <stdio.h>
 #include "../include/Graphics.h"
 
-GmlibVideoSettings settings;
+GmlibSettings settings;
 
-void GmlibVideoSettingsInit() {
+void GmlibSettingsInit() {
     FILE *file = fopen("../settings.txt", "r");
+
+    // if settings.txt is missing set default else read settings
     if (file == NULL) {
         settings.resolutionWidth = GetMonitorWidth(GetCurrentMonitor());
         settings.resolutionHeight = GetMonitorHeight(GetCurrentMonitor());
         settings.scaleWidth = settings.resolutionWidth / 960.0f;
         settings.scaleHeight = settings.resolutionHeight / 540.0f;
         settings.fullscreen = true;
-        GmlibVideoSettingsSave();
+        GmlibSettingsSave();
     } else {
-        fread((char *) &settings, sizeof(GmlibVideoSettings), 1, file);
+        fread((char *) &settings, sizeof(GmlibSettings), 1, file);
         fclose(file);
     }
 
 }
 
-void GmlibVideoSettingsSave() {
+void GmlibSettingsSave() {
     FILE *file = fopen("../settings.txt", "w");
-    fwrite((char *) &settings, sizeof(GmlibVideoSettings), 1, file);
+    fwrite((char *) &settings, sizeof(GmlibSettings), 1, file);
     fclose(file);
 }
 
-void GmlibVideoSettingsApply() {
+void GmlibSettingsApply() {
     SetWindowSize(settings.resolutionWidth, settings.resolutionHeight);
     if (IsWindowFullscreen() != settings.fullscreen) {
         ToggleFullscreen();
@@ -39,7 +41,7 @@ void GmlibVideoSettingsApply() {
     }
 }
 
-void GmlibVideoSettingsLog() {
+void GmlibSettingsLog() {
     printf("Resolution: %uX%u\n", settings.resolutionWidth, settings.resolutionHeight);
     printf("Scale: %fX%f\n", settings.scaleWidth, settings.scaleHeight);
     printf("Fullscreen: %u\n", settings.fullscreen);

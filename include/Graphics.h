@@ -36,7 +36,7 @@ typedef struct {
     void (*onClick)(void *, float);
     void *params;
     Rectangle slidePosition;
-    Vector2 pointPosition;
+    float pointPosition;
     bool prv_pressed;
     float percent;
 } GmlibSlider;
@@ -76,38 +76,38 @@ typedef struct {
     float scaleHeight;
     bool fullscreen;
     bool borderless;
-} GmlibVideoSettings;
+} GmlibSettings;
 
-GAME_EXPORTS void GmlibLoadAssets(const char *directory);
-GAME_EXPORTS void GmlibUnloadAssets();
-GAME_EXPORTS Texture2D *GmlibGetTexture(const char *name);
-GAME_EXPORTS Font *GmlibGetFont(const char *name);
-GAME_EXPORTS GmlibButton *GmlibButtonCreate(const char *name);
-GAME_EXPORTS void GmlibButtonHandle(GmlibButton *button);
-GAME_EXPORTS void GmlibButtonDraw(GmlibButton *button);
-GAME_EXPORTS void GmlibButtonDestroy(GmlibButton *button);
-GAME_EXPORTS GmlibSlider *GmlibSliderCreate(const char *sliderTexture, const char *pointTexture);
-GAME_EXPORTS void GmlibSliderHandle(GmlibSlider *slider);
-GAME_EXPORTS void GmlibSliderDraw(GmlibSlider *slider);
-GAME_EXPORTS void GmlibSliderDestroy(GmlibSlider *slider);
-GAME_EXPORTS GmlibTextBox *GmlibTextBoxCreate(const char *backgroundTexture, const char *font);
-GAME_EXPORTS void GmlibTextBoxHandle(GmlibTextBox *textBox);
-GAME_EXPORTS void GmlibTextBoxDraw(GmlibTextBox *textBox);
-GAME_EXPORTS void GmlibTextBoxDestroy(GmlibTextBox *textBox);
-GAME_EXPORTS GmlibCheckBox *GmlibCheckBoxCreate(const char *texture);
-GAME_EXPORTS void GmlibCheckBoxHandle(GmlibCheckBox *checkBox);
-GAME_EXPORTS void GmlibCheckBoxDraw(GmlibCheckBox *checkBox);
-GAME_EXPORTS void GmlibCheckBoxDestroy(GmlibCheckBox *checkBox);
-GAME_EXPORTS GmlibPanel *GmlibPanelCreate(const char *background, Rectangle position);
-GAME_EXPORTS void GmlibPanelDraw(GmlibPanel *panel);
-GAME_EXPORTS void GmlibPanelHandle(GmlibPanel *panel);
-GAME_EXPORTS void GmlibPanelDestory(GmlibPanel *panel);
-GAME_EXPORTS void GmlibVideoSettingsInit();
-GAME_EXPORTS void GmlibVideoSettingsSave();
-GAME_EXPORTS void GmlibVideoSettingsApply();
-GAME_EXPORTS void GmlibVideoSettingsLog();
+GAME_EXPORTS extern GmlibSettings settings;
 
-GAME_EXPORTS extern GmlibVideoSettings settings;
+GAME_EXPORTS void GmlibLoadAssets(const char *directory);           // Recursively load assets(.png, .ttf, etc.) from a directory
+GAME_EXPORTS void GmlibUnloadAssets();                              // Frees all loaded assets from memory
+GAME_EXPORTS Texture2D *GmlibGetTexture(const char *name);          // Get a pointer to a loaded texture
+GAME_EXPORTS Font *GmlibGetFont(const char *name);                  // Get a pointer to a loaded font
+GAME_EXPORTS GmlibButton *GmlibButtonCreate(const char *texture);   // Create a button with a given texture (texture.png and texturePressed.png)
+GAME_EXPORTS void GmlibButtonHandle(GmlibButton *button);           // Calls onClick(params) if the button was pressed
+GAME_EXPORTS void GmlibButtonDraw(GmlibButton *button);             // Draws the Button to the screen
+GAME_EXPORTS void GmlibButtonDestroy(GmlibButton *button);          // Frees the button
+GAME_EXPORTS GmlibSlider *GmlibSliderCreate(const char *sliderTexture, const char *pointTexture);   // Create a Slider with the given textures
+GAME_EXPORTS void GmlibSliderHandle(GmlibSlider *slider);           // Calls onClick(params, percent) if the slider was let go
+GAME_EXPORTS void GmlibSliderDraw(GmlibSlider *slider);             // Draws the slider and point to the screen
+GAME_EXPORTS void GmlibSliderDestroy(GmlibSlider *slider);          // Frees the slider
+GAME_EXPORTS GmlibTextBox *GmlibTextBoxCreate(const char *backgroundTexture, const char *font); // Create a TextBox with a given background texture and font
+GAME_EXPORTS void GmlibTextBoxHandle(GmlibTextBox *textBox);        // if clicked on will start listening for keyboard input on an Enter press will call onClick(params, text)
+GAME_EXPORTS void GmlibTextBoxDraw(GmlibTextBox *textBox);          // Draws the textBox and the corresponding text
+GAME_EXPORTS void GmlibTextBoxDestroy(GmlibTextBox *textBox);       // Frees the textBox to the screen
+GAME_EXPORTS GmlibCheckBox *GmlibCheckBoxCreate(const char *texture);   // Create a CheckBox with a given texture (texture.png and textureChecked.png)
+GAME_EXPORTS void GmlibCheckBoxHandle(GmlibCheckBox *checkBox);     // if clicked on will toggle between checked and not checked
+GAME_EXPORTS void GmlibCheckBoxDraw(GmlibCheckBox *checkBox);       // Draws the checkBox to the screen
+GAME_EXPORTS void GmlibCheckBoxDestroy(GmlibCheckBox *checkBox);    // Frees the checkBox
+GAME_EXPORTS GmlibPanel *GmlibPanelCreate(const char *background, Rectangle position);  // Creates a Panel of a given position and background (background.png and backgroundBorder.png)
+GAME_EXPORTS void GmlibPanelDraw(GmlibPanel *panel);                // Draws the panel and components (with the order background, components[0], components[1], ...)
+GAME_EXPORTS void GmlibPanelHandle(GmlibPanel *panel);              // Calls handle() for every component inside
+GAME_EXPORTS void GmlibPanelDestory(GmlibPanel *panel);             // Frees the panel and all components inside
+GAME_EXPORTS void GmlibSettingsInit();                              // Loads settings.txt if it exists otherwise sets settings to default and saves settings
+GAME_EXPORTS void GmlibSettingsSave();                              // Saves settings to settings.txt
+GAME_EXPORTS void GmlibSettingsApply();                             // Applies settings to the screen
+GAME_EXPORTS void GmlibSettingsLog();                               // Logs settings to stdout
 
 #ifdef __cplusplus
 }

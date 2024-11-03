@@ -19,31 +19,46 @@ void GmlibLoadAssets(const char *directory) {
     Texture2D texture;
     Font font;
 
+    // init hashmaps
     if (textures == NULL) {
         textures = GmlibHashMapCreate(256, true);
     }
-
     if (fonts == NULL) {
         fonts = GmlibHashMapCreate(256, true);
     }
 
+    // iterate through files
     for (int i = 0; i < list.count; i++) {
         file = list.paths[i];
         fileName = file + strlen(directory) + 1;
         nameSize = strlen(fileName);
 
+        // check if file or dir
         if (strchr(fileName, '.') != NULL) {
+
+            // if .png
             if (strstr(fileName + nameSize - 4, ".png") != NULL) {
-                image = LoadImage(file);
-                texture = LoadTextureFromImage(image);
-                GmlibHashMapInsert(textures, fileName, &texture, sizeof(texture));
-                UnloadImage(image);
+
+                // check if exists
+                if (GmlibHashMapGet(textures, fileName)) {
+                    image = LoadImage(file);
+                    texture = LoadTextureFromImage(image);
+                    GmlibHashMapInsert(textures, fileName, &texture, sizeof(texture));
+                    UnloadImage(image);
+                }
             }
+
+            // if .ttf
             if (strstr(fileName + nameSize - 4, ".ttf") != NULL) {
-                font = LoadFont(file);
-                GmlibHashMapInsert(fonts, fileName, &font, sizeof(Font));
+
+                // check if exists
+                if (GmlibHashMapGet(fonts, fileName)) {
+                    font = LoadFont(file);
+                    GmlibHashMapInsert(fonts, fileName, &font, sizeof(Font));
+                }
             }
         } else {
+            // recursive loading
             GmlibLoadAssets(file);
         }
     }
@@ -56,6 +71,7 @@ void GmlibUnloadAssets() {
     Texture2D *texture;
     Font *font;
 
+    // free hashmaps
     while (pair = GmlibHashMapIteratorNext(&iterator)) {
         texture = (Texture2D *) pair->value;
         UnloadTexture(*texture);

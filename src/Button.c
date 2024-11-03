@@ -6,25 +6,29 @@
 #include <stdio.h>
 #include "../include/Graphics.h"
 
-GmlibButton *GmlibButtonCreate(const char *name) {
+GmlibButton *GmlibButtonCreate(const char *texture) {
     GmlibButton *button = calloc(1, sizeof(GmlibButton));
     char *helper;
 
+    // set base functions
     button->base.draw = (void (*)(void *)) GmlibButtonDraw;
     button->base.handleEvent = (void (*)(void *)) GmlibButtonHandle;
     button->base.destroy = (void (*)(void *)) GmlibButtonDestroy;
 
-    if (name != NULL) {
-        helper = malloc(strlen(name) + 20);
+    // search for textures
+    if (texture != NULL) {
+        helper = malloc(strlen(texture) + 20);
 
-        strncpy(helper, name, strlen(name) - 4);
-        strncpy(helper + strlen(name) - 4, "Pressed", 7);
-        strncpy(helper + strlen(name) + 3, ".png\0", 5);
+        strncpy(helper, texture, strlen(texture) - 4);
+        strncpy(helper + strlen(texture) - 4, "Pressed", 7);
+        strncpy(helper + strlen(texture) + 3, ".png\0", 5);
 
-        button->texture = GmlibGetTexture(name);
+        button->texture = GmlibGetTexture(texture);
         button->texturePressed = GmlibGetTexture(helper);
         free(helper);
     }
+
+    // fallback to default textures
     if (button->texture == NULL) {
         button->texture = GmlibGetTexture("Button.png");
     }
@@ -32,6 +36,7 @@ GmlibButton *GmlibButtonCreate(const char *name) {
         button->texturePressed = GmlibGetTexture("ButtonPressed.png");
     }
 
+    // set default size
     button->position.width = button->texture->width;
     button->position.height = button->texture->height;
 
@@ -39,25 +44,32 @@ GmlibButton *GmlibButtonCreate(const char *name) {
 }
 
 void GmlibButtonHandle(GmlibButton *button) {
-    int x, y, minx, miny, maxx, maxy;
+    float x, y, minx, miny, maxx, maxy;
     bool buttonDown, buttonRelease;
 
     if (button == NULL)
         return;
 
     button->prv_pressed = false;
+
+    // check if left click
     buttonDown = IsMouseButtonDown(MOUSE_BUTTON_LEFT);
     buttonRelease = IsMouseButtonReleased(MOUSE_BUTTON_LEFT);
-
     if (buttonRelease || buttonDown) {
+
+        // check for x collision
         minx = button->position.x * settings.scaleWidth;
         x = GetMouseX();
         maxx = button->position.width * settings.scaleWidth + minx;
         if (minx <= x && x <= maxx) {
+
+            // check for y collision
             miny = button->position.y * settings.scaleWidth;
             y = GetMouseY();
             maxy = button->position.height * settings.scaleWidth + miny;
             if (miny <= y && y <= maxy) {
+
+                // call onClick
                 if (button->onClick != NULL && buttonRelease) {
                     button->onClick(button->params);
                 }
@@ -71,6 +83,7 @@ void GmlibButtonDraw(GmlibButton *button) {
     Rectangle src = {0, 0, 0, 0}, dest;
     Vector2 origin = {0, 0};
 
+    // find sreen coords
     src.width = button->texture->width;
     src.height = button->texture->height;
     dest = button->position;
@@ -79,6 +92,7 @@ void GmlibButtonDraw(GmlibButton *button) {
     dest.width *= settings.scaleWidth;
     dest.height *= settings.scaleHeight;
 
+    // draw corresponding texture
     if (button->prv_pressed) {
         DrawTexturePro(*button->texturePressed, src, dest, origin, 0, WHITE);
     } else {

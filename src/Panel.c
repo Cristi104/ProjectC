@@ -11,15 +11,16 @@ GmlibPanel *GmlibPanelCreate(const char *background, Rectangle position) {
     GmlibPanel *panel = calloc(1, sizeof(GmlibPanel));
     char *helper;
 
+    // set base functions
     panel->base.draw = (void (*)(void *)) GmlibPanelDraw;
     panel->base.handleEvent = (void (*)(void *)) GmlibPanelHandle;
     panel->base.destroy = (void (*)(void *)) GmlibPanelDestory;
 
     panel->position = position;
-
     panel->visible = true;
     panel->components = GmlibArrayCreate(5, false);
 
+    // search for textures
     if (background != NULL) {
         helper = malloc(strlen(background) + 20);
 
@@ -31,6 +32,8 @@ GmlibPanel *GmlibPanelCreate(const char *background, Rectangle position) {
         panel->border = GmlibGetTexture(helper);
         free(helper);
     }
+
+    // fallback to default textures
     if (panel->background == NULL) {
         panel->background = GmlibGetTexture("UIBackground.png");
     }
@@ -54,6 +57,7 @@ void GmlibPanelDraw(GmlibPanel *panel) {
         return;
     }
 
+    // find sreen coords
     dest = panel->position;
     helper.x = (dest.x + 4) * settings.scaleWidth;
     helper.y = (dest.y + 4) * settings.scaleHeight;
@@ -64,14 +68,17 @@ void GmlibPanelDraw(GmlibPanel *panel) {
     dest.width *= settings.scaleWidth;
     dest.height *= settings.scaleHeight;
 
-
+    // Draw background
     DrawTexturePro(*panel->border, src, dest, origin, 0, WHITE);
     DrawTexturePro(*panel->background, src, helper, origin, 0, WHITE);
 
+    // draw components
     array = panel->components;
     for (int i = 0; i < array->size; i++) {
         component = array->arr[i];
-        component->draw(component);
+        if (component->draw != NULL) {
+            component->draw(component);
+        }
     }
 }
 
@@ -86,10 +93,13 @@ void GmlibPanelHandle(GmlibPanel *panel) {
         return;
     }
 
+    // call handle on components
     array = panel->components;
     for (int i = 0; i < array->size; i++) {
         component = array->arr[i];
-        component->handleEvent(component);
+        if (component->handleEvent != NULL) {
+            component->handleEvent(component);
+        }
     }
 }
 
@@ -101,11 +111,14 @@ void GmlibPanelDestory(GmlibPanel *panel) {
         return;
     }
 
+    // free components
     array = panel->components;
     for (int i = 0; i < array->size; i++) {
         component = array->arr[i];
         component->destroy(component);
     }
+
+    // free panel
     GmlibArrayDestroy(array);
     free(panel);
 }

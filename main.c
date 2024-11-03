@@ -7,83 +7,36 @@
 #include "include/Graphics.h"
 
 int main() {
-    Vector2 pos = {190, 200};
-
     InitWindow(800, 600, "Hello World");
-    GmlibVideoSettingsInit();
     SetTargetFPS(60);
-    GmlibVideoSettingsApply();
-
+    GmlibSettingsInit();
+    GmlibSettingsApply();
 
     GmlibLoadAssets("../res");
 
-//    GmlibUIComponent *button = (GmlibUIComponent *) GmlibPanelCreate(NULL,
-//                                                                     CLITERAL(Rectangle) {0, 0, 1280 / 2, 720 / 2});
-//    GmlibUIComponent *button = GmlibButtonCreate(NULL);
+//    GmlibUIComponent *button = (GmlibUIComponent *) GmlibPanelCreate(NULL, CLITERAL(Rectangle) {0, 0, 960 / 2, 540 / 2});
+    GmlibUIComponent *button = GmlibButtonCreate(NULL);
+    ((GmlibButton *) button)->position = CLITERAL(Rectangle) {100, 100, 32, 16};
 //    GmlibUIComponent *button = GmlibCheckBoxCreate(NULL);
+//    ((GmlibCheckBox *) button)->position = CLITERAL(Rectangle) {100, 100, 16, 16};
 //    GmlibUIComponent *button = GmlibTextBoxCreate(NULL, NULL);
-    GmlibUIComponent *button = GmlibSliderCreate(NULL, NULL);
+//    ((GmlibTextBox *) button)->position = CLITERAL(Rectangle) {100, 100, 100, 16};
+//    GmlibUIComponent *button = GmlibSliderCreate(NULL, NULL);
+//    ((GmlibSlider *) button)->slidePosition = CLITERAL(Rectangle) {100, 100, 100, 16};
     while (!WindowShouldClose()) {
         BeginDrawing();
         ClearBackground(RAYWHITE);
         button->handleEvent(button);
         button->draw(button);
 
-        DrawFPS(700, 0);
-        DrawTextEx(*GmlibGetFont("8bitOperatorPlus-Regular.ttf"), "Congrats!\nYou created your first window!", pos, 16,
-                   0, LIGHTGRAY);
+        DrawFPS(settings.resolutionWidth - 100, 0);
         EndDrawing();
     }
     button->destroy(button);
 
     GmlibUnloadAssets();
     CloseWindow();
-    GmlibVideoSettingsLog();
+    GmlibSettingsLog();
 
-
-//    FilePathList list = LoadDirectoryFiles("../res/textures");
-
-//    for (int i = 0; i < list.count; i++) {
-//        printf("%s\n", list.paths[i]);
-//    }
-//
-//    char *keys[] = {"abc", "dfg", "asdg", "54rf", "45reds"};
-//    int values[] = {1, 2, 3, 4, 5,};
-//
-//    HashMap *hashMap = NewHashMap(10, false);
-//    for (int i = 0; i < 5; i++) {
-//        InsertHashMap(hashMap, keys[i], &values[i], 0);
-//    }
-//    HashMapIterator iterator = NewHashMapIterator(hashMap);
-//    Pair *pair;
-//    while (pair = NextHashMapIterator(&iterator)) {
-//        printf("%i\n", *(int *) pair->value);
-//    }
-//    printf("\n");
-//    while (pair = PreviousHashMapIterator(&iterator)) {
-//        printf("%i\n", *(int *) pair->value);
-//    }
-//    printf("\n");
-//    while (pair = NextHashMapIterator(&iterator)) {
-//        printf("%i\n", *(int *) pair->value);
-//    }
-//    pair = PreviousHashMapIterator(&iterator);
-//    printf("%i\n", *(int *) pair->value);
-//    FreeHashMap(hashMap);
-//    for (int i = 0; i < 5; i++) {
-//        printf("%i\n", values[i]);
-//    }
-//    Vector *vector = NewVector(5, false);
-//    for (int i = 0; i < 5; i++) {
-//        AppendVector(vector, &values[i], 0);
-//    }
-//    for (int i = 0; i < 5; i++) {
-//        printf("%i\n", *(int *) vector->array[i]);
-//        (*(int *) vector->array[i])++;
-//    }
-//    FreeVector(vector);
-//    for (int i = 0; i < 5; i++) {
-//        printf("%i\n", values[i]);
-//    }
     return 0;
 }
