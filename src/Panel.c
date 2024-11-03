@@ -4,7 +4,7 @@
 
 #include <stdlib.h>
 #include <string.h>
-#include "../include/Graphics.h"
+#include "../include/UI.h"
 #include "../include/DataStructs.h"
 
 GmlibPanel *GmlibPanelCreate(const char *background, Rectangle position) {

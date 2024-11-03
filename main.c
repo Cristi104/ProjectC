@@ -4,39 +4,30 @@
 #include "raylib.h"
 #include "include/DataStructs.h"
 #include "include/SystemFunc.h"
-#include "include/Graphics.h"
+#include "include/UI.h"
 
 int main() {
     InitWindow(800, 600, "Hello World");
     SetTargetFPS(60);
     GmlibSettingsInit();
     GmlibSettingsApply();
-
     GmlibLoadAssets("../res");
 
-//    GmlibUIComponent *button = (GmlibUIComponent *) GmlibPanelCreate(NULL, CLITERAL(Rectangle) {0, 0, 960 / 2, 540 / 2});
-    GmlibUIComponent *button = GmlibButtonCreate(NULL);
-    ((GmlibButton *) button)->position = CLITERAL(Rectangle) {100, 100, 32, 16};
-//    GmlibUIComponent *button = GmlibCheckBoxCreate(NULL);
-//    ((GmlibCheckBox *) button)->position = CLITERAL(Rectangle) {100, 100, 16, 16};
-//    GmlibUIComponent *button = GmlibTextBoxCreate(NULL, NULL);
-//    ((GmlibTextBox *) button)->position = CLITERAL(Rectangle) {100, 100, 100, 16};
-//    GmlibUIComponent *button = GmlibSliderCreate(NULL, NULL);
-//    ((GmlibSlider *) button)->slidePosition = CLITERAL(Rectangle) {100, 100, 100, 16};
+    GmlibText *text = GmlibTextCreate("Lorem ipsum testus maximus", (Vector2) {10, 10}, NULL, 8, 20);
+
     while (!WindowShouldClose()) {
         BeginDrawing();
-        ClearBackground(RAYWHITE);
-        button->handleEvent(button);
-        button->draw(button);
+        ClearBackground(GRAY);
+        GmlibTextDraw(text);
 
         DrawFPS(settings.resolutionWidth - 100, 0);
         EndDrawing();
     }
-    button->destroy(button);
 
+    GmlibTextDestroy(text);
     GmlibUnloadAssets();
-    CloseWindow();
     GmlibSettingsLog();
+    CloseWindow();
 
     return 0;
 }

@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
-#include "../include/Graphics.h"
+#include "../include/UI.h"
 
 GmlibTextBox *GmlibTextBoxCreate(const char *backgroundTexture, const char *font) {
     GmlibTextBox *textBox = calloc(1, sizeof(GmlibTextBox));

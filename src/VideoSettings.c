@@ -3,7 +3,7 @@
 //
 
 #include <stdio.h>
-#include "../include/Graphics.h"
+#include "../include/UI.h"
 
 GmlibSettings settings;
 

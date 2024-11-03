@@ -3,7 +3,7 @@
 //
 #include <stdlib.h>
 #include <stdio.h>
-#include "../include/Graphics.h"
+#include "../include/UI.h"
 
 GmlibSlider *GmlibSliderCreate(const char *sliderTexture, const char *pointTexture) {
     GmlibSlider *slider = calloc(1, sizeof(GmlibSlider));

@@ -4,7 +4,7 @@
 
 #include <stdlib.h>
 #include <string.h>
-#include "../include/Graphics.h"
+#include "../include/UI.h"
 
 GmlibCheckBox *GmlibCheckBoxCreate(const char *texture) {
     GmlibCheckBox *checkBox = calloc(1, sizeof(GmlibCheckBox));

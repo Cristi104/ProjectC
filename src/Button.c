@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
-#include "../include/Graphics.h"
+#include "../include/UI.h"
 
 GmlibButton *GmlibButtonCreate(const char *texture) {
     GmlibButton *button = calloc(1, sizeof(GmlibButton));

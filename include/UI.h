@@ -2,8 +2,8 @@
 // Created by cristi on 30.10.2024.
 //
 
-#ifndef PROJECTC_GRAPHICS_H
-#define PROJECTC_GRAPHICS_H
+#ifndef PROJECTC_UI_H
+#define PROJECTC_UI_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -70,6 +70,15 @@ typedef struct {
 } GmlibPanel;
 
 typedef struct {
+    GmlibUIComponent base;
+    Vector2 position;
+    char *string;
+    Font *font;
+    unsigned int fontSize;
+    unsigned int wrapLength;
+} GmlibText;
+
+typedef struct {
     unsigned int resolutionWidth;
     unsigned int resolutionHeight;
     float scaleWidth;
@@ -104,6 +113,10 @@ GAME_EXPORTS GmlibPanel *GmlibPanelCreate(const char *background, Rectangle posi
 GAME_EXPORTS void GmlibPanelDraw(GmlibPanel *panel);                // Draws the panel and components (with the order background, components[0], components[1], ...)
 GAME_EXPORTS void GmlibPanelHandle(GmlibPanel *panel);              // Calls handle() for every component inside
 GAME_EXPORTS void GmlibPanelDestory(GmlibPanel *panel);             // Frees the panel and all components inside
+GAME_EXPORTS GmlibText *GmlibTextCreate(const char *string, Vector2 position, const char *font, unsigned int fontSize, unsigned int wrapLength);  // Create a Text object
+GAME_EXPORTS void GmlibTextDraw(GmlibText *text);                   // Draws the text to the screen
+GAME_EXPORTS void GmlibTextDestroy(GmlibText *text);                // Frees the text object
+GAME_EXPORTS void GmlibTextSetString(GmlibText *text, char *string);// Sets the string of a text object
 GAME_EXPORTS void GmlibSettingsInit();                              // Loads settings.txt if it exists otherwise sets settings to default and saves settings
 GAME_EXPORTS void GmlibSettingsSave();                              // Saves settings to settings.txt
 GAME_EXPORTS void GmlibSettingsApply();                             // Applies settings to the screen
@@ -113,4 +126,4 @@ GAME_EXPORTS void GmlibSettingsLog();                               // Logs sett
 }
 #endif
 
-#endif //PROJECTC_GRAPHICS_H
+#endif //PROJECTC_UI_H

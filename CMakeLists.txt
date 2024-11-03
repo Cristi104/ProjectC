@@ -10,14 +10,15 @@ add_library(gamelib include/DataStructs.h
         src/Vector.c
         include/SystemFunc.h
         src/Thread.c
-        include/Graphics.h
+        include/UI.h
         src/ResourceLoader.c
         src/Button.c
         src/Slider.c
         src/TextBox.c
         src/CheckBox.c
         src/Panel.c
-        src/VideoSettings.c)
+        src/VideoSettings.c
+        src/Text.c)
 
 add_executable(ProjectC main.c)
 
