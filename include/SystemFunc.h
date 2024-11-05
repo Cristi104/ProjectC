@@ -5,11 +5,15 @@
 #ifndef PROJECTC_SYSTEMFUNC_H
 #define PROJECTC_SYSTEMFUNC_H
 
+#include "Game_exports.h"
+
+#if defined(unix) || defined(__APPLE__)
+#include <pthread.h>
+#endif
+
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-#include "Game_exports.h"
 
 #ifdef WIN32
 
@@ -21,8 +25,6 @@ typedef struct {
 typedef void *GmlibMutex;
 
 #elif defined(unix) || defined(__APPLE__)
-
-#include <pthread.h>
 
 typedef pthread_t *GmlibThread;
 

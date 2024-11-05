@@ -22,7 +22,7 @@ int main() {
         ClearBackground(GRAY);
         GmlibTextDraw(text);
 
-        GmlibMapDraw(map);
+//        GmlibMapDraw(map);
 
 //        DrawTexturePro(*GmlibGetTexture("Grass.png"), (Rectangle) {0, 0, 256, 256}, (Rectangle) {0, 0, 512, 512}, (Vector2) {0, 0}, 0, WHITE);
         DrawFPS(settings.resolutionWidth - 100, 0);
@@ -30,10 +30,10 @@ int main() {
     }
 
     GmlibMapDestory(map);
-    GmlibTextDestroy(text);
     GmlibUnloadAssets();
     GmlibSettingsLog();
     CloseWindow();
+    GmlibTextDestroy(text);
 
     return 0;
 }

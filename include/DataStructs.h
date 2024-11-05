@@ -5,11 +5,12 @@
 #ifndef PROJECTC_DATASTRUCTS_H
 #define PROJECTC_DATASTRUCTS_H
 
+#include "Game_exports.h"
+#include <stddef.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-#include "Game_exports.h"
 
 typedef struct {
     char *key;

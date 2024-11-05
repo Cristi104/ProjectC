@@ -63,16 +63,19 @@ void GmlibTextSetString(GmlibText *text, char *string) {
 
     // realocate a block of the right size;
     length = strlen(string);
-    text->string = realloc(text->string, length + 1);
-    text->string[0] = '\0';
+    free(text->string);
+    text->string = malloc(length + 1);
+    memset(text->string, 0, length);
+//    text->string[0] = '\0';
     rowLength = 0;
 
     // if textWrapping is on;
     if (text->wrapLength != 0) {
 
         // create a copy of string
-        stringCopy = malloc(length + 1);
+        stringCopy = malloc(length + 2);
         strncpy(stringCopy, string, length);
+        stringCopy[length] = '\0';
 
         // split into words
         ptr = strtok(stringCopy, " ");
@@ -86,8 +89,8 @@ void GmlibTextSetString(GmlibText *text, char *string) {
             }
 
             // concatenate the word
-            strcat(text->string, ptr);
-            strcat(text->string, " ");
+            strcpy(text->string + strlen(text->string), ptr);
+            text->string[strlen(text->string)] = ' ';
             rowLength += wordLength + 1;
 
             ptr = strtok(NULL, " ");

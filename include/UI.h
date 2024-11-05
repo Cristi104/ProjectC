@@ -5,13 +5,13 @@
 #ifndef PROJECTC_UI_H
 #define PROJECTC_UI_H
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #include "Game_exports.h"
 #include "raylib.h"
 #include "DataStructs.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 typedef struct {
     void (*draw)(void *);
