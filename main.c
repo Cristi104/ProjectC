@@ -11,11 +11,11 @@ int main() {
     InitWindow(800, 600, "Hello World");
     SetTargetFPS(60);
     GmlibSettingsInit();
-//    GmlibSettingsApply();
+    GmlibSettingsApply();
     GmlibLoadAssets("../res");
 
     GmlibText *text = GmlibTextCreate("Lorem ipsum testus maximus", (Vector2) {10, 10}, NULL, 8, 20);
-    GmlibMap map = GmlibMapCreate(11, 11);
+    GmlibMap map = GmlibMapCreate(100, 100);
 
     Camera2D camera = {{0, 0}, {0, 0}, 0, 1};
 
