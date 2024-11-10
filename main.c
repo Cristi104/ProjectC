@@ -23,11 +23,16 @@ int main() {
 
     Camera2D camera = {{settings.resolutionWidth / 2, settings.resolutionHeight / 2}, {0, 0}, 0, 1};
     Camera2D uiCamera = {{0, 0}, {0, 0}, 0, settings.scaleWidth};
-
+    Vector2 position = {0, 0};
+    Texture2D *texture = GmlibGetTexture("Point.png");
+    bool fixed = false;
     while (!WindowShouldClose()) {
         BeginDrawing();
         ClearBackground(GRAY);
 
+        if (IsKeyReleased(KEY_Q)) {
+            fixed = !fixed;
+        }
         if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
             camera.zoom += 0.03;
         }
@@ -36,31 +41,50 @@ int main() {
         }
         if (IsKeyDown(KEY_W)) {
 //            camera.offset.y += 10;
-            camera.target.y -= 10;
+            if (fixed) {
+                position.y -= 10;
+            } else {
+                camera.target.y -= 10;
+            }
         }
         if (IsKeyDown(KEY_A)) {
 //            camera.offset.x += 10;
-            camera.target.x -= 10;
+            if (fixed) {
+                position.x -= 10;
+            } else {
+                camera.target.x -= 10;
+            }
         }
         if (IsKeyDown(KEY_S)) {
 //            camera.offset.y -= 10;
-            camera.target.y += 10;
+            if (fixed) {
+                position.y += 10;
+            } else {
+                camera.target.y += 10;
+            }
         }
         if (IsKeyDown(KEY_D)) {
 //            camera.offset.x -= 10;
-            camera.target.x += 10;
+            if (fixed) {
+                position.x += 10;
+            } else {
+                camera.target.x += 10;
+            }
         }
-
+        if (fixed) {
+            camera.target = position;
+        }
         BeginMode2D(camera);
 
         GmlibMapDraw(map);
+        DrawTextureV(*texture, position, WHITE);
 
         EndMode2D();
         BeginMode2D(uiCamera);
         DrawFPS(960 - 100, 0);
 //        GmlibTextDraw(text);
-        GmlibPanelHandle(panel);
-        GmlibPanelDraw(panel);
+//        GmlibPanelHandle(panel);
+//        GmlibPanelDraw(panel);
         EndMode2D();
 //        DrawTexturePro(*GmlibGetTexture("Grass.png"), (Rectangle) {0, 0, 256, 256}, (Rectangle) {0, 0, 512, 512}, (Vector2) {0, 0}, 0, WHITE);
         EndDrawing();
