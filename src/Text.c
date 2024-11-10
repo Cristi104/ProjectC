@@ -40,9 +40,9 @@ void GmlibTextDraw(GmlibText *text) {
         return;
     }
 
-    SetTextLineSpacing(text->fontSize * settings.scaleHeight);
+    SetTextLineSpacing(text->fontSize);
 
-    DrawTextEx(*text->font, text->string, (Vector2) {text->position.x * settings.scaleWidth, text->position.y * settings.scaleHeight}, text->fontSize * settings.scaleWidth, 1, BLACK);
+    DrawTextEx(*text->font, text->string, (Vector2) {text->position.x, text->position.y}, text->fontSize, 1, BLACK);
 }
 
 void GmlibTextDestroy(GmlibText *text) {

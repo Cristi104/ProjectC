@@ -13,11 +13,16 @@ int main() {
     GmlibSettingsInit();
     GmlibSettingsApply();
     GmlibLoadAssets("../res");
-
-    GmlibText *text = GmlibTextCreate("Lorem ipsum testus maximus", (Vector2) {10, 10}, NULL, 8, 20);
+    GmlibPanel *panel = GmlibPanelCreate(NULL, (Rectangle) {0, 0, 480, 270});
+    GmlibArrayAppend(panel->components, GmlibTextCreate("Lorem ipsum testus maximus", (Vector2) {10, 10}, NULL, 8, 20), 0);
+//    GmlibArrayAppend(panel->components, GmlibButtonCreate(NULL), 0);
+//    GmlibArrayAppend(panel->components, GmlibSliderCreate(NULL, NULL), 0);
+//    GmlibArrayAppend(panel->components, GmlibTextBoxCreate(NULL, NULL), 0);
+    GmlibArrayAppend(panel->components, GmlibCheckBoxCreate(NULL), 0);
     GmlibMap map = GmlibMapCreate(100, 100);
 
-    Camera2D camera = {{0, 0}, {0, 0}, 0, 1};
+    Camera2D camera = {{settings.resolutionWidth / 2, settings.resolutionHeight / 2}, {0, 0}, 0, 1};
+    Camera2D uiCamera = {{0, 0}, {0, 0}, 0, settings.scaleWidth};
 
     while (!WindowShouldClose()) {
         BeginDrawing();
@@ -30,16 +35,20 @@ int main() {
             camera.zoom -= 0.03;
         }
         if (IsKeyDown(KEY_W)) {
-            camera.offset.y += 10;
+//            camera.offset.y += 10;
+            camera.target.y -= 10;
         }
         if (IsKeyDown(KEY_A)) {
-            camera.offset.x += 10;
+//            camera.offset.x += 10;
+            camera.target.x -= 10;
         }
         if (IsKeyDown(KEY_S)) {
-            camera.offset.y -= 10;
+//            camera.offset.y -= 10;
+            camera.target.y += 10;
         }
         if (IsKeyDown(KEY_D)) {
-            camera.offset.x -= 10;
+//            camera.offset.x -= 10;
+            camera.target.x += 10;
         }
 
         BeginMode2D(camera);
@@ -47,18 +56,21 @@ int main() {
         GmlibMapDraw(map);
 
         EndMode2D();
-
-        GmlibTextDraw(text);
+        BeginMode2D(uiCamera);
+        DrawFPS(960 - 100, 0);
+//        GmlibTextDraw(text);
+        GmlibPanelHandle(panel);
+        GmlibPanelDraw(panel);
+        EndMode2D();
 //        DrawTexturePro(*GmlibGetTexture("Grass.png"), (Rectangle) {0, 0, 256, 256}, (Rectangle) {0, 0, 512, 512}, (Vector2) {0, 0}, 0, WHITE);
-        DrawFPS(settings.resolutionWidth - 100, 0);
         EndDrawing();
     }
 
+    GmlibPanelDestory(panel);
     GmlibMapDestory(map);
     GmlibUnloadAssets();
     GmlibSettingsLog();
     CloseWindow();
-    GmlibTextDestroy(text);
 
     return 0;
 }

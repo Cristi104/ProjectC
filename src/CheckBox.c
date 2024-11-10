@@ -70,24 +70,19 @@ void GmlibCheckBoxHandle(GmlibCheckBox *checkBox) {
 }
 
 void GmlibCheckBoxDraw(GmlibCheckBox *checkBox) {
-    Rectangle src = {0, 0, 0, 0}, dest;
+    Rectangle src = {0, 0, 0, 0};
     Vector2 origin = {0, 0};
 
     // find sreen coords
     src.width = checkBox->texture->width;
     src.height = checkBox->texture->height;
-    dest = checkBox->position;
-    dest.x *= settings.scaleWidth;
-    dest.y *= settings.scaleHeight;
-    dest.width *= settings.scaleWidth;
-    dest.height *= settings.scaleHeight;
 
 
     // draw corresponding texture
     if (checkBox->checked) {
-        DrawTexturePro(*checkBox->textureChecked, src, dest, origin, 0, WHITE);
+        DrawTexturePro(*checkBox->textureChecked, src, checkBox->position, origin, 0, WHITE);
     } else {
-        DrawTexturePro(*checkBox->texture, src, dest, origin, 0, WHITE);
+        DrawTexturePro(*checkBox->texture, src, checkBox->position, origin, 0, WHITE);
     }
 }
 

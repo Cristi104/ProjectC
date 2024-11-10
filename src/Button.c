@@ -60,13 +60,13 @@ void GmlibButtonHandle(GmlibButton *button) {
         // check for x collision
         minx = button->position.x * settings.scaleWidth;
         x = GetMouseX();
-        maxx = button->position.width * settings.scaleWidth + minx;
+        maxx = button->position.width * settings.scaleWidth;
         if (minx <= x && x <= maxx) {
 
             // check for y collision
-            miny = button->position.y * settings.scaleWidth;
+            miny = button->position.y * settings.scaleHeight;
             y = GetMouseY();
-            maxy = button->position.height * settings.scaleWidth + miny;
+            maxy = button->position.height * settings.scaleHeight;
             if (miny <= y && y <= maxy) {
 
                 // call onClick
@@ -80,23 +80,18 @@ void GmlibButtonHandle(GmlibButton *button) {
 }
 
 void GmlibButtonDraw(GmlibButton *button) {
-    Rectangle src = {0, 0, 0, 0}, dest;
+    Rectangle src = {0, 0, 0, 0};
     Vector2 origin = {0, 0};
 
     // find sreen coords
     src.width = button->texture->width;
     src.height = button->texture->height;
-    dest = button->position;
-    dest.x *= settings.scaleWidth;
-    dest.y *= settings.scaleHeight;
-    dest.width *= settings.scaleWidth;
-    dest.height *= settings.scaleHeight;
 
     // draw corresponding texture
     if (button->prv_pressed) {
-        DrawTexturePro(*button->texturePressed, src, dest, origin, 0, WHITE);
+        DrawTexturePro(*button->texturePressed, src, button->position, origin, 0, WHITE);
     } else {
-        DrawTexturePro(*button->texture, src, dest, origin, 0, WHITE);
+        DrawTexturePro(*button->texture, src, button->position, origin, 0, WHITE);
     }
 }
 

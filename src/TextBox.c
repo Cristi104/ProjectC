@@ -97,23 +97,18 @@ void GmlibTextBoxHandle(GmlibTextBox *textBox) {
 
 void GmlibTextBoxDraw(GmlibTextBox *textBox) {
     int maxChars;
-    Rectangle src = {0, 0, 0, 0}, dest;
+    Rectangle src = {0, 0, 0, 0};
     Vector2 origin = {0, 0};
 
     // find sreen coords
     src.width = textBox->background->width;
     src.height = textBox->background->height;
-    dest = textBox->position;
-    dest.x *= settings.scaleWidth;
-    dest.y *= settings.scaleHeight;
-    dest.width *= settings.scaleWidth;
-    dest.height *= settings.scaleHeight;
 
     // draw background
-    DrawTexturePro(*textBox->background, src, dest, origin, 0, WHITE);
+    DrawTexturePro(*textBox->background, src, textBox->position, origin, 0, WHITE);
 
-    origin.x = dest.x + settings.scaleWidth;
-    origin.y = dest.y;
+    origin.x = textBox->position.x + 1;
+    origin.y = textBox->position.y;
 
     // find number of shown chars
     maxChars = textBox->position.width / 8;
@@ -123,10 +118,10 @@ void GmlibTextBoxDraw(GmlibTextBox *textBox) {
 
     // draw text
     if (strlen(textBox->text) >= maxChars) {
-        DrawTextEx(*textBox->font, textBox->text + strlen(textBox->text) - maxChars, origin, 16 * settings.scaleWidth, 1,
+        DrawTextEx(*textBox->font, textBox->text + strlen(textBox->text) - maxChars, origin, 16, 1,
                    WHITE);
     } else {
-        DrawTextEx(*textBox->font, textBox->text, origin, 16 * settings.scaleWidth, 1, WHITE);
+        DrawTextEx(*textBox->font, textBox->text, origin, 16, 1, WHITE);
     }
 }
 

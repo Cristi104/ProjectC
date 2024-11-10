@@ -73,7 +73,7 @@ void GmlibSliderHandle(GmlibSlider *slider) {
                 }
 
                 // update point position
-                slider->pointPosition = slider->percent * (slider->slidePosition.width - slider->pointTexture->width) * settings.scaleWidth;
+                slider->pointPosition = slider->percent * (slider->slidePosition.width - slider->pointTexture->width);
 
                 // call onClick
                 if (slider->onClick != NULL && buttonRelease) {
@@ -86,26 +86,21 @@ void GmlibSliderHandle(GmlibSlider *slider) {
 }
 
 void GmlibSliderDraw(GmlibSlider *slider) {
-    Rectangle src = {0, 0, 0, 0}, dest;
+    Rectangle src = {0, 0, 0, 0};
     Vector2 origin = {0, 0};
 
     // find sreen coords
     src.width = slider->sliderTexture->width;
     src.height = slider->sliderTexture->height;
-    dest = slider->slidePosition;
-    dest.x *= settings.scaleWidth;
-    dest.y *= settings.scaleHeight;
-    dest.width *= settings.scaleWidth;
-    dest.height *= settings.scaleHeight;
 
     // draw slide
-    DrawTexturePro(*slider->sliderTexture, src, dest, origin, 0, WHITE);
+    DrawTexturePro(*slider->sliderTexture, src, slider->slidePosition, origin, 0, WHITE);
 
-    origin.x = dest.x + slider->pointPosition;
-    origin.y = dest.y;
+    origin.x = slider->slidePosition.x + slider->pointPosition;
+    origin.y = slider->slidePosition.y;
 
     // draw point
-    DrawTextureEx(*slider->pointTexture, origin, 0, settings.scaleWidth, WHITE);
+    DrawTextureEx(*slider->pointTexture, origin, 0, 1, WHITE);
 }
 
 void GmlibSliderDestroy(GmlibSlider *slider) {
