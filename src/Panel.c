@@ -47,7 +47,7 @@ GmlibPanel *GmlibPanelCreate(const char *background, Rectangle position) {
 void GmlibPanelDraw(GmlibPanel *panel) {
     GmlibArray *array;
     GmlibUIComponent *component;
-    Rectangle src = {0, 0, 16, 16}, dest, helper;
+    Rectangle src = {0, 0, 16, 16}, helper;
     Vector2 origin = {0, 0};
 
     if (panel == NULL) {
@@ -58,18 +58,13 @@ void GmlibPanelDraw(GmlibPanel *panel) {
     }
 
     // find sreen coords
-    dest = panel->position;
-    helper.x = (dest.x + 4) * settings.scaleWidth;
-    helper.y = (dest.y + 4) * settings.scaleHeight;
-    helper.width = (dest.width - 8) * settings.scaleWidth;
-    helper.height = (dest.height - 8) * settings.scaleHeight;
-    dest.x *= settings.scaleWidth;
-    dest.y *= settings.scaleHeight;
-    dest.width *= settings.scaleWidth;
-    dest.height *= settings.scaleHeight;
+    helper.x = panel->position.x + 4;
+    helper.y = panel->position.y + 4;
+    helper.width = panel->position.width - 8;
+    helper.height = panel->position.height - 8;
 
     // Draw background
-    DrawTexturePro(*panel->border, src, dest, origin, 0, WHITE);
+    DrawTexturePro(*panel->border, src, panel->position, origin, 0, WHITE);
     DrawTexturePro(*panel->background, src, helper, origin, 0, WHITE);
 
     // draw components
