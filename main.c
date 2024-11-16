@@ -8,17 +8,21 @@
 #include "include/Game.h"
 
 int main() {
+    SetConfigFlags(FLAG_WINDOW_RESIZABLE);
     InitWindow(800, 600, "Hello World");
     SetTargetFPS(60);
     GmlibSettingsInit();
+//    settings.borderless = true;
+//    settings.fullscreen = false;
     GmlibSettingsApply();
     GmlibLoadAssets("../res");
-    GmlibPanel *panel = GmlibPanelCreate(NULL, (Rectangle) {0, 0, 480, 270});
-    GmlibArrayAppend(panel->components, GmlibTextCreate("Lorem ipsum testus maximus", (Vector2) {10, 10}, NULL, 8, 20), 0);
+//    GmlibPanel *panel = GmlibPanelCreate(NULL, (Rectangle) {0, 0, 480, 270});
+//    GmlibArrayAppend(panel->components, GmlibTextCreate("Lorem ipsum testus maximus", (Vector2) {10, 10}, NULL, 8, 20),
+//                     0);
 //    GmlibArrayAppend(panel->components, GmlibButtonCreate(NULL), 0);
 //    GmlibArrayAppend(panel->components, GmlibSliderCreate(NULL, NULL), 0);
 //    GmlibArrayAppend(panel->components, GmlibTextBoxCreate(NULL, NULL), 0);
-    GmlibArrayAppend(panel->components, GmlibCheckBoxCreate(NULL), 0);
+//    GmlibArrayAppend(panel->components, GmlibCheckBoxCreate(NULL), 0);
     GmlibMap map = GmlibMapCreate(100, 100);
 
     Camera2D camera = {{settings.resolutionWidth / 2, settings.resolutionHeight / 2}, {0, 0}, 0, 1};
@@ -81,7 +85,7 @@ int main() {
 
         EndMode2D();
         BeginMode2D(uiCamera);
-        DrawFPS(960 - 100, 0);
+        DrawFPS(960 - 700, 0);
 //        GmlibTextDraw(text);
 //        GmlibPanelHandle(panel);
 //        GmlibPanelDraw(panel);
@@ -90,7 +94,7 @@ int main() {
         EndDrawing();
     }
 
-    GmlibPanelDestory(panel);
+//    GmlibPanelDestory(panel);
     GmlibMapDestory(map);
     GmlibUnloadAssets();
     GmlibSettingsLog();

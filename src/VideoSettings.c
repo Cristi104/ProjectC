@@ -32,10 +32,10 @@ void GmlibSettingsSave() {
 }
 
 void GmlibSettingsApply() {
-    SetWindowSize(settings.resolutionWidth, settings.resolutionHeight);
     if (IsWindowFullscreen() != settings.fullscreen) {
         ToggleFullscreen();
     }
+    SetWindowSize(settings.resolutionWidth, settings.resolutionHeight);
     if (IsWindowState(FLAG_BORDERLESS_WINDOWED_MODE) != settings.borderless) {
         ToggleBorderlessWindowed();
     }
