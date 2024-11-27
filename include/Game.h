@@ -6,6 +6,7 @@
 #define PROJECTC_GAME_H
 
 #include "DataStructs.h"
+#include "raylib.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -22,6 +23,7 @@ typedef struct {
 
 typedef struct {
     GmlibTile **tiles;
+    RenderTexture2D prerender;
     unsigned int width;
     unsigned int height;
 } GmlibMap;
@@ -30,6 +32,7 @@ GAME_EXPORTS GmlibTile GmlibTileCreate(unsigned int id);
 GAME_EXPORTS void GmlibTileDestroy(GmlibTile tile);
 GAME_EXPORTS GmlibMap GmlibMapCreate(unsigned int width, unsigned int height);
 GAME_EXPORTS void GmlibMapDraw(GmlibMap map);
+GAME_EXPORTS void GmlibMapUpdate(GmlibMap map);
 GAME_EXPORTS void GmlibMapDestory(GmlibMap map);
 
 #ifdef __cplusplus

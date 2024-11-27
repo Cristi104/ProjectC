@@ -8,9 +8,9 @@
 #include "include/Game.h"
 
 int main() {
-    SetConfigFlags(FLAG_WINDOW_RESIZABLE);
+    SetConfigFlags(FLAG_WINDOW_RESIZABLE | FLAG_VSYNC_HINT);
     InitWindow(800, 600, "Hello World");
-    SetTargetFPS(60);
+//    SetTargetFPS(60);
     GmlibSettingsInit();
 //    settings.borderless = true;
 //    settings.fullscreen = false;
@@ -24,7 +24,7 @@ int main() {
 //    GmlibArrayAppend(panel->components, GmlibTextBoxCreate(NULL, NULL), 0);
 //    GmlibArrayAppend(panel->components, GmlibCheckBoxCreate(NULL), 0);
     GmlibMap map = GmlibMapCreate(100, 100);
-
+//    GmlibMapUpdate(map);
     Camera2D camera = {{settings.resolutionWidth / 2, settings.resolutionHeight / 2}, {0, 0}, 0, 1};
     Camera2D uiCamera = {{0, 0}, {0, 0}, 0, settings.scaleWidth};
     Vector2 position = {0, 0};
