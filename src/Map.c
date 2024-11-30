@@ -2,10 +2,16 @@
 // Created by Cristi on 11/5/2024.
 //
 
+#include <stdio.h>
 #include "stdlib.h"
 #include "raylib.h"
 #include "../include/UI.h"
 #include "../include/Game.h"
+
+Vector2 GetMouseTilePosition(GmlibMap map) {
+    Vector2 coords = GetScreenToWorld2D(GetMousePosition(), map.camera);
+    return (Vector2) {(int) coords.x / 16, (int) coords.y / 16};
+}
 
 GmlibMap GmlibMapCreate(unsigned int width, unsigned int height) {
     GmlibMap map;
@@ -17,29 +23,41 @@ GmlibMap GmlibMapCreate(unsigned int width, unsigned int height) {
     for (unsigned int i = 0; i < height; i++) {
         map.tiles[i] = malloc(width * sizeof(GmlibTile));
         for (unsigned int j = 0; j < height; j++) {
-            map.tiles[i][j] = GmlibTileCreate(rand() % 2);
+            if (i * j * (width - 1 - i) * (height - 1 - j) == 0) {
+                map.tiles[i][j] = GmlibTileCreate(0);
+            } else {
+                map.tiles[i][j] = GmlibTileCreate(rand() % 2);
+            }
         }
     }
 
     map.prerender = LoadRenderTexture(16 * width, 16 * height);
-    GmlibMapUpdate(map);
+
+    map.camera.offset.x = settings.resolutionWidth / 2;
+    map.camera.offset.y = settings.resolutionHeight / 2;
+    map.camera.target.x = 0;
+    map.camera.target.y = 0;
+    map.camera.rotation = 0;
+    map.camera.zoom = 1;
+
+    GmlibMapUpdate(&map);
     return map;
 }
 
-void GmlibMapUpdate(GmlibMap map) {
+void GmlibMapUpdate(GmlibMap *map) {
     Rectangle src, dest;
     Texture2D *texture[] = {GmlibGetTexture("Dirt.png"), GmlibGetTexture("Grass.png")};
-    GmlibTile **tiles = map.tiles;
+    GmlibTile **tiles = map->tiles;
     src = (Rectangle) {0, 0, 16, 16};
     dest = (Rectangle) {0, 0, 16, 16};
-    BeginTextureMode(map.prerender);
-    for (unsigned int y = 1; y < map.height - 1; y++) {
-        for (unsigned int x = 1; x < map.width - 1; x++) {
+    BeginTextureMode(map->prerender);
+    for (unsigned int y = 1; y < map->height - 1; y++) {
+        for (unsigned int x = 1; x < map->width - 1; x++) {
             src.x = 16 * ((x + y * 3) % 5);
             src.y = 0;
             src.width = 16;
             src.height = 16;
-            dest.x = 16 * x;
+            dest.x = 16 * (x + 1);
             dest.width = 16;
             dest.height = 16;
 
@@ -113,10 +131,10 @@ void GmlibMapUpdate(GmlibMap map) {
 }
 
 void GmlibMapDraw(GmlibMap map) {
-    Rectangle src, dest;
-    Texture2D *texture[] = {GmlibGetTexture("Dirt.png"), GmlibGetTexture("Grass.png")};
+    BeginMode2D(map.camera);
     DrawTextureEx(map.prerender.texture, (Vector2) {map.prerender.texture.width, map.prerender.texture.height}, 180, 1,
                   WHITE);
+    EndMode2D();
 }
 
 void GmlibMapDestory(GmlibMap map) {
@@ -127,4 +145,29 @@ void GmlibMapDestory(GmlibMap map) {
         free(map.tiles[y]);
     }
     free(map.tiles);
+}
+
+void GmlibMapHandle(GmlibMap *map) {
+    if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
+        map->camera.zoom += 0.03;
+    }
+    if (IsMouseButtonDown(MOUSE_BUTTON_RIGHT)) {
+        map->camera.zoom -= 0.03;
+    }
+    if (IsKeyDown(KEY_W)) {
+        map->camera.target.y -= 10;
+    }
+    if (IsKeyDown(KEY_A)) {
+        map->camera.target.x -= 10;
+    }
+    if (IsKeyDown(KEY_S)) {
+        map->camera.target.y += 10;
+    }
+    if (IsKeyDown(KEY_D)) {
+        map->camera.target.x += 10;
+    }
+    if (IsKeyReleased(KEY_Z)) {
+        Vector2 coords = GetMouseTilePosition(*map);
+        printf("coords: %f, %f\n", coords.x, coords.y);
+    }
 }

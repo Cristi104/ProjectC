@@ -22,6 +22,7 @@ add_library(gamelib include/DataStructs.h
         include/Game.h
         src/Tile.c
         src/Map.c
+        src/Camera.c
 )
 
 add_executable(ProjectC main.c)
