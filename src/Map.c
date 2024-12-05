@@ -10,23 +10,23 @@
 
 Vector2 GetMouseTilePosition(GmlibMap map) {
     Vector2 coords = GetScreenToWorld2D(GetMousePosition(), map.camera);
-    return (Vector2) {(int) coords.x / 16, (int) coords.y / 16};
+    return (Vector2) {(int) coords.x / 16 + 1, map.height - 2 - ((int) coords.y / 16)};
 }
 
 GmlibMap GmlibMapCreate(unsigned int width, unsigned int height) {
     GmlibMap map;
 
-    map.width = width;
-    map.height = height;
+    map.width = width + 2;
+    map.height = height + 2;
 
-    map.tiles = malloc(height * sizeof(GmlibTile *));
-    for (unsigned int i = 0; i < height; i++) {
-        map.tiles[i] = malloc(width * sizeof(GmlibTile));
-        for (unsigned int j = 0; j < height; j++) {
-            if (i * j * (width - 1 - i) * (height - 1 - j) == 0) {
-                map.tiles[i][j] = GmlibTileCreate(0);
+    map.tiles = malloc((width + 2) * sizeof(GmlibTile *));
+    for (unsigned int x = 0; x < width + 2; x++) {
+        map.tiles[x] = malloc((height + 2) * sizeof(GmlibTile));
+        for (unsigned int y = 0; y < height + 2; y++) {
+            if (x * y * (width + 1 - x) * (height + 1 - y) == 0) {
+                map.tiles[x][y] = GmlibTileCreate(0);
             } else {
-                map.tiles[i][j] = GmlibTileCreate(rand() % 2);
+                map.tiles[x][y] = GmlibTileCreate(rand() % 2);
             }
         }
     }
@@ -51,88 +51,115 @@ void GmlibMapUpdate(GmlibMap *map) {
     src = (Rectangle) {0, 0, 16, 16};
     dest = (Rectangle) {0, 0, 16, 16};
     BeginTextureMode(map->prerender);
-    for (unsigned int y = 1; y < map->height - 1; y++) {
-        for (unsigned int x = 1; x < map->width - 1; x++) {
+    for (unsigned int x = 1; x < map->width - 1; x++) {
+        dest.x = 16 * x;
+        for (unsigned int y = 1; y < map->height - 1; y++) {
+            //random sprites
             src.x = 16 * ((x + y * 3) % 5);
+
+            // main tile texture
             src.y = 0;
             src.width = 16;
             src.height = 16;
-            dest.x = 16 * (x + 1);
+            dest.y = 16 * y;
             dest.width = 16;
             dest.height = 16;
+            DrawTexturePro(*texture[tiles[x][y].id], src, dest, (Vector2) {0, 0}, 180, WHITE);
 
-            DrawTexturePro(*texture[tiles[y][x].id], src, dest, (Vector2) {0, 0}, 0, WHITE);
-//            continue;
+            continue;
+            // corners
             src.width = 8;
             src.height = 8;
             dest.width = 8;
             dest.height = 8;
             src.y = 48;
-            if (tiles[y][x].id < tiles[y - 1][x - 1].id) {
-                src.x += 8;
-                src.y += 8;
-                DrawTexturePro(*texture[tiles[y - 1][x - 1].id], src, dest, (Vector2) {0, 0}, 0, WHITE);
-                src.x -= 8;
-                src.y -= 8;
-            }
-            if (tiles[y][x].id < tiles[y - 1][x + 1].id) {
-                src.y += 8;
-                dest.x += 8;
-                DrawTexturePro(*texture[tiles[y - 1][x + 1].id], src, dest, (Vector2) {0, 0}, 0, WHITE);
-                src.y -= 8;
-                dest.x -= 8;
-            }
-            if (tiles[y][x].id < tiles[y + 1][x - 1].id) {
-                src.x += 8;
-                dest.y += 8;
-                DrawTexturePro(*texture[tiles[y + 1][x - 1].id], src, dest, (Vector2) {0, 0}, 0, WHITE);
-                src.x -= 8;
-                dest.y -= 8;
-            }
-            if (tiles[y][x].id < tiles[y + 1][x + 1].id) {
-                dest.x += 8;
-                dest.y += 8;
-                DrawTexturePro(*texture[tiles[y + 1][x + 1].id], src, dest, (Vector2) {0, 0}, 0, WHITE);
+
+            // top right
+            if (tiles[x][y].id < tiles[x - 1][y - 1].id && (tiles[x - 1][y - 1].id != tiles[x - 1][y].id && tiles[x - 1][y - 1].id != tiles[x][y - 1].id)) {
                 dest.x -= 8;
                 dest.y -= 8;
+                DrawTexturePro(*texture[tiles[x - 1][y - 1].id], src, dest, (Vector2) {0, 0}, 180, WHITE);
+                dest.x += 8;
+                dest.y += 8;
             }
+
+            // top left
+            if (tiles[x][y].id < tiles[x + 1][y - 1].id && (tiles[x + 1][y - 1].id != tiles[x + 1][y].id && tiles[x + 1][y - 1].id != tiles[x][y - 1].id)) {
+                src.x -= 8;
+                dest.y -= 8;
+                DrawTexturePro(*texture[tiles[x + 1][y - 1].id], src, dest, (Vector2) {0, 0}, 180, WHITE);
+                src.x += 8;
+                dest.y += 8;
+            }
+
+            // bottom right
+            if (tiles[x][y].id < tiles[x - 1][y + 1].id && (tiles[x - 1][y + 1].id != tiles[x - 1][y].id && tiles[x - 1][y + 1].id != tiles[x][y + 1].id)) {
+                dest.x -= 8;
+                src.y += 8;
+                DrawTexturePro(*texture[tiles[x - 1][y + 1].id], src, dest, (Vector2) {0, 0}, 180, WHITE);
+                dest.x += 8;
+                src.y -= 8;
+            }
+
+            // bottom left
+            if (tiles[x][y].id < tiles[x + 1][y + 1].id && (tiles[x + 1][y + 1].id != tiles[x + 1][y].id && tiles[x + 1][y + 1].id != tiles[x][y + 1].id)) {
+                src.x -= 8;
+                src.y += 8;
+                DrawTexturePro(*texture[tiles[x + 1][y + 1].id], src, dest, (Vector2) {0, 0}, 180, WHITE);
+                src.x += 8;
+                src.y -= 8;
+            }
+
+            // edges
             src.height = 16;
             dest.height = 16;
-            if (tiles[y][x].id < tiles[y][x - 1].id) {
+            dest.x -= 8;
+
+            // right
+            if (tiles[x][y].id < tiles[x - 1][y].id) {
+                src.y = 32;
+                DrawTexturePro(*texture[tiles[x - 1][y].id], src, dest, (Vector2) {0, 0}, 180, WHITE);
+            }
+
+            // left
+            if (tiles[x][y].id < tiles[x + 1][y].id) {
                 src.y = 32;
                 src.x += 8;
-                DrawTexturePro(*texture[tiles[y][x - 1].id], src, dest, (Vector2) {0, 0}, 0, WHITE);
-                src.x -= 8;
-            }
-            if (tiles[y][x].id < tiles[y][x + 1].id) {
-                src.y = 32;
                 dest.x += 8;
-                DrawTexturePro(*texture[tiles[y][x + 1].id], src, dest, (Vector2) {0, 0}, 0, WHITE);
+                DrawTexturePro(*texture[tiles[x + 1][y].id], src, dest, (Vector2) {0, 0}, 180, WHITE);
+                src.x -= 8;
                 dest.x -= 8;
             }
+
+            dest.x += 8;
             src.width = 16;
             src.height = 8;
             dest.width = 16;
             dest.height = 8;
-            if (tiles[y][x].id < tiles[y - 1][x].id) {
-                src.y = 24;
-                DrawTexturePro(*texture[tiles[y - 1][x].id], src, dest, (Vector2) {0, 0}, 0, WHITE);
-            }
-            if (tiles[y][x].id < tiles[y + 1][x].id) {
+            dest.y -= 8;
+
+            // top
+            if (tiles[x][y].id < tiles[x][y - 1].id) {
                 src.y = 16;
+                DrawTexturePro(*texture[tiles[x][y - 1].id], src, dest, (Vector2) {0, 0}, 180, WHITE);
+            }
+
+            // bottom
+            if (tiles[x][y].id < tiles[x][y + 1].id) {
+                src.y = 24;
                 dest.y += 8;
-                DrawTexturePro(*texture[tiles[y + 1][x].id], src, dest, (Vector2) {0, 0}, 0, WHITE);
+                DrawTexturePro(*texture[tiles[x][y + 1].id], src, dest, (Vector2) {0, 0}, 180, WHITE);
                 dest.y -= 8;
             }
+            dest.y += 8;
         }
-        dest.y = 16 * y;
     }
     EndTextureMode();
 }
 
 void GmlibMapDraw(GmlibMap map) {
     BeginMode2D(map.camera);
-    DrawTextureEx(map.prerender.texture, (Vector2) {map.prerender.texture.width, map.prerender.texture.height}, 180, 1,
+    DrawTextureEx(map.prerender.texture, (Vector2) {0, 0}, 0, 1,
                   WHITE);
     EndMode2D();
 }
