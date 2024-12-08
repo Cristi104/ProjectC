@@ -16,15 +16,19 @@ jobs:
         include:
           - os: windows-latest
             c: cl
+            cpp: cl
             name: Windows build
           - os: ubuntu-latest
             c: gcc
+            cpp: g++
             name: Linux gcc build
           - os: ubuntu-latest
             c: clang
+            cpp: clang++
             name: Linux clang build
           - os: macos-latest
             c: clang
+            cpp: clang++
             name: MacOS build
         exclude:
           - os: windows-latest
@@ -51,6 +55,7 @@ jobs:
       - name: CMake config
         run: >
           cmake -B cmake-build
+          -DCMAKE_CXX_COMPILER=${{ matrix.cpp }}
           -DCMAKE_C_COMPILER=${{ matrix.c }}
           -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
           -S ${{ github.workspace }}

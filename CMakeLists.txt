@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.27)
-project(ProjectC C)
+project(ProjectC)
 
-set(CMAKE_C_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 
 find_package(raylib 5.0 QUIET)
 
