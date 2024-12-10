@@ -5,27 +5,32 @@ set(CMAKE_CXX_STANDARD 17)
 
 find_package(raylib 5.0 QUIET)
 
-add_library(gamelib include/DataStructs.h
-        src/HashMap.c
-        src/Vector.c
-        include/SystemFunc.h
-        src/Thread.c
+add_library(gamelib
         include/UI.h
-        src/ResourceLoader.c
-        src/Button.c
-        src/Slider.c
-        src/TextBox.c
-        src/CheckBox.c
-        src/Panel.c
-        src/VideoSettings.c
-        src/Text.c
-        include/Game.h
-        src/Tile.c
-        src/Map.c
-        src/Camera.c
+        src/Resources.cpp
+        src/Button.cpp
+        src/Slider.cpp
+        src/TextBox.cpp
+        src/CheckBox.cpp
+        src/Panel.cpp
+        src/VideoSettings.cpp
+        src/Text.cpp
+        src/Tile.cpp
+        src/Map.cpp
+        src/Camera.cpp
+        include/Button.h
+        include/UIComponent.h
+        include/Resources.h
+        include/Slider.h
+        include/TextBox.h
+        include/CheckBox.h
+        include/Panel.h
+        include/Text.h
+        include/Map.h
+        include/Tile.h
 )
 
-add_executable(ProjectC main.c)
+add_executable(ProjectC main.cpp)
 
 if (NOT raylib_FOUND)
 
