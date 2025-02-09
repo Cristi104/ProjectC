@@ -9,6 +9,8 @@ namespace GmLib {
     class Tile{
     public:
         unsigned int id = 0;
+
+        Tile(unsigned int id);
     };
 }
 

@@ -3,3 +3,5 @@
 //
 
 #include "../include/Tile.h"
+
+GmLib::Tile::Tile(unsigned int id) :id(id) {}

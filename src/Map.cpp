@@ -16,9 +16,11 @@ namespace GmLib {
             std::vector<Tile>& row = this->tiles.emplace_back();
             row.reserve(height + 2);
             while (row.size() < height + 2){
-                row.emplace_back();
+                row.emplace_back(rand()%2);
             }
         }
+        Vector2 offset = {static_cast<float>(settings.resolutionWidth/2), static_cast<float>(settings.resolutionHeight/2)};
+        this->camera = {offset, offset, 0, 0.5};
         this->prerender = LoadRenderTexture(width * 16, height * 16);
         this->update();
     }
@@ -27,9 +29,10 @@ namespace GmLib {
         Rectangle src = {0, 0, 16, 16}, dest = {0, 0, 16, 16};
         Texture2D *texture[] = {Resources::getTexture("Dirt.png"), Resources::getTexture("Grass.png")};
         BeginTextureMode(this->prerender);
-        for (unsigned int x = 1; x < this->width - 1; x++) {
+        ClearBackground(BLACK);
+        for (unsigned int x = 1; x < this->width + 1; x++) {
             dest.x = 16 * x;
-            for (unsigned int y = 1; y < this->height - 1; y++) {
+            for (unsigned int y = 1; y < this->height + 1; y++) {
                 //random sprites
                 src.x = 16 * ((x + y * 3) % 5);
 
@@ -42,7 +45,7 @@ namespace GmLib {
                 dest.height = 16;
                 DrawTexturePro(*texture[tiles[x][y].id], src, dest, {0, 0}, 180, WHITE);
 
-                continue;
+//                continue;
                 // corners
                 src.width = 8;
                 src.height = 8;
@@ -136,8 +139,9 @@ namespace GmLib {
 
     void Map::draw() {
         BeginMode2D(this->camera);
-        DrawTextureEx(this->prerender.texture, {0, 0}, 0, 1,
-                      WHITE);
+//        DrawTextureEx(this->prerender.texture, {0, 0}, 0, 1,
+//                      WHITE);
+        DrawTexture(this->prerender.texture,0,0,WHITE);
         EndMode2D();
     }
 
@@ -168,6 +172,6 @@ namespace GmLib {
 
     Vector2 Map::mouseToTileCoords() {
         Vector2 coords = GetScreenToWorld2D(GetMousePosition(), this->camera);
-        return {coords.x / 16 + 1, this->height - 2 - (coords.y / 16)};
+        return {coords.x / 16 , this->height - (coords.y / 16)};
     }
 }
