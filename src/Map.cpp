@@ -6,17 +6,19 @@
 #include "../include/UI.h"
 #include "../include/Map.h"
 #include "../include/Resources.h"
-
+#include "../include/PerlinNoiseGenerator.h"
 namespace GmLib {
 
-    Map::Map() : width(100),
-                 height(100){
+    Map::Map() : width(200),
+                 height(200){
+        std::vector<std::vector<float>> noise = Gmlib::GenerateFractalBrownianMotion(width + 4, 20, 123);
         this->tiles.reserve(width + 2);
-        while (tiles.size() < width + 2){
+        for (unsigned int i = 0; i < width + 2; i++){
             std::vector<Tile>& row = this->tiles.emplace_back();
             row.reserve(height + 2);
-            while (row.size() < height + 2){
-                row.emplace_back(rand()%2);
+            for (unsigned int j = 0; j < height + 2; j++){
+                row.emplace_back((noise[i][j] < 0.01) ? 0 : 1);
+//                row.emplace_back(rand()%2);
             }
         }
         Vector2 offset = {static_cast<float>(settings.resolutionWidth/2), static_cast<float>(settings.resolutionHeight/2)};

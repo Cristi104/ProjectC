@@ -10,7 +10,7 @@ int main() {
     InitWindow(800, 600, "Hello World");
 //    SetTargetFPS(60);
     GmlibSettingsInit();
-    GmlibSettingsApply();
+//    GmlibSettingsApply();
     GmLib::Resources::Load("../res");
 //    GmlibMap map = GmlibMapCreate(100, 100);
     GmLib::Map map;
@@ -39,14 +39,16 @@ int main() {
     GmlibSettingsLog();
     CloseWindow();
 
-    std::vector<std::vector<float>> noise = Gmlib::GeneratePerlinNoise(20, 11, 123);
-    std::cout << std::fixed << std::setprecision(2);
-    for(int i = 0; i < 20; i++){
-        for(int j = 0; j < 20; j++){
-            std::cout << std::setw(5) << noise[i][j] << ' ';
-        }
+//    std::vector<std::vector<float>> noise = Gmlib::GeneratePerlinNoise(104, 11);
+//    std::cout << std::fixed << std::setprecision(2);
+//    std::cout << '\n' << noise.size();
+//    for(int i = 0; i < 102; i++){
+//        std::cout << noise[i].size();
+//        for(int j = 0; j < 20; j++){
+//            std::cout << std::setw(5) << noise[i][j] << ' ';
+//        }
 //        std::cout << '\n';
-    }
+//    }
 
     return 0;
 }
