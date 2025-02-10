@@ -2,7 +2,9 @@
 #include "include/UI.h"
 #include "include/Resources.h"
 #include "include/Map.h"
-
+#include "include/PerlinNoiseGenerator.h"
+#include <iostream>
+#include <iomanip>
 int main() {
     SetConfigFlags(FLAG_WINDOW_RESIZABLE | FLAG_VSYNC_HINT);
     InitWindow(800, 600, "Hello World");
@@ -36,6 +38,15 @@ int main() {
     GmLib::Resources::Unload();
     GmlibSettingsLog();
     CloseWindow();
+
+    std::vector<std::vector<float>> noise = Gmlib::GeneratePerlinNoise(20, 11, 123);
+    std::cout << std::fixed << std::setprecision(2);
+    for(int i = 0; i < 20; i++){
+        for(int j = 0; j < 20; j++){
+            std::cout << std::setw(5) << noise[i][j] << ' ';
+        }
+//        std::cout << '\n';
+    }
 
     return 0;
 }

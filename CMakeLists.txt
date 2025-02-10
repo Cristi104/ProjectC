@@ -28,6 +28,8 @@ add_library(gamelib
         include/Text.h
         include/Map.h
         include/Tile.h
+        src/PerlinNoiseGenerator.cpp
+        include/PerlinNoiseGenerator.h
 )
 
 add_executable(ProjectC main.cpp)
