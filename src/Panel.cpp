@@ -2,7 +2,7 @@
 // Created by Cristi on 11/1/2024.
 //
 
-#include "../include/UI.h"
+#include "../include/Settings.h"
 #include "../include/Panel.h"
 #include "../include/Resources.h"
 

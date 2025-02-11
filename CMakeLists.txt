@@ -6,14 +6,13 @@ set(CMAKE_CXX_STANDARD 17)
 find_package(raylib 5.0 QUIET)
 
 add_library(gamelib
-        include/UI.h
         src/Resources.cpp
         src/Button.cpp
         src/Slider.cpp
         src/TextBox.cpp
         src/CheckBox.cpp
         src/Panel.cpp
-        src/VideoSettings.cpp
+        src/Settings.cpp
         src/Text.cpp
         src/Tile.cpp
         src/Map.cpp
@@ -30,6 +29,7 @@ add_library(gamelib
         include/Tile.h
         src/PerlinNoiseGenerator.cpp
         include/PerlinNoiseGenerator.h
+        include/Settings.h
 )
 
 add_executable(ProjectC main.cpp)

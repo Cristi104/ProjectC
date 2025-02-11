@@ -3,7 +3,7 @@
 //
 
 #include <sstream>
-#include "../include/UI.h"
+#include "../include/Settings.h"
 #include "../include/Text.h"
 #include "../include/Resources.h"
 

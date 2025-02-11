@@ -2,7 +2,7 @@
 // Created by cristi on 31.10.2024.
 //
 
-#include "../include/UI.h"
+#include "../include/Settings.h"
 #include "../include/Slider.h"
 #include "../include/Resources.h"
 
@@ -49,20 +49,20 @@ namespace GmLib {
         if (buttonRelease || buttonDown) {
 
             // check for x collision
-            minx = this->slidePosition.x * settings.scaleWidth;
+            minx = this->slidePosition.x * GmLib::Settings::getScaleWidth();
             x = GetMouseX();
-            maxx = this->slidePosition.width * settings.scaleWidth + minx;
+            maxx = this->slidePosition.width * GmLib::Settings::getScaleWidth() + minx;
             if (minx <= x && x <= maxx) {
 
                 // check for y collision
-                miny = this->slidePosition.y * settings.scaleHeight;
+                miny = this->slidePosition.y * GmLib::Settings::getScaleHeight();
                 y = GetMouseY();
-                maxy = this->slidePosition.height * settings.scaleHeight + miny;
+                maxy = this->slidePosition.height * GmLib::Settings::getScaleHeight() + miny;
                 if (miny <= y && y <= maxy) {
 
                     // find percentage
-                    x -= minx + this->pointTexture->width * settings.scaleWidth / 2;
-                    this->percent = x / ((this->slidePosition.width - this->pointTexture->width) * settings.scaleWidth);
+                    x -= minx + this->pointTexture->width * GmLib::Settings::getResolutionWidth() / 2;
+                    this->percent = x / ((this->slidePosition.width - this->pointTexture->width) * GmLib::Settings::getScaleWidth());
                     if (this->percent < 0) {
                         this->percent = 0;
                     }

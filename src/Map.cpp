@@ -3,7 +3,7 @@
 //
 
 #include "raylib.h"
-#include "../include/UI.h"
+#include "../include/Settings.h"
 #include "../include/Map.h"
 #include "../include/Resources.h"
 #include "../include/PerlinNoiseGenerator.h"
@@ -11,17 +11,17 @@ namespace GmLib {
 
     Map::Map() : width(200),
                  height(200){
-        std::vector<std::vector<float>> noise = Gmlib::GenerateFractalBrownianMotion(width + 4, 20, 123);
+        std::vector<std::vector<float>> noise = GmLib::GenerateFractalBrownianMotion(width + 4, 123, 20);
         this->tiles.reserve(width + 2);
         for (unsigned int i = 0; i < width + 2; i++){
             std::vector<Tile>& row = this->tiles.emplace_back();
             row.reserve(height + 2);
             for (unsigned int j = 0; j < height + 2; j++){
-                row.emplace_back((noise[i][j] < 0.01) ? 0 : 1);
+                row.emplace_back((noise[i][j] < -0.01) ? 0 : 1);
 //                row.emplace_back(rand()%2);
             }
         }
-        Vector2 offset = {static_cast<float>(settings.resolutionWidth/2), static_cast<float>(settings.resolutionHeight/2)};
+        Vector2 offset = {static_cast<float>(GmLib::Settings::getResolutionWidth()/2), static_cast<float>(GmLib::Settings::getResolutionHeight()/2)};
         this->camera = {offset, offset, 0, 0.5};
         this->prerender = LoadRenderTexture(width * 16, height * 16);
         this->update();
@@ -149,10 +149,10 @@ namespace GmLib {
 
     void Map::handle() {
         if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
-            this->camera.zoom += 0.03;
+            this->camera.zoom *= 1.05;
         }
         if (IsMouseButtonDown(MOUSE_BUTTON_RIGHT)) {
-            this->camera.zoom -= 0.03;
+            this->camera.zoom *= 0.95;
         }
         if (IsKeyDown(KEY_W)) {
             this->camera.target.y -= 10;

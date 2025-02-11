@@ -2,7 +2,7 @@
 // Created by Cristi on 11/1/2024.
 //
 
-#include "../include/UI.h"
+#include "../include/Settings.h"
 #include "../include/CheckBox.h"
 #include "../include/Resources.h"
 
@@ -40,15 +40,15 @@ namespace GmLib {
         if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) {
 
             // check for x collision
-            minx = this->position.x * settings.scaleWidth;
+            minx = this->position.x * GmLib::Settings::getScaleWidth();
             x = GetMouseX();
-            maxx = this->position.width * settings.scaleWidth + minx;
+            maxx = this->position.width * GmLib::Settings::getScaleWidth() + minx;
             if (minx <= x && x <= maxx) {
 
                 // check for y collision
-                miny = this->position.y * settings.scaleHeight;
+                miny = this->position.y * GmLib::Settings::getScaleHeight();
                 y = GetMouseY();
-                maxy = this->position.height * settings.scaleHeight + miny;
+                maxy = this->position.height * GmLib::Settings::getScaleHeight() + miny;
                 if (miny <= y && y <= maxy) {
                     this->checked = !this->checked;
                 }

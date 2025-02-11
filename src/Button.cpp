@@ -2,7 +2,7 @@
 // Created by cristi on 30.10.2024.
 //
 
-#include "../include/UI.h"
+#include "../include/Settings.h"
 #include "../include/Button.h"
 #include "../include/Resources.h"
 
@@ -45,15 +45,15 @@ namespace GmLib {
         if (buttonRelease || buttonDown) {
 
             // check for x collision
-            minx = this->position.x * settings.scaleWidth;
+            minx = this->position.x * GmLib::Settings::getScaleWidth();
             x = GetMouseX();
-            maxx = this->position.width * settings.scaleWidth;
+            maxx = this->position.width * GmLib::Settings::getScaleWidth();
             if (minx <= x && x <= maxx) {
 
                 // check for y collision
-                miny = this->position.y * settings.scaleHeight;
+                miny = this->position.y * GmLib::Settings::getScaleHeight();
                 y = GetMouseY();
-                maxy = this->position.height * settings.scaleHeight;
+                maxy = this->position.height * GmLib::Settings::getScaleHeight();
                 if (miny <= y && y <= maxy) {
 
                     // call onClick

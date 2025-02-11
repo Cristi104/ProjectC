@@ -7,7 +7,7 @@
 #include <array>
 #include <algorithm>
 
-namespace Gmlib {
+namespace GmLib {
 
     float dotProduct(Vector2 a, Vector2 b){
         return a.x * b.x + a.y * b.y;
@@ -61,7 +61,7 @@ namespace Gmlib {
 
 #define WRAP 512
 
-    std::vector<std::vector<float>> GeneratePerlinNoise(unsigned int size, unsigned int density, unsigned int seed){
+    std::vector<std::vector<float>> GeneratePerlinNoise(unsigned int size, unsigned int seed, unsigned int density){
         // based on algorithm provided here: https://rtouti.github.io/graphics/perlin-noise-algorithm
 
         std::random_device rd;
@@ -110,7 +110,7 @@ namespace Gmlib {
         return std::move(noise);
     }
 
-    std::vector<std::vector<float>> GenerateFractalBrownianMotion(unsigned int size, unsigned int density, unsigned int seed, unsigned int octaves, Vector2 amplitudeSettings, Vector2 frequencySettings) {
+    std::vector<std::vector<float>> GenerateFractalBrownianMotion(unsigned int size, unsigned int seed, unsigned int density, unsigned int octaves, float amplitudeScaling, float frequencyScaling) {
         std::random_device rd;
         std::mt19937 gen(rd());
         if(seed == 0)
@@ -120,11 +120,11 @@ namespace Gmlib {
         std::vector<std::vector<float>> noise(size, std::vector<float>(size));
         std::vector<std::vector<float>> perlinNoise;
 
-        float amplitude = amplitudeSettings.x;
-        float frequency = frequencySettings.x/density;
+        float amplitude = 1;
+        float frequency = 1.0/density;
 
         for(unsigned int octave = 0; octave < octaves; octave++){
-            perlinNoise = GeneratePerlinNoise(size,1.0/frequency, gen());
+            perlinNoise = GeneratePerlinNoise(size, gen(), 1.0/frequency);
 
             for(unsigned int i = 0; i < size; i++){
                 for(unsigned int j = 0; j < size; j++) {
@@ -132,8 +132,8 @@ namespace Gmlib {
                 }
             }
 
-            amplitude *= amplitudeSettings.y;
-            frequency *= frequencySettings.y;
+            amplitude *= amplitudeScaling;
+            frequency *= frequencyScaling;
         }
 
         return noise;
