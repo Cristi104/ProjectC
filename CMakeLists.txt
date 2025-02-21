@@ -30,6 +30,10 @@ add_library(gamelib
         src/PerlinNoiseGenerator.cpp
         include/PerlinNoiseGenerator.h
         include/Settings.h
+        src/Floor.cpp
+        include/Floor.h
+        src/Serialiazation.cpp
+        include/Serialiazation.h
 )
 
 add_executable(ProjectC main.cpp)
