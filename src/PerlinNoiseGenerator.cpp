@@ -70,6 +70,8 @@ namespace GmLib {
             seed = gen();
         gen.seed(seed);
 
+        if(density == 0) density = 1;
+
         std::array<unsigned int, WRAP + 1> permutations{};
         for(unsigned int i = 0; i < WRAP; i++)
             permutations[i] = i;
@@ -124,7 +126,7 @@ namespace GmLib {
         float frequency = 1.0/density;
 
         for(unsigned int octave = 0; octave < octaves; octave++){
-            perlinNoise = GeneratePerlinNoise(size, gen(), 1.0/frequency);
+            perlinNoise = GeneratePerlinNoise(size, seed, 1.0/frequency);
 
             for(unsigned int i = 0; i < size; i++){
                 for(unsigned int j = 0; j < size; j++) {

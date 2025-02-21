@@ -26,7 +26,7 @@ namespace GmLib {
     /// @param frequencyScaling how much each octave's density is changed (values smaller than 1 increase the density of each octave while above 1 decreases)
     GAME_EXPORTS std::vector<std::vector<float>>
     GenerateFractalBrownianMotion(unsigned int size, unsigned int seed = 0, unsigned int density = 20, unsigned int octaves = 8,
-                                  float amplitudeScaling = 0.7, float frequencyScaling = 0.5);
+                                  float amplitudeScaling = 0.7, float frequencyScaling = 1.5);
 } // Gmlib
 
 #endif //PROJECTC_PERLINNOISEGENERATOR_H
