@@ -14,18 +14,18 @@ namespace GmLib {
     Floor::Floor()
             :texture(Resources::getTexture("MissingTexture.png")), textureName("MissingTexture.png"), drawPriority(0){}
 
-    void Floor::serialize(std::ostream &out) const {
+    void Floor::serializeData(std::ostream &out) const {
         Serialize(out, "Texture name", textureName);
         Serialize(out, "Draw priority", drawPriority);
     }
 
-    void Floor::deserialize(std::istream &in) {
-        Deserialize(in, "Texture name", textureName);
+    void Floor::deserializeData(std::istream &in) {
+        textureName = Deserialize<std::string>(in, "Texture name");
         if(textureName.find(".png", textureName.length() - 4) != std::string ::npos)
             texture = Resources::getTexture(textureName);
         else
             throw std::runtime_error("Texture name given for Floor is not a .png\n");
-        Deserialize(in, "Draw priority", drawPriority);
+        drawPriority = Deserialize<unsigned int>(in, "Draw priority");
     }
 
 } // GmLib

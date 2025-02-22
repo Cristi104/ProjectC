@@ -12,55 +12,118 @@ namespace GmLib {
 
     class GAME_EXPORTS Serializable{
     public:
-        virtual void serialize(std::ostream &out) const = 0;
-        virtual void deserialize(std::istream &in) = 0;
+        /// serializes the inner data of a object
+        virtual void serializeData(std::ostream &out) const = 0;
+
+        /// deserializes the inner data of a object
+        virtual void deserializeData(std::istream &in) = 0;
+
     };
 
-    template<typename t>
-    void Serialize(std::ostream &out, const std::string &name, const t &obj){
+    /// serializes any object of a Serializable derived class to a given ostream using a human readable json-like format
+    /// @param out the output stream where the object data will be printed
+    /// @param name the name used to identify the data
+    /// @param obj object to serialize if the object is not a primitive it will be surrounded by {}
+    template<typename T>
+    void Serialize(std::ostream &out, const std::string &name, const T &obj){
         out << name << ": {\n";
-        obj.serialize(out);
+        obj.serializeData(out);
         out << "}\n";
     }
 
+    /// serializes any object of a Serializable derived class to a given ostream using a human readable json-like format
+    /// @param out the output stream where the object data will be printed
+    /// @param name the name used to identify the data
+    /// @param obj object to serialize if the object is not a primitive it will be surrounded by {}
     template<>
     void GAME_EXPORTS Serialize<std::string>(std::ostream &out, const std::string &name, const std::string &obj);
+
+    /// serializes any object of a Serializable derived class to a given ostream using a human readable json-like format
+    /// @param out the output stream where the object data will be printed
+    /// @param name the name used to identify the data
+    /// @param obj object to serialize if the object is not a primitive it will be surrounded by {}
     template<>
     void GAME_EXPORTS Serialize<int>(std::ostream &out, const std::string &name, const int &obj);
+
+    /// serializes any object of a Serializable derived class to a given ostream using a human readable json-like format
+    /// @param out the output stream where the object data will be printed
+    /// @param name the name used to identify the data
+    /// @param obj object to serialize if the object is not a primitive it will be surrounded by {}
     template<>
     void GAME_EXPORTS Serialize<unsigned int >(std::ostream &out, const std::string &name, const unsigned int &obj);
+
+    /// serializes any object of a Serializable derived class to a given ostream using a human readable json-like format
+    /// @param out the output stream where the object data will be printed
+    /// @param name the name used to identify the data
+    /// @param obj object to serialize if the object is not a primitive it will be surrounded by {}
     template<>
     void GAME_EXPORTS Serialize<float>(std::ostream &out, const std::string &name, const float &obj);
 
-
-    template<typename t>
-    void Deserialize(std::istream &in, const std::string &name, t &obj){
+    /// deserializes any object of a Serializable derived class from a given istream
+    /// @param in the input stream where the object data is
+    /// @param name the expected name of the object
+    /// @returns the deserialized object
+    /// @throws std::runtime_error if the data is not found in the expected format or order
+    template<typename T>
+    T Deserialize(std::istream &in, const std::string &name){
         std::string buffer;
         std::string keyString = name + ": {";
         std::string::size_type begin;
+        T obj;
 
         std::getline(in, buffer);
+        while (buffer.empty())
+            std::getline(in, buffer);
+
         if(buffer == keyString){
-            obj.deserialize(in);
+            obj.deserializeData(in);
         } else {
             std::getline(in, buffer);
             throw std::runtime_error("Missing " + name + ": {###} while reading a serialized object\n");
         }
 
         std::getline(in, buffer);
+        while (buffer.empty())
+            std::getline(in, buffer);
+
         if(buffer != "}"){
             throw std::runtime_error("Missing } while reading a serialized object\n");
         }
+
+        return obj;
     }
 
+    /// deserializes any object of a Serializable derived class from a given istream
+    /// @param in the input stream where the object data is
+    /// @param name the expected name of the object
+    /// @returns the deserialized object
+    /// @throws std::runtime_error if the data is not found in the expected format or order
     template<>
-    void GAME_EXPORTS Deserialize<std::string>(std::istream &in, const std::string &name, std::string &obj);
+    std::string GAME_EXPORTS Deserialize<std::string>(std::istream &in, const std::string &name);
+
+    /// deserializes any object of a Serializable derived class from a given istream
+    /// @param in the input stream where the object data is
+    /// @param name the expected name of the object
+    /// @returns the deserialized object
+    /// @throws std::runtime_error if the data is not found in the expected format or order
     template<>
-    void GAME_EXPORTS Deserialize<int>(std::istream &in, const std::string &name, int &obj);
+    int GAME_EXPORTS Deserialize<int>(std::istream &in, const std::string &name);
+
+    /// deserializes any object of a Serializable derived class from a given istream
+    /// @param in the input stream where the object data is
+    /// @param name the expected name of the object
+    /// @returns the deserialized object
+    /// @throws std::runtime_error if the data is not found in the expected format or order
     template<>
-    void GAME_EXPORTS Deserialize<unsigned int>(std::istream &in, const std::string &name, unsigned int &obj);
+    unsigned int GAME_EXPORTS Deserialize<unsigned int>(std::istream &in, const std::string &name);
+
+    /// deserializes any object of a Serializable derived class from a given istream
+    /// @param in the input stream where the object data is
+    /// @param name the expected name of the object
+    /// @returns the deserialized object
+    /// @throws std::runtime_error if the data is not found in the expected format or order
     template<>
-    void GAME_EXPORTS Deserialize<float>(std::istream &in, const std::string &name, float &obj);
+    float GAME_EXPORTS Deserialize<float>(std::istream &in, const std::string &name);
 
 } // GmLib
 

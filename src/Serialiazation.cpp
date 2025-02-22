@@ -27,27 +27,38 @@ namespace GmLib {
     }
 
     template<>
-    void Deserialize<std::string>(std::istream &in, const std::string &name, std::string &obj){
+    std::string Deserialize<std::string>(std::istream &in, const std::string &name){
         std::string buffer;
         std::string keyString = name + ": \"";
         std::string::size_type begin, end;
+        std::string obj;
+
 
         std::getline(in, buffer);
+        while (buffer.empty())
+            std::getline(in, buffer);
+
         begin = buffer.find(keyString);
         end = buffer.rfind('\"');
 
         if(begin != std::string::npos && end != std::string ::npos && begin + keyString.length() != end){
             obj = buffer.substr(begin + keyString.length(), end - begin- keyString.length());
         } else throw std::runtime_error("Missing " + name + ": \"#####\" while reading a serialized object\n");
+
+        return obj;
     }
 
     template<>
-    void Deserialize<int>(std::istream &in, const std::string &name, int &obj){
+    int Deserialize<int>(std::istream &in, const std::string &name){
         std::string buffer;
         std::string keyString = name + ": ";
         std::string::size_type begin;
+        int obj;
 
         std::getline(in, buffer);
+        while (buffer.empty())
+            std::getline(in, buffer);
+
         begin = buffer.find(keyString);
 
         if(begin != std::string::npos){
@@ -59,15 +70,21 @@ namespace GmLib {
                 throw std::runtime_error("Invalid " + name + " argument while reading a serialized object");
             }
         } else throw std::runtime_error("Missing " + name + ": ### while reading a serialized object\n");
+
+        return obj;
     }
 
     template<>
-    void Deserialize<unsigned int>(std::istream &in, const std::string &name, unsigned int &obj){
+    unsigned int Deserialize<unsigned int>(std::istream &in, const std::string &name){
         std::string buffer;
         std::string keyString = name + ": ";
         std::string::size_type begin;
+        unsigned int obj;
 
         std::getline(in, buffer);
+        while (buffer.empty())
+            std::getline(in, buffer);
+
         begin = buffer.find(keyString);
 
         if(begin != std::string::npos){
@@ -79,15 +96,21 @@ namespace GmLib {
                 throw std::runtime_error("Invalid " + name + " argument while reading a serialized object");
             }
         } else throw std::runtime_error("Missing " + name + ": ### while reading a serialized object\n");
+
+        return obj;
     }
 
     template<>
-    void Deserialize<float>(std::istream &in, const std::string &name, float &obj){
+    float Deserialize<float>(std::istream &in, const std::string &name){
         std::string buffer;
         std::string keyString = name + ": ";
         std::string::size_type begin;
+        float obj;
 
         std::getline(in, buffer);
+        while (buffer.empty())
+            std::getline(in, buffer);
+
         begin = buffer.find(keyString);
 
         if(begin != std::string::npos){
@@ -99,6 +122,8 @@ namespace GmLib {
                 throw std::runtime_error("Invalid " + name + " argument while reading a serialized object");
             }
         } else throw std::runtime_error("Missing " + name + ": ###.### while reading a serialized object\n");
+
+        return obj;
     }
 
 } // GmLib

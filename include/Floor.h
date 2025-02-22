@@ -13,7 +13,8 @@
 
 namespace GmLib {
 
-    struct GAME_EXPORTS Floor : public Serializable{
+    class GAME_EXPORTS Floor : public Serializable{
+    public:
         Texture2D *texture;
         std::string textureName;
         unsigned int drawPriority;
@@ -21,8 +22,8 @@ namespace GmLib {
         Floor();
         Floor(const std::string &textureName, unsigned int drawPriority);
 
-        void serialize(std::ostream &out) const override;
-        void deserialize(std::istream &in) override;
+        void serializeData(std::ostream &out) const override;
+        void deserializeData(std::istream &in) override;
 
     };
 

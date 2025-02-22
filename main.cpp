@@ -11,7 +11,8 @@ int main() {
     SetConfigFlags(FLAG_WINDOW_RESIZABLE | FLAG_VSYNC_HINT);
     InitWindow(800, 600, "Hello World");
     GmLib::Floor fl;
-    GmLib::Deserialize(std::cin, "Floor", fl);
+    GmLib::Serialize(std::cout, "Floor", fl);
+    fl = GmLib::Deserialize<GmLib::Floor>(std::cin, "Floor");
     GmLib::Serialize(std::cout, "Floor", fl);
 //    Gmlib::Settings::reset();
     GmLib::Settings::load();
