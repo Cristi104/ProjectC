@@ -8,8 +8,8 @@
 
 namespace GmLib {
 
-    GmLib::Slider::Slider() : pointTexture(Resources::getTexture("Point.png")),
-                              sliderTexture(Resources::getTexture("Slide.png")),
+    GmLib::Slider::Slider() : pointTexture(Resources::getTexture("Point.png").lock()),
+                              sliderTexture(Resources::getTexture("Slide.png").lock()),
                               slidePosition({0,0,0,0}),
                               onClick(nullptr),
                               pointPosition(0),

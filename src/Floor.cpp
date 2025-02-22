@@ -22,7 +22,7 @@ namespace GmLib {
     void Floor::deserializeData(std::istream &in) {
         textureName = Deserialize<std::string>(in, "Texture name");
         if(textureName.find(".png", textureName.length() - 4) != std::string ::npos)
-            texture = Resources::getTexture(textureName);
+            texture = Resources::getTexture(textureName).lock();
         else
             throw std::runtime_error("Texture name given for Floor is not a .png\n");
         drawPriority = Deserialize<unsigned int>(in, "Draw priority");

@@ -11,8 +11,8 @@
 namespace GmLib {
     class Slider : public UIComponent {
     private:
-        Texture2D *sliderTexture;
-        Texture2D *pointTexture;
+        std::shared_ptr<Texture2D> sliderTexture;
+        std::shared_ptr<Texture2D> pointTexture;
         Rectangle slidePosition;
         std::function<void(float)> onClick;
         float pointPosition;

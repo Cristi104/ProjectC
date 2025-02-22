@@ -10,8 +10,8 @@
 namespace GmLib {
     class CheckBox : public UIComponent {
     private:
-        Texture2D *texture;
-        Texture2D *textureChecked;
+        std::shared_ptr<Texture2D> texture;
+        std::shared_ptr<Texture2D> textureChecked;
         Rectangle position;
         bool checked;
     public:

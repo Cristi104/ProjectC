@@ -12,8 +12,8 @@
 namespace GmLib {
     class TextBox : public UIComponent {
     private:
-        Texture2D *texture;
-        Font *font;
+        std::shared_ptr<Texture2D> texture;
+        std::shared_ptr<Font> font;
         Rectangle position;
         std::function<void(std::string&)> onClick;
         bool wasPressed;

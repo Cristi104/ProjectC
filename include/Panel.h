@@ -11,8 +11,8 @@
 namespace GmLib {
     class Panel : public UIComponent {
     private:
-        Texture2D *background;
-        Texture2D *border;
+        std::shared_ptr<Texture2D> background;
+        std::shared_ptr<Texture2D> border;
         Rectangle position;
         std::vector<UIComponent*> components;
         bool visible;

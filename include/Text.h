@@ -13,7 +13,7 @@ namespace GmLib {
     class Text : public UIComponent {
     private:
         Vector2 position;
-        Font *font;
+        std::shared_ptr<Font> font;
         std::string string;
         unsigned int fontSize;
         unsigned int wrapLength;

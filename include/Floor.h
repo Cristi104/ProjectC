@@ -15,7 +15,7 @@ namespace GmLib {
 
     class GAME_EXPORTS Floor : public Serializable{
     public:
-        Texture2D *texture;
+        std::shared_ptr<Texture2D> texture;
         std::string textureName;
         unsigned int drawPriority;
 

@@ -12,8 +12,8 @@
 namespace GmLib {
     class GAME_EXPORTS Button : public UIComponent {
     private:
-        Texture2D *texture;
-        Texture2D *texturePressed;
+        std::shared_ptr<Texture2D> texture;
+        std::shared_ptr<Texture2D> texturePressed;
         Rectangle position;
         std::function<void()> onClick;
         bool wasPressed;

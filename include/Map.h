@@ -18,6 +18,9 @@ namespace GmLib {
         unsigned int width;
         unsigned int height;
         Camera2D camera;
+
+        void drawFloor(unsigned int x, unsigned int y);
+
     public:
         Map();
         void update();

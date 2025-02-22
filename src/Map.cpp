@@ -8,7 +8,6 @@
 #include "../include/Resources.h"
 #include "../include/PerlinNoiseGenerator.h"
 namespace GmLib {
-
     Map::Map() : width(200),
                  height(200){
         std::vector<std::vector<float>> noise = GmLib::GenerateFractalBrownianMotion(width + 4, 123, 20);
@@ -28,111 +27,11 @@ namespace GmLib {
     }
 
     void Map::update() {
-        Rectangle src = {0, 0, 16, 16}, dest = {0, 0, 16, 16};
-        Texture2D *texture[] = {Resources::getTexture("Dirt.png"), Resources::getTexture("Grass.png")};
         BeginTextureMode(this->prerender);
         ClearBackground(BLACK);
         for (unsigned int x = 1; x < this->width + 1; x++) {
-            dest.x = 16 * x;
             for (unsigned int y = 1; y < this->height + 1; y++) {
-                //random sprites
-                src.x = 16 * ((x + y * 3) % 5);
-
-                // main tile texture
-                src.y = 0;
-                src.width = 16;
-                src.height = 16;
-                dest.y = 16 * y;
-                dest.width = 16;
-                dest.height = 16;
-                DrawTexturePro(*texture[tiles[x][y].id], src, dest, {0, 0}, 180, WHITE);
-
-//                continue;
-                // corners
-                src.width = 8;
-                src.height = 8;
-                dest.width = 8;
-                dest.height = 8;
-                src.y = 48;
-
-                // top right
-                if (tiles[x][y].id < tiles[x - 1][y - 1].id && (tiles[x - 1][y - 1].id != tiles[x - 1][y].id && tiles[x - 1][y - 1].id != tiles[x][y - 1].id)) {
-                    dest.x -= 8;
-                    dest.y -= 8;
-                    DrawTexturePro(*texture[tiles[x - 1][y - 1].id], src, dest, {0, 0}, 180, WHITE);
-                    dest.x += 8;
-                    dest.y += 8;
-                }
-
-                // top left
-                if (tiles[x][y].id < tiles[x + 1][y - 1].id && (tiles[x + 1][y - 1].id != tiles[x + 1][y].id && tiles[x + 1][y - 1].id != tiles[x][y - 1].id)) {
-                    src.x -= 8;
-                    dest.y -= 8;
-                    DrawTexturePro(*texture[tiles[x + 1][y - 1].id], src, dest, {0, 0}, 180, WHITE);
-                    src.x += 8;
-                    dest.y += 8;
-                }
-
-                // bottom right
-                if (tiles[x][y].id < tiles[x - 1][y + 1].id && (tiles[x - 1][y + 1].id != tiles[x - 1][y].id && tiles[x - 1][y + 1].id != tiles[x][y + 1].id)) {
-                    dest.x -= 8;
-                    src.y += 8;
-                    DrawTexturePro(*texture[tiles[x - 1][y + 1].id], src, dest, {0, 0}, 180, WHITE);
-                    dest.x += 8;
-                    src.y -= 8;
-                }
-
-                // bottom left
-                if (tiles[x][y].id < tiles[x + 1][y + 1].id && (tiles[x + 1][y + 1].id != tiles[x + 1][y].id && tiles[x + 1][y + 1].id != tiles[x][y + 1].id)) {
-                    src.x -= 8;
-                    src.y += 8;
-                    DrawTexturePro(*texture[tiles[x + 1][y + 1].id], src, dest, {0, 0}, 180, WHITE);
-                    src.x += 8;
-                    src.y -= 8;
-                }
-
-                // edges
-                src.height = 16;
-                dest.height = 16;
-                dest.x -= 8;
-
-                // right
-                if (tiles[x][y].id < tiles[x - 1][y].id) {
-                    src.y = 32;
-                    DrawTexturePro(*texture[tiles[x - 1][y].id], src, dest, {0, 0}, 180, WHITE);
-                }
-
-                // left
-                if (tiles[x][y].id < tiles[x + 1][y].id) {
-                    src.y = 32;
-                    src.x += 8;
-                    dest.x += 8;
-                    DrawTexturePro(*texture[tiles[x + 1][y].id], src, dest, {0, 0}, 180, WHITE);
-                    src.x -= 8;
-                    dest.x -= 8;
-                }
-
-                dest.x += 8;
-                src.width = 16;
-                src.height = 8;
-                dest.width = 16;
-                dest.height = 8;
-                dest.y -= 8;
-
-                // top
-                if (tiles[x][y].id < tiles[x][y - 1].id) {
-                    src.y = 16;
-                    DrawTexturePro(*texture[tiles[x][y - 1].id], src, dest, {0, 0}, 180, WHITE);
-                }
-
-                // bottom
-                if (tiles[x][y].id < tiles[x][y + 1].id) {
-                    src.y = 24;
-                    dest.y += 8;
-                    DrawTexturePro(*texture[tiles[x][y + 1].id], src, dest, {0, 0}, 180, WHITE);
-                    dest.y -= 8;
-                }
-                dest.y += 8;
+                drawFloor(x,y);
             }
         }
         EndTextureMode();
@@ -175,5 +74,111 @@ namespace GmLib {
     Vector2 Map::mouseToTileCoords() {
         Vector2 coords = GetScreenToWorld2D(GetMousePosition(), this->camera);
         return {coords.x / 16 , this->height - (coords.y / 16)};
+    }
+
+    void Map::drawFloor(unsigned int x, unsigned int y) {
+        Rectangle src = {0, 0, 16, 16}, dest = {0, 0, 16, 16};
+        std::shared_ptr<Texture2D> textures[] = {Resources::getTexture("Dirt.png").lock(), Resources::getTexture("Grass.png").lock()};
+
+        dest.x = 16 * x;
+        dest.y = 16 * y;
+
+        //random sprites
+        src.x = 16 * ((x + y * 3) % 5);
+
+        // main tile texture
+        src.y = 0;
+        src.width = 16;
+        src.height = 16;
+        dest.width = 16;
+        dest.height = 16;
+        DrawTexturePro(*textures[tiles[x][y].floorId], src, dest, {0, 0}, 180, WHITE);
+
+        // corners
+        src.width = 8;
+        src.height = 8;
+        dest.width = 8;
+        dest.height = 8;
+        src.y = 48;
+
+        // top right
+        if (tiles[x][y].floorId < tiles[x - 1][y - 1].floorId && (tiles[x - 1][y - 1].floorId != tiles[x - 1][y].floorId && tiles[x - 1][y - 1].floorId != tiles[x][y - 1].floorId)) {
+            dest.x -= 8;
+            dest.y -= 8;
+            DrawTexturePro(*textures[tiles[x - 1][y - 1].floorId], src, dest, {0, 0}, 180, WHITE);
+            dest.x += 8;
+            dest.y += 8;
+        }
+
+        // top left
+        if (tiles[x][y].floorId < tiles[x + 1][y - 1].floorId && (tiles[x + 1][y - 1].floorId != tiles[x + 1][y].floorId && tiles[x + 1][y - 1].floorId != tiles[x][y - 1].floorId)) {
+            src.x -= 8;
+            dest.y -= 8;
+            DrawTexturePro(*textures[tiles[x + 1][y - 1].floorId], src, dest, {0, 0}, 180, WHITE);
+            src.x += 8;
+            dest.y += 8;
+        }
+
+        // bottom right
+        if (tiles[x][y].floorId < tiles[x - 1][y + 1].floorId && (tiles[x - 1][y + 1].floorId != tiles[x - 1][y].floorId && tiles[x - 1][y + 1].floorId != tiles[x][y + 1].floorId)) {
+            dest.x -= 8;
+            src.y += 8;
+            DrawTexturePro(*textures[tiles[x - 1][y + 1].floorId], src, dest, {0, 0}, 180, WHITE);
+            dest.x += 8;
+            src.y -= 8;
+        }
+
+        // bottom left
+        if (tiles[x][y].floorId < tiles[x + 1][y + 1].floorId && (tiles[x + 1][y + 1].floorId != tiles[x + 1][y].floorId && tiles[x + 1][y + 1].floorId != tiles[x][y + 1].floorId)) {
+            src.x -= 8;
+            src.y += 8;
+            DrawTexturePro(*textures[tiles[x + 1][y + 1].floorId], src, dest, {0, 0}, 180, WHITE);
+            src.x += 8;
+            src.y -= 8;
+        }
+
+        // edges
+        src.height = 16;
+        dest.height = 16;
+        dest.x -= 8;
+
+        // right
+        if (tiles[x][y].floorId < tiles[x - 1][y].floorId) {
+            src.y = 32;
+            DrawTexturePro(*textures[tiles[x - 1][y].floorId], src, dest, {0, 0}, 180, WHITE);
+        }
+
+        // left
+        if (tiles[x][y].floorId < tiles[x + 1][y].floorId) {
+            src.y = 32;
+            src.x += 8;
+            dest.x += 8;
+            DrawTexturePro(*textures[tiles[x + 1][y].floorId], src, dest, {0, 0}, 180, WHITE);
+            src.x -= 8;
+            dest.x -= 8;
+        }
+
+        dest.x += 8;
+        src.width = 16;
+        src.height = 8;
+        dest.width = 16;
+        dest.height = 8;
+        dest.y -= 8;
+
+        // top
+        if (tiles[x][y].floorId < tiles[x][y - 1].floorId) {
+            src.y = 16;
+            DrawTexturePro(*textures[tiles[x][y - 1].floorId], src, dest, {0, 0}, 180, WHITE);
+        }
+
+        // bottom
+        if (tiles[x][y].floorId < tiles[x][y + 1].floorId) {
+            src.y = 24;
+            dest.y += 8;
+            DrawTexturePro(*textures[tiles[x][y + 1].floorId], src, dest, {0, 0}, 180, WHITE);
+            dest.y -= 8;
+        }
+        dest.y += 8;
+
     }
 }

@@ -7,19 +7,20 @@
 
 #include <map>
 #include <string>
+#include <memory>
 #include "raylib.h"
 #include "Game_exports.h"
 
 namespace GmLib {
     class GAME_EXPORTS Resources{
     public:
-        static std::map<std::string, Texture2D*> textures;
-        static std::map<std::string, Font*> fonts;
+        static std::map<std::string, std::shared_ptr<Texture2D>> textures;
+        static std::map<std::string, std::shared_ptr<Font>> fonts;
 
         static void Load(const std::string &directory);
         static void Unload();
-        static Texture2D *getTexture(const std::string &fileName);
-        static Font *getFont(const std::string &fileName);
+        static std::weak_ptr<Texture2D> getTexture(const std::string &fileName);
+        static std::weak_ptr<Font> getFont(const std::string &fileName);
     };
 }
 

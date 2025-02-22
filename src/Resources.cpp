@@ -6,8 +6,8 @@
 #include "../include/Resources.h"
 
 namespace GmLib{
-    std::map<std::string, Texture2D*> Resources::textures;
-    std::map<std::string, Font*> Resources::fonts;
+    std::map<std::string, std::shared_ptr<Texture2D>> Resources::textures;
+    std::map<std::string, std::shared_ptr<Font>> Resources::fonts;
 
     void Resources::Load(const std::string &directory) {
         FilePathList list = LoadDirectoryFiles(directory.c_str());
@@ -33,7 +33,9 @@ namespace GmLib{
                     if (textures.find(fileName) == textures.end()){
                         image = LoadImage(file);
                         texture = LoadTextureFromImage(image);
-                        textures.insert({fileName, new Texture2D(texture)});
+                        textures.insert({fileName,std::shared_ptr<Texture2D>(
+                                new Texture2D(texture),
+                                [](Texture2D *ptr){UnloadTexture(*ptr);})});
                         UnloadImage(image);
                     }
                 }
@@ -44,7 +46,9 @@ namespace GmLib{
                     // check if exists
                     if (fonts.find(fileName) == fonts.end()){
                         font = LoadFont(file);
-                        fonts.insert({fileName, new Font(font)});
+                        fonts.insert({fileName, std::shared_ptr<Font>(
+                                new Font(font),
+                                [](Font *ptr){UnloadFont(*ptr);})});
                     }
                 }
             } else {
@@ -56,29 +60,35 @@ namespace GmLib{
     }
 
     void Resources::Unload() {
-        for(const auto& pair : textures){
-            UnloadTexture(*pair.second);
-            delete pair.second;
-        }
-        for(const auto& pair : fonts){
-            UnloadFont(*pair.second);
-            delete pair.second;
-        }
+        textures.clear();
+        fonts.clear();
     }
 
-    Texture2D *Resources::getTexture(const std::string &fileName) {
+    std::weak_ptr<Texture2D> Resources::getTexture(const std::string &fileName) {
         try{
             return textures.at(fileName);
         } catch (std::out_of_range &ex){
-            return nullptr;
+            try{
+                return textures.at("MissingTexture.png");
+            } catch (std::out_of_range &ex){
+                Image image = GenImageChecked(64,64,4,4,
+                                                {0,0,0,255},{255,0,255,255});
+                Texture2D texture = LoadTextureFromImage(image);
+                textures.insert({"MissingTexture.png",std::shared_ptr<Texture2D>(
+                        new Texture2D(texture),
+                        [](Texture2D *ptr){UnloadTexture(*ptr);})});
+                UnloadImage(image);
+                return textures.at("MissingTexture.png");
+            }
         }
     }
 
-    Font *Resources::getFont(const std::string &fileName) {
-        try{
-            return fonts.at(fileName);
-        } catch (std::out_of_range &ex){
-            return nullptr;
-        }
+    std::weak_ptr<Font> Resources::getFont(const std::string &fileName) {
+//        try{
+//            return fonts.at(fileName);
+//        } catch (std::out_of_range &ex){
+//            return {};
+//        }
+        return fonts.at(fileName);
     }
 }
