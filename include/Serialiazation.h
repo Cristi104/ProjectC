@@ -18,6 +18,7 @@ namespace GmLib {
         /// deserializes the inner data of a object
         virtual void deserializeData(std::istream &in) = 0;
 
+        virtual ~Serializable() = default;
     };
 
     /// serializes any object of a Serializable derived class to a given ostream using a human readable json-like format

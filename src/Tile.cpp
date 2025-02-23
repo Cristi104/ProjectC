@@ -4,4 +4,11 @@
 
 #include "../include/Tile.h"
 
-GmLib::Tile::Tile(unsigned int id) :id(id) {}
+namespace GmLib{
+    Tile::Tile(unsigned int floorId) :floorId(floorId) {}
+
+    void Tile::init() {
+
+    }
+}
+

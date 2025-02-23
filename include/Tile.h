@@ -5,12 +5,19 @@
 #ifndef PROJECTC_TILE_H
 #define PROJECTC_TILE_H
 
-namespace GmLib {
-    class Tile{
-    public:
-        unsigned int id = 0;
+#include <vector>
+#include "raylib.h"
+#include "Game_exports.h"
 
-        Tile(unsigned int id);
+namespace GmLib {
+    class GAME_EXPORTS Tile{
+    private:
+        static std::vector<Texture2D*> floorTextures;
+        static void init();
+    public:
+        unsigned int floorId = 0;
+        unsigned int wallId = 0;
+        explicit Tile(unsigned int floorId);
     };
 }
 
